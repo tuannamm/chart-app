@@ -1,0 +1,33 @@
+.header-container {
+  .navbar-brand {
+    font-size: 30px;
+    color: black;
+    font-weight: 500;
+  }
+    .btn-login {
+      border-radius: 10px;
+      border: 1px solid grey;
+      margin: 0 10px;
+      padding: 0 15px;
+      height: 40px;
+      width: 87px;
+    }
+    .btn-signup {
+      border-radius: 10px;
+      border: 1px solid grey;
+      margin: 0 5px;
+      width: 87px;
+      padding: 0 15px;
+      color: white;
+      background-color: #303030;
+      &:hover {
+        background-color: black;
+      }
+      height: 40px;
+    }
+    .nav-link {
+      &.active  {
+        color:rgb(94, 92, 92)
+      }
+    }
+}
