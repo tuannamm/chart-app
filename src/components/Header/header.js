@@ -5,16 +5,23 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { NavLink } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const handleLogin = () => {};
+  const navigate = useNavigate();
 
-  const handleSignUp = () => {};
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleSignUp = () => {
+    navigate("/signup");
+  };
   return (
     <Navbar bg="light" expand="lg" className="header-container">
       <Container>
         <NavLink to="/" className="nav-link navbar-brand ">
-          Chart
+          Chart App
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
