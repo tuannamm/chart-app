@@ -1,0 +1,29 @@
+.homepage-container {
+  margin: 20px 50px;
+  border: 1px solid black;
+  .feature-button {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .feature-button-right {
+      margin: 10px 10px 10px 830px;
+    }
+    .feature-button-left {
+      margin: 10px 0px 10px 10px;
+    }
+    .btn {
+      border-radius: 10px;
+      border: 0.5px solid black;
+      margin-right: 5px;
+      &:hover {
+        background-color: rgb(214, 212, 212);
+      }
+    }
+  }
+  .chart-container {
+    border: 1px solid black;
+    height: 80vh;
+    width: 1320px;
+    margin: 10px;
+  }
+}

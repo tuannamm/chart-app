@@ -4,7 +4,18 @@ import "./homepage.scss";
 const HomePage = () => {
   return (
     <div className="homepage-container">
-      <h1>Hello</h1>
+      <div className="feature-button">
+        <div className="feature-button-left">
+          <button className="btn">Annotate</button>
+          <button className="btn">Properties</button>
+          <button className="btn">Data</button>
+        </div>
+        <div className="feature-button-right">
+          <button className="btn ">Import data</button>
+          <button className="btn">Download</button>
+        </div>
+      </div>
+      <div className="chart-container"></div>
     </div>
   );
 };
