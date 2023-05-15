@@ -1,0 +1,41 @@
+.admin-container {
+  display: flex;
+  .admin-sidebar {
+    .pro-sidebar {
+      height: 100vh !important;
+    }
+    .sidebar-btn-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .sidebar-btn {
+        width: 200px;
+        height: 35px;
+        padding: 5px;
+        border: 1px solid grey;
+        border-radius: 5px;
+        background-color: #303030;
+        color: #adadad;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        span {
+          margin-left: 5px;
+        }
+        
+      }
+    }
+  }
+  .admin-content {
+    width: 100%;
+    .admin-header {
+      height: 40px;
+      
+    }
+    .admin-main {
+      
+    }
+  }
+
+}

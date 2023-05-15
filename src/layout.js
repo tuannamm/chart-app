@@ -8,6 +8,7 @@ import HomePage from "./components/HomePage/homepage";
 import App from "./App";
 import SignUp from "./components/Auth/signup";
 import Login from "./components/Auth/login";
+import Admin from "./components/Admin/admin";
 
 const Layout = () => {
   return (
@@ -17,6 +18,7 @@ const Layout = () => {
           <Route path="/" element={<App />}>
             <Route index element={<HomePage />} />
           </Route>
+          <Route path="/admin" element={<Admin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
         </Routes>
