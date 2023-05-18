@@ -1,0 +1,25 @@
+.card-chart-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  margin-top: 10px;
+  padding: 20px;
+  .card-chart {
+    text-align: center;
+    margin: 20px;
+    border: 0.5px solid rgb(201, 198, 198);
+    border-radius: 15px;
+    &:hover {
+      border: 1px solid grey;
+
+    }
+    .chart.image {
+
+    }
+  }
+
+}
+.chart-container {
+  .apex-chart {
+    margin-top: 20vh;
+  }
+}
