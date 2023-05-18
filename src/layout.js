@@ -9,6 +9,7 @@ import App from "./App";
 import SignUp from "./components/Auth/signup";
 import Login from "./components/Auth/login";
 import Admin from "./components/Admin/admin";
+import Gallery from "./components/Gallery/gallery";
 
 const Layout = () => {
   return (
@@ -18,6 +19,7 @@ const Layout = () => {
           <Route path="/" element={<App />}>
             <Route index element={<HomePage />} />
           </Route>
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
