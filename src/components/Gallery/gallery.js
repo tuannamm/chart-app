@@ -1,10 +1,11 @@
 import "./gallery.scss";
 import "../Header/header.scss";
 import { NavLink, useNavigate } from "react-router-dom";
-
 import Card from "react-bootstrap/Card";
 import { FaChartPie } from "react-icons/fa";
-import { Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
+
+import Setting from "../Setting/setting";
 
 const chartListData = [
   {
@@ -42,13 +43,36 @@ const chartListData = [
 const Gallery = () => {
   const navigate = useNavigate();
 
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleSignUp = () => {
+    navigate("/signup");
+  };
+
   return (
     <>
       <Navbar bg="light" expand="lg" className="header-container">
-        <NavLink to="/" className="nav-link navbar-brand ">
-          <FaChartPie size={"2em"} color={"00bfff"} />
-          Chart App
-        </NavLink>
+        <Container>
+          <NavLink to="/" className="nav-link navbar-brand ">
+            <FaChartPie size={"2em"} color={"00bfff"} />
+            Chart App
+          </NavLink>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto"></Nav>
+            <Nav>
+              <button className="btn-login" onClick={() => handleLogin()}>
+                Log in
+              </button>
+              <button className="btn-signup" onClick={() => handleSignUp()}>
+                Sign up
+              </button>
+              <Setting />
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Navbar>
       <div className="card-chart-container">
         {chartListData &&
@@ -57,7 +81,7 @@ const Gallery = () => {
               style={{ width: "25rem", height: "20rem" }}
               key={chart.id}
               onClick={() =>
-                navigate("/", {
+                navigate("/home", {
                   state: {
                     chartId: chart.id,
                   },
