@@ -1,11 +1,19 @@
-import React, { useLayoutEffect } from "react";
+import React, { useState } from "react";
 import "./homepage.scss";
-
 import { useLocation } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
 
+import DataModal from "./Modal/dataModal";
+
 const HomePage = () => {
   const { state } = useLocation();
+  const [showDataModal, setShowDataModal] = useState(false);
+  const [data, setData] = useState({
+    title: "",
+    name: "",
+    categories: [],
+    dataLabel: [],
+  });
 
   const chartData = (chartId) => {
     switch (chartId) {
@@ -13,8 +21,8 @@ const HomePage = () => {
         return {
           series: [
             {
-              name: "Desktops",
-              data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+              name: data.name ? data.name : "",
+              data: [...data.dataLabel],
             },
           ],
           options: {
@@ -32,27 +40,17 @@ const HomePage = () => {
               curve: "straight",
             },
             title: {
-              text: "Product Trends by Month",
-              align: "left",
+              text: data.title ? data.title : "TITLE",
+              align: "center",
             },
             grid: {
               row: {
-                colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+                colors: ["#f3f3f3", "transparent"],
                 opacity: 0.5,
               },
             },
             xaxis: {
-              categories: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-              ],
+              categories: [...data.categories],
             },
           },
         };
@@ -104,29 +102,45 @@ const HomePage = () => {
     }
   };
 
+  const handleShowDataModal = () => {
+    setShowDataModal(true);
+  };
+
   return (
-    <div className="homepage-container">
-      <div className="feature-button">
-        <div className="feature-button-left">
-          <button className="btn">Annotate</button>
-          <button className="btn">Properties</button>
-          <button className="btn">Data</button>
+    <>
+      <div className="homepage-container">
+        <div className="feature-button">
+          <div className="feature-button-left">
+            <button className="btn">Annotate</button>
+            <button className="btn">Properties</button>
+            <button className="btn" onClick={() => handleShowDataModal()}>
+              Data
+            </button>
+          </div>
+          <div className="feature-button-right">
+            <button className="btn ">Import data</button>
+            <button className="btn">Download</button>
+          </div>
         </div>
-        <div className="feature-button-right">
-          <button className="btn ">Import data</button>
-          <button className="btn">Download</button>
+        <div className="chart-container">
+          <ReactApexCharts
+            className="apex-chart"
+            options={chartData(state.chartId).options}
+            series={chartData(state.chartId).series}
+            type="line"
+            height={350}
+          />
+        </div>
+        <div>
+          <DataModal
+            showDataModal={showDataModal}
+            setShowDataModal={setShowDataModal}
+            data={data}
+            setData={setData}
+          />
         </div>
       </div>
-      <div className="chart-container">
-        <ReactApexCharts
-          className="apex-chart"
-          options={chartData(state.chartId).options}
-          series={chartData(state.chartId).series}
-          type="line"
-          height={350}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 
