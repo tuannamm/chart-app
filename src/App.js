@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoadingScreen(true);
-    }, 2000);
+    }, 1500);
   }, []);
 
   return (
@@ -22,7 +22,7 @@ const App = () => {
           className="loading-screen"
           type="bars"
           color="black"
-          height={150}
+          height={100}
           width={375}
         />
       ) : (

@@ -1,12 +1,13 @@
 .homepage-container {
   margin: 20px 50px;
   border: 1px solid black;
+  border-radius: 10px;
   .feature-button {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     .feature-button-right {
-      margin: 10px 10px 10px 830px;
+      margin: 10px 0px 10px 20px;
     }
     .feature-button-left {
       margin: 10px 0px 10px 10px;
@@ -21,9 +22,9 @@
     }
   }
   .chart-container {
-    border: 1px solid black;
-    height: 80vh;
-    width: 1320px;
-    margin: 10px;
+    height: 60vh;
+    width: 80%;
+    margin: auto;
+ 
   }
 }

@@ -59,7 +59,7 @@ const HomePage = () => {
           series: [
             {
               name: "STOCK ABC",
-              data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+              data: [...data.dataLabel],
             },
           ],
           options: {
@@ -76,14 +76,9 @@ const HomePage = () => {
             stroke: {
               curve: "straight",
             },
-
             title: {
-              text: "Fundamental Analysis of Stocks",
-              align: "left",
-            },
-            subtitle: {
-              text: "Price Movements",
-              align: "left",
+              text: data.title ? data.title : "TITLE",
+              align: "center",
             },
             // labels: series.monthDataSeries1.dates,
             xaxis: {
