@@ -8,7 +8,7 @@ import { FaChartPie } from "react-icons/fa";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 import Setting from "../../Setting/setting";
-import Spinner from "../../components/AtomicSpinner/atomicSpinner";
+import Spinner from "../../components/AtomicSpinner/AtomicSpinner";
 
 const chartListData = [
   {
@@ -97,7 +97,7 @@ const Gallery = () => {
             </Container>
           </Navbar>
 
-          <div className="card-chart-container">
+          <div className="card-chart-container bounce">
             <div className="list-chart">
               {chartListData &&
                 chartListData.map((chart) => (

@@ -3,8 +3,8 @@ import "./App.scss";
 import { Outlet } from "react-router-dom";
 
 // import component
-import Header from "./components/Header/header";
-import LoadingScreen from "./components/LoadingScreen/loadingScreen";
+import Header from "./components/Header/Header";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
 const App = () => {
   const [loadingScreen, setLoadingScreen] = useState(undefined);

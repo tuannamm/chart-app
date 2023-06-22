@@ -7,22 +7,24 @@
   min-height: 100vh;
   .welcome-page-title {
     font-size: 7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: 700;
     margin-top: -200px;
+    .bounce-in-right {
+      animation: bounce-in-right 3s ease ;
+    }
+    .rotate-in-down-left {
+      animation: rotate-in-down-left 2s ease ;
+    }
   }
   .welcome-page-desc {
     font-size: 3rem;
     font-weight: 500;
     margin: 60px 0 80px 60px;
   }
-  .icon-logo {
-    position: relative;
-    transition: transform 2s ease-in-out;
-  }
-  .icon-logo.transformed {
-    transform: scale(0.5) rotate(180deg);
-    transition: transform 2s ease-in-out;
-  }
+
   button {
     font-size: 2rem;
     font-weight: 500;
@@ -41,3 +43,37 @@
     }
   }
 }
+
+@keyframes bounce-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(2000px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-100px);
+  }
+  80% { transform: translateX(100px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes rotate-in-down-left {
+  0% {
+    transform-origin: left bottom;
+    transform: rotate(-90deg);
+    opacity: 0;
+  }
+  100% {
+    transform-origin: left bottom;
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+
+// .grow {
+//   animation: grow 2s ease;
+// }
+// @keyframes grow {
+//   from { transform: scale(0); }
+//   to { transform: scale(1); }
+// }

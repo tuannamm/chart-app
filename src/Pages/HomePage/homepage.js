@@ -1,19 +1,60 @@
-import React, { useState } from "react";
+import React, { createRef, useState } from "react";
 import "./homepage.scss";
-import { useLocation } from "react-router-dom";
+
+import { useLocation, useNavigate } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
+import { useScreenshot, createFileName } from "use-react-screenshot";
 
 import DataModal from "./Modal/dataModal";
 
 const HomePage = () => {
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const ref = createRef(null);
+
   const [showDataModal, setShowDataModal] = useState(false);
+  const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [data, setData] = useState({
     title: "",
     name: "",
     categories: [],
     dataLabel: [],
   });
+  const [image, takeScreenShot] = useScreenshot({
+    type: "image/jpeg",
+    quality: 1.0,
+  });
+
+  const download = (
+    image,
+    { name = `${data.title}`, extension = "jpg" } = {}
+  ) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+
+  const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+
+  const handleButtonClick = () => {
+    setCanvasVisible(true);
+    const apexChartContainer = document.querySelector(".apex-chart");
+    const canvas = document.createElement("canvas");
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.zIndex = "10";
+    apexChartContainer.appendChild(canvas);
+  };
+
+  const handleRemoveCanvas = () => {
+    setCanvasVisible(false);
+    const canvasElements = document.querySelectorAll(".apex-chart canvas");
+    canvasElements.forEach((canvas) => canvas.remove());
+  };
 
   const chartData = (chartId) => {
     switch (chartId) {
@@ -101,29 +142,42 @@ const HomePage = () => {
     setShowDataModal(true);
   };
 
+  const handleDownload = () => {
+    navigate("/download");
+  };
+
   return (
     <>
       <div className="homepage-container">
         <div className="feature-button">
           <div className="feature-button-left">
-            <button className="btn">Annotate</button>
+            <button className="btn" onClick={handleButtonClick}>
+              Annotate
+            </button>
             <button className="btn">Properties</button>
-            <button className="btn" onClick={() => handleShowDataModal()}>
+            <button className="btn" onClick={handleShowDataModal}>
               Data
             </button>
           </div>
           <div className="feature-button-right">
             <button className="btn ">Import data</button>
-            <button className="btn">Download</button>
+            <button className="btn" onClick={downloadScreenshot}>
+              Download
+            </button>
+            {isCanvasVisible && (
+              <button className="btn cancel" onClick={handleRemoveCanvas}>
+                Cancel
+              </button>
+            )}
           </div>
         </div>
-        <div className="chart-container">
+        <div className="chart-container" ref={ref}>
           <ReactApexCharts
             className="apex-chart"
             options={chartData(state.chartId).options}
             series={chartData(state.chartId).series}
             type="line"
-            height={600}
+            height={500}
           />
         </div>
         <div>

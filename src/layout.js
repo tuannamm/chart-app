@@ -4,15 +4,17 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // import component
-import HomePage from "./components/HomePage/homepage";
+
 import App from "./App";
-import SignUp from "./components/Auth/signup";
-import Login from "./components/Auth/login";
 
 import WelcomePage from "./Pages/WelcomePage/welcomePage";
+import Gallery from "./Pages/Gallery/gallery";
+import HomePage from "./Pages/HomePage/homepage";
 import Admin from "./Pages/Admin/admin";
 import User from "./Pages/User/user";
-import Gallery from "./Pages/Gallery/gallery";
+
+import Login from "./components/Auth/Login";
+import SignUp from "./components/Auth/Signup";
 
 const Layout = () => {
   return (
@@ -28,6 +30,7 @@ const Layout = () => {
           <Route path="/user" element={<User />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          {/* <Route path="/download" component={Download} /> */}
         </Routes>
       </Router>
     </>
