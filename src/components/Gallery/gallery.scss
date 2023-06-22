@@ -11,16 +11,33 @@
   .card-chart {
     text-align: center;
     margin: 20px;
-    border: 0.5px solid rgb(201, 198, 198);
+    border: 1px solid rgb(201, 198, 198);
     border-radius: 15px;
-    transition: all .15s ease-out 0s;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+
+    @keyframes card-hover {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.08);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
     &:hover {
       color: rgb(0, 191, 255);
       box-shadow: 0 0 5px rgb(0, 191, 255);
       border: 1px solid rgb(0, 191, 255);
+      animation-name: card-hover;
+      transform: scale(1.08);
       .chart-image {
       }
     }
+ 
     .chart-image {
       object-fit: cover;
       border-radius: 15px;

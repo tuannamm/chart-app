@@ -123,7 +123,7 @@ const HomePage = () => {
             options={chartData(state.chartId).options}
             series={chartData(state.chartId).series}
             type="line"
-            height={350}
+            height={600}
           />
         </div>
         <div>

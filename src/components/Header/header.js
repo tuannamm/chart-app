@@ -13,8 +13,7 @@ const Header = () => {
     <Navbar bg="light" expand="lg" className="header-container">
       <Container>
         <NavLink to="/home" className="nav-link navbar-brand ">
-          <FaChartPie size={"2em"} color={"00bfff"} />
-          Chart App
+          <FaChartPie size={"2em"} color={"00bfff"} /> Chart App
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -25,7 +24,7 @@ const Header = () => {
             <NavLink href="/admin" className="nav-link">
               Admin
             </NavLink>
-            <NavLink href="/" className="nav-link">
+            <NavLink href="/gallery" className="nav-link">
               Gallery
             </NavLink>
           </Nav>
