@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-bootstrap";
 import { FaChartPie } from "react-icons/fa";
 
-import Setting from "../Setting/setting";
+import Setting from "../../Setting/setting";
 
 const Header = () => {
   return (

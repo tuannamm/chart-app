@@ -22,7 +22,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   const navigate = useNavigate();
 
   const handleToHomepage = () => {
-    navigate("/");
+    navigate("/home");
   };
   return (
     <>

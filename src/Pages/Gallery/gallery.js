@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import "./gallery.scss";
-import "../Header/header.scss";
+import "../../components/Header/header.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { FaChartPie } from "react-icons/fa";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
-import Setting from "../Setting/setting";
-import Spinner from "../AtomicSpinner/atomicSpinner";
+import Setting from "../../Setting/setting";
+import Spinner from "../../components/AtomicSpinner/atomicSpinner";
 
 const chartListData = [
   {

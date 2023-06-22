@@ -8,9 +8,11 @@ import HomePage from "./components/HomePage/homepage";
 import App from "./App";
 import SignUp from "./components/Auth/signup";
 import Login from "./components/Auth/login";
-import Admin from "./components/Admin/admin";
-import Gallery from "./components/Gallery/gallery";
-import WelcomePage from "./components/Page/WelcomePage/welcomePage";
+
+import WelcomePage from "./Pages/WelcomePage/welcomePage";
+import Admin from "./Pages/Admin/admin";
+import User from "./Pages/User/user";
+import Gallery from "./Pages/Gallery/gallery";
 
 const Layout = () => {
   return (
@@ -23,6 +25,7 @@ const Layout = () => {
           </Route>
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/user" element={<User />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
         </Routes>
