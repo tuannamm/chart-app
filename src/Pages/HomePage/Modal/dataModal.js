@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import "./dataModal.scss";
+import { toast } from "react-toastify";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+
+import constant from "../../../utils/constant";
+import "./dataModal.scss";
 
 const DataModal = (props) => {
   const { showDataModal, setShowDataModal, setData } = props;
@@ -49,6 +52,26 @@ const DataModal = (props) => {
     setDataLabel([...dataLabel, e]);
   };
 
+  const handleSave = () => {
+    setData({
+      title,
+      name,
+      categories,
+      dataLabel,
+    });
+    handleClose();
+    toast.success("Created successfully!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
   const handleClose = () => {
     setShowDataModal(false);
     setCategories([]);
@@ -64,7 +87,7 @@ const DataModal = (props) => {
         <Modal.Body>
           <form className="row g-3">
             <div className="col-md-6">
-              <label className="form-label">Title</label>
+              <label className="form-label">{constant.title}</label>
               <input
                 type="text"
                 className="form-control"
@@ -73,7 +96,7 @@ const DataModal = (props) => {
               />
             </div>
             <div className="col-md-6">
-              <label className="form-label">Name</label>
+              <label className="form-label">{constant.name}</label>
               <input
                 type="text"
                 className="form-control"
@@ -126,21 +149,10 @@ const DataModal = (props) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            {constant.close}
           </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              setData({
-                title,
-                name,
-                categories,
-                dataLabel,
-              });
-              handleClose();
-            }}
-          >
-            Save Changes
+          <Button variant="primary" onClick={handleSave}>
+            {constant.save_changes}
           </Button>
         </Modal.Footer>
       </Modal>

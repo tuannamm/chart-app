@@ -9,6 +9,10 @@ const constant = {
   forgot_password: "Forgot password?",
   log_in_chart_app: "Log in to Chart App",
   go_to_homepage: " Go to Homepage",
+  close: "Close",
+  title: "Title",
+  name: "Name",
+  save_changes: "Save Changes",
 
   // Navbar
   user: "User",
