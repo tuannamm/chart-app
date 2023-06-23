@@ -1,4 +1,4 @@
-import React, { createRef, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import "./homepage.scss";
 
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,11 +9,12 @@ import DataModal from "./Modal/dataModal";
 
 const HomePage = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
   const ref = createRef(null);
 
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
+  const [isAnnotateClicked, setAnnotateClicked] = useState(false);
+
   const [data, setData] = useState({
     title: "",
     name: "",
@@ -39,20 +40,28 @@ const HomePage = () => {
 
   const handleButtonClick = () => {
     setCanvasVisible(true);
-    const apexChartContainer = document.querySelector(".apex-chart");
-    const canvas = document.createElement("canvas");
-    canvas.style.position = "absolute";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    canvas.style.zIndex = "10";
-    apexChartContainer.appendChild(canvas);
+    setAnnotateClicked(true);
   };
+
+  useEffect(() => {
+    if (isCanvasVisible && isAnnotateClicked) {
+      const apexChartContainer = document.querySelector(".apex-chart");
+      const canvas = document.createElement("canvas");
+      canvas.style.position = "absolute";
+      canvas.style.top = "0";
+      canvas.style.left = "0";
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.style.zIndex = "10";
+      apexChartContainer.appendChild(canvas);
+    }
+  }, [isCanvasVisible, isAnnotateClicked]);
 
   const handleRemoveCanvas = () => {
     setCanvasVisible(false);
-    const canvasElements = document.querySelectorAll(".apex-chart canvas");
+    setAnnotateClicked(false);
+    const apexChartContainer = document.querySelector(".apex-chart");
+    const canvasElements = apexChartContainer.querySelectorAll("canvas");
     canvasElements.forEach((canvas) => canvas.remove());
   };
 
@@ -140,10 +149,6 @@ const HomePage = () => {
 
   const handleShowDataModal = () => {
     setShowDataModal(true);
-  };
-
-  const handleDownload = () => {
-    navigate("/download");
   };
 
   return (
