@@ -1,10 +1,12 @@
 import { useState } from "react";
-
-import "./auth.scss";
-
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
+import icons from "../../utils/icons";
+import constant from "../../utils/constant";
+import "./auth.scss";
+
+const { AiOutlineLoading3Quarters } = icons;
 
 const Login = (props) => {
   const navigate = useNavigate();
@@ -32,16 +34,16 @@ const Login = (props) => {
   return (
     <div className="login-container">
       <div className="header">
-        <span>Don't have account yet?</span>
+        <span>{constant.dont_have_account}</span>
         <button className="sign-up-button" onClick={() => goSignUp()}>
-          Sign up
+          {constant.sign_up}
         </button>
       </div>
-      <div className="title col-4 mx-auto">Chart App</div>
-      <div className="welcome col-4 mx-auto">Hello, who are you?</div>
+      <div className="title col-4 mx-auto">{constant.app_name}</div>
+      <div className="welcome col-4 mx-auto">{constant.hello}</div>
       <div className="content-form col-4 mx-auto">
         <div className="form-group">
-          <label>Email</label>
+          <label>{constant.email}</label>
           <input
             type={"email"}
             className="form-control"
@@ -50,7 +52,7 @@ const Login = (props) => {
           />
         </div>
         <div className="form-group">
-          <label>Password</label>
+          <label>{constant.password}</label>
           <input
             type={"password"}
             className="form-control"
@@ -58,7 +60,7 @@ const Login = (props) => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <span className="forgot-password">Forgot password?</span>
+        <span className="forgot-password">{constant.forgot_password}</span>
         <div>
           <button
             className="btn-submit"
@@ -68,12 +70,12 @@ const Login = (props) => {
             {isLoading === true && (
               <AiOutlineLoading3Quarters className="loading-icon" />
             )}
-            <span> Login to Chart App</span>
+            <span> {constant.log_in_chart_app}</span>
           </button>
         </div>
         <div className="text-center">
           <span className="back" onClick={() => goHomepage()}>
-            &#60; Go to Homepage
+            &#60; {constant.go_to_homepage}
           </span>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 // import component
 import Header from "./components/Header/Header";
 import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const [loadingScreen, setLoadingScreen] = useState(undefined);
@@ -33,6 +34,18 @@ const App = () => {
           <div className="app-content">
             <Outlet />
           </div>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       )}
     </>

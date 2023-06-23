@@ -1,6 +1,5 @@
 // import library
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // import component
@@ -30,7 +29,6 @@ const Layout = () => {
           <Route path="/user" element={<User />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/download" component={Download} /> */}
         </Routes>
       </Router>
     </>
