@@ -82,7 +82,7 @@ const DataModal = (props) => {
     <>
       <Modal show={showDataModal} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Data</Modal.Title>
+          <Modal.Title>{`${constant.data}`.toUpperCase()}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row g-3">
