@@ -1,6 +1,16 @@
-  .loading-screen {
-    position: absolute;
-    top: 30%;
-    left: 40%;
-    margin: auto;
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
   }
+}
