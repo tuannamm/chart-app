@@ -4,30 +4,62 @@
     color: black;
     font-weight: 500;
   }
-    .btn-login {
-      border-radius: 10px;
-      border: 1px solid grey;
-      margin: 0 10px;
-      padding: 0 15px;
-      height: 40px;
-      width: 87px;
+
+  .btn-login {
+    border-radius: 10px;
+    border: 1px solid grey;
+    margin: 0 10px;
+    padding: 0 15px;
+    height: 40px;
+    width: 87px;
+  }
+
+  .btn-signup {
+    border-radius: 10px;
+    border: 1px solid grey;
+    margin: 0 5px;
+    width: 87px;
+    padding: 0 15px;
+    color: white;
+    background-color: #303030;
+    height: 40px;
+
+    &:hover {
+      background-color: rgb(0, 191, 255);
     }
+  }
+
+  .nav-link {
+    &.active {
+      color: rgb(94, 92, 92);
+    }
+  }
+
+  @media (max-width: 991px) {
+    /* Styles for screens smaller than 992px */
+    .navbar-brand {
+      font-size: 26px;
+    }
+
+    .btn-login,
     .btn-signup {
-      border-radius: 10px;
-      border: 1px solid grey;
-      margin: 0 5px;
-      width: 87px;
-      padding: 0 15px;
-      color: white;
-      background-color: #303030;
-      &:hover {
-        background-color: rgb(0, 191, 255);
-      }
-      height: 40px;
+      margin: 0 3px;
+      padding: 0 10px;
+      width: 70px;
     }
-    .nav-link {
-      &.active  {
-        color:rgb(94, 92, 92)
-      }
+  }
+
+  @media (max-width: 767px) {
+    /* Styles for screens smaller than 768px */
+    .navbar-brand {
+      font-size: 22px;
     }
+
+    .btn-login,
+    .btn-signup {
+      margin: 0 2px;
+      padding: 0 8px;
+      width: 60px;
+    }
+  }
 }
