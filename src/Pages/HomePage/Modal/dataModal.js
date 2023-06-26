@@ -8,7 +8,6 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
 
   const handleSaveData = () => {
     const newData = {
-      title: title,
       series: [
         {
           label: label,
@@ -17,18 +16,15 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
       ],
     };
 
-    // Clear input fields and close the modal
     setTitle("");
     setLabel("");
     setItems([{ x: "", y: "" }]);
 
-    // Update the data state with the new array
     // data?.push(newData);
 
     data.push(newData);
-    setData([...data]);
+    setData([title, ...data]);
 
-    // Close the modal
     setShowDataModal(false);
   };
 
@@ -61,18 +57,19 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="label">Label</label>
-          <input
-            type="text"
-            id="label"
-            value={label}
-            onChange={(e) => setLabel(e.target.value)}
-          />
-        </div>
+
         <h3>Items</h3>
         {items.map((item, index) => (
           <div key={index} className="item">
+            <div className="form-group">
+              <label htmlFor="label">Label</label>
+              <input
+                type="text"
+                id="label"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+              />
+            </div>
             <div className="form-group">
               <label htmlFor={`x-${index}`}>X</label>
               <input
