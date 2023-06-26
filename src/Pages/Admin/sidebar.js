@@ -8,15 +8,13 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-import {
-  FaTachometerAlt,
-  FaGithub,
-  FaRegLaughWink,
-  FaChartPie,
-} from "react-icons/fa";
-
 import sidebarBg from "../../assets/chart.webp";
 import { Link, useNavigate } from "react-router-dom";
+
+import icons from "../../utils/icons";
+import constant from "../../utils/constant";
+
+const { FaTachometerAlt, FaGithub, FaChartPie, FaRegLaughWink } = icons;
 
 const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
   const navigate = useNavigate();
@@ -58,7 +56,7 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               onClick={() => handleToHomepage()}
               style={{ marginLeft: "20px", fontSize: "20px" }}
             >
-              Chart App
+              {constant.app_name}
             </span>
           </div>
         </SidebarHeader>
@@ -69,14 +67,14 @@ const SideBar = ({ image, collapsed, toggled, handleToggleSidebar }) => {
               icon={<FaTachometerAlt />}
               suffix={<span className="badge red">Main</span>}
             >
-              Dashboard
+              {constant.dashboard}
             </MenuItem>
           </Menu>
           <Menu iconShape="circle">
             <SubMenu title="Feature" icon={<FaRegLaughWink />}>
-              <MenuItem>Quản lý Users</MenuItem>
-              <MenuItem>Quản lý Chart</MenuItem>
-              <MenuItem>Quản lý Profile</MenuItem>
+              <MenuItem>{constant.users_management}</MenuItem>
+              <MenuItem>{constant.charts_management}</MenuItem>
+              <MenuItem>{constant.profile_management}</MenuItem>
             </SubMenu>
           </Menu>
         </SidebarContent>

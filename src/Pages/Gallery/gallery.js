@@ -4,11 +4,14 @@ import "./gallery.scss";
 import "../../components/Header/header.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
-import { FaChartPie } from "react-icons/fa";
 import { Container, Nav, Navbar } from "react-bootstrap";
 
 import Setting from "../../Setting/setting";
 import Spinner from "../../components/AtomicSpinner/AtomicSpinner";
+import constant from "../../utils/constant";
+import icons from "../../utils/icons";
+
+const { FaChartPie } = icons;
 
 const chartListData = [
   {
@@ -79,17 +82,17 @@ const Gallery = () => {
             <Container>
               <NavLink to="/" className="nav-link navbar-brand ">
                 <FaChartPie size={"2em"} color={"00bfff"} />
-                Chart App
+                {constant.app_name}
               </NavLink>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto"></Nav>
                 <Nav>
                   <button className="btn-login" onClick={() => handleLogin()}>
-                    Log in
+                    {constant.log_in}
                   </button>
                   <button className="btn-signup" onClick={() => handleSignUp()}>
-                    Sign up
+                    {constant.sign_up}
                   </button>
                   <Setting />
                 </Nav>

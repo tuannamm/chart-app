@@ -6,7 +6,7 @@ import Avatar from "../../components/Avatar/Avatar";
 import Profile from "../../components/Profile/Profile";
 
 import icons from "../../utils/icons";
-import Example from "../../components/Table";
+import constant from "../../utils/constant";
 
 const { FiSettings } = icons;
 
@@ -17,12 +17,12 @@ const User = () => {
         <Header />
       </div>
       <div className="content-container">
-        <div className="chart-list-table">{/* <Example /> */}</div>
+        <div className="chart-list-table"></div>
         <div className="user-profile">
           <div className="header-profile">
-            <h1>User profile</h1>
+            <h1>{constant.user_profile}</h1>
             <button>
-              Edit <FiSettings />
+              {constant.edit} <FiSettings />
             </button>
           </div>
           <div className="user-avatar">

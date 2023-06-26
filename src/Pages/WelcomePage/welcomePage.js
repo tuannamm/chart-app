@@ -1,8 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaChartPie } from "react-icons/fa";
 
 import "./welcomePage.scss";
+import icons from "../../utils/icons";
+import constant from "../../utils/constant";
+
+const { FaChartPie } = icons;
 
 const WelcomePage = () => {
   const navigate = useNavigate();
@@ -19,14 +22,12 @@ const WelcomePage = () => {
           color={"#00bfff"}
           className="icon-logo rotate-in-down-left"
         />
-        <div className="bounce-in-right"> Chart App</div>
+        <div className="bounce-in-right"> {constant.app_name}</div>
       </div>
-      <div className="welcome-page-desc">
-        Modern & Interactive Open-source Charts
-      </div>
+      <div className="welcome-page-desc">{constant.description}</div>
       <div className="grow">
         <button className="btn-welcome" onClick={handleClick}>
-          GET STARTED
+          {constant.get_started}
         </button>
       </div>
     </div>

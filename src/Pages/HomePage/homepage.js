@@ -1,19 +1,32 @@
-import React, { createRef, useState } from "react";
+import React, { createRef, useState, useRef } from "react";
 import "./homepage.scss";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
 import { useScreenshot, createFileName } from "use-react-screenshot";
+import { Stage, Layer, Circle, Line, Rect } from "react-konva";
+import { toast } from "react-toastify";
 
+import constant from "../../utils/constant";
 import DataModal from "./Modal/dataModal";
 
 const HomePage = () => {
   const { state } = useLocation();
-  const navigate = useNavigate();
   const ref = createRef(null);
 
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
+
+  const [drag, setDrag] = useState({
+    isDragging: false,
+    x: 50,
+    y: 50,
+  });
+
+  const [tool, setTool] = useState("pen");
+  const [lines, setLines] = useState([]);
+  const isDrawing = useRef(false);
+
   const [data, setData] = useState({
     title: "",
     name: "",
@@ -35,30 +48,45 @@ const HomePage = () => {
     a.click();
   };
 
-  const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+  const downloadScreenshot = async () => {
+    await takeScreenShot(ref.current).then(download);
+    toast.success("Download successfully!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
   const handleButtonClick = () => {
-    setCanvasVisible(true);
-    const apexChartContainer = document.querySelector(".apex-chart");
-    const canvas = document.createElement("canvas");
-    canvas.style.position = "absolute";
-    canvas.style.top = "0";
-    canvas.style.left = "0";
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    canvas.style.zIndex = "10";
-    apexChartContainer.appendChild(canvas);
+    // setCanvasVisible(true);
+    // setAnnotateClicked(true);
+
+    if (!isCanvasVisible) {
+      setCanvasVisible(true);
+    }
   };
+
+  // useEffect(() => {
+  //   if (isCanvasVisible && isAnnotateClicked) {
+  //     const apexChartContainer = document.querySelector(".apex-chart");
+  //     const canvas = document.querySelector("canvas-container");
+  //     apexChartContainer.appendChild(canvas);
+  //   }
+  // }, [isCanvasVisible, isAnnotateClicked]);
 
   const handleRemoveCanvas = () => {
     setCanvasVisible(false);
-    const canvasElements = document.querySelectorAll(".apex-chart canvas");
-    canvasElements.forEach((canvas) => canvas.remove());
   };
 
   const chartData = (chartId) => {
     switch (chartId) {
       case 1:
+      case 2:
         return {
           series: [
             {
@@ -69,10 +97,14 @@ const HomePage = () => {
           options: {
             chart: {
               height: 350,
-              type: "bar",
+              type: "line",
               zoom: {
-                enabled: false,
+                enabled: true,
               },
+            },
+            title: {
+              text: data.title ? data.title : "TITLE",
+              align: "center",
             },
             dataLabels: {
               enabled: true,
@@ -80,10 +112,7 @@ const HomePage = () => {
             stroke: {
               curve: "straight",
             },
-            title: {
-              text: data.title ? data.title : "TITLE",
-              align: "center",
-            },
+
             grid: {
               row: {
                 colors: ["#f3f3f3", "transparent"],
@@ -93,9 +122,11 @@ const HomePage = () => {
             xaxis: {
               categories: [...data.categories],
             },
+            legend: {
+              horizontalAlign: "left",
+            },
           },
         };
-      case 2:
         return {
           series: [
             {
@@ -142,8 +173,27 @@ const HomePage = () => {
     setShowDataModal(true);
   };
 
-  const handleDownload = () => {
-    navigate("/download");
+  const handleMouseDown = (e) => {
+    isDrawing.current = true;
+    const pos = e.target.getStage().getPointerPosition();
+    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDrawing.current) {
+      return;
+    }
+    const stage = e.target.getStage();
+    const point = stage.getPointerPosition();
+    let lastLine = lines[lines.length - 1];
+    lastLine.points = lastLine.points.concat([point.x, point.y]);
+
+    lines.splice(lines.length - 1, 1, lastLine);
+    setLines(lines.concat());
+  };
+
+  const handleMouseUp = () => {
+    isDrawing.current = false;
   };
 
   return (
@@ -152,34 +202,94 @@ const HomePage = () => {
         <div className="feature-button">
           <div className="feature-button-left">
             <button className="btn" onClick={handleButtonClick}>
-              Annotate
+              {constant.annotate}
             </button>
-            <button className="btn">Properties</button>
+            <button className="btn">{constant.properties}</button>
             <button className="btn" onClick={handleShowDataModal}>
-              Data
+              {constant.data}
             </button>
           </div>
           <div className="feature-button-right">
-            <button className="btn ">Import data</button>
+            <button className="btn">{constant.import_data}</button>
             <button className="btn" onClick={downloadScreenshot}>
-              Download
+              {constant.download}
             </button>
             {isCanvasVisible && (
               <button className="btn cancel" onClick={handleRemoveCanvas}>
-                Cancel
+                {constant.cancel}
               </button>
             )}
           </div>
         </div>
         <div className="chart-container" ref={ref}>
-          <ReactApexCharts
-            className="apex-chart"
-            options={chartData(state.chartId).options}
-            series={chartData(state.chartId).series}
-            type="line"
-            height={500}
-          />
+          {isCanvasVisible && (
+            <div className="canvas-container">
+              <Stage
+                onMouseDown={handleMouseDown}
+                onMousemove={handleMouseMove}
+                onMouseup={handleMouseUp}
+                width={1500}
+                height={500}
+              >
+                <Layer>
+                  {lines.map((line, i) => (
+                    <Line
+                      key={i}
+                      points={line.points}
+                      stroke="#df4b26"
+                      strokeWidth={5}
+                      tension={0.5}
+                      draggable
+                      globalCompositeOperation={
+                        line.tool === "eraser"
+                          ? "destination-out"
+                          : "source-over"
+                      }
+                    />
+                  ))}
+                  <Rect
+                    width={100}
+                    height={100}
+                    draggable
+                    fill="red"
+                    shadowBlur={10}
+                  />
+                  <Circle
+                    x={drag.x}
+                    y={drag.y}
+                    radius={50}
+                    fill="green"
+                    draggable
+                    onDragStart={() => {
+                      setDrag({
+                        ...drag,
+                        isDragging: true,
+                      });
+                    }}
+                    onDragEnd={(e) => {
+                      setDrag({
+                        ...drag,
+                        isDragging: false,
+                        x: e.target.x(),
+                        y: e.target.y(),
+                      });
+                    }}
+                  />
+                </Layer>
+              </Stage>
+            </div>
+          )}
+          <div>
+            {" "}
+            <ReactApexCharts
+              className="apex-chart"
+              options={chartData(state.chartId).options}
+              series={chartData(state.chartId).series}
+              height={500}
+            />
+          </div>
         </div>
+
         <div>
           <DataModal
             showDataModal={showDataModal}
