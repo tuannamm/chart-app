@@ -27,20 +27,17 @@ const HomePage = () => {
   const [lines, setLines] = useState([]);
   const isDrawing = useRef(false);
 
-  const [data, setData] = useState({
-    title: "",
-    name: "",
-    categories: [],
-    dataLabel: [],
-  });
+  const [data, setData] = useState([]);
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
   });
 
+  console.log("data", data);
+
   const download = (
     image,
-    { name = `${data.title}`, extension = "jpg" } = {}
+    { name = `${data?.title}`, extension = "jpg" } = {}
   ) => {
     const a = document.createElement("a");
     a.href = image;
@@ -87,16 +84,10 @@ const HomePage = () => {
     switch (chartId) {
       case 1:
         return {
-          series: [
-            {
-              name: data.name ? data.name : "",
-              data: [...data.dataLabel],
-            },
-          ],
+          series: [] || [...data[0].series],
           options: {
             chart: {
               height: 350,
-              type: "bar",
               zoom: {
                 enabled: false,
               },
@@ -108,7 +99,7 @@ const HomePage = () => {
               curve: "straight",
             },
             title: {
-              text: data.title ? data.title : "TITLE",
+              text: data.length > 0 ? data[0].title : "TITLE",
               align: "center",
             },
             grid: {
@@ -117,9 +108,9 @@ const HomePage = () => {
                 opacity: 0.5,
               },
             },
-            xaxis: {
-              categories: [...data.categories],
-            },
+            // xaxis: {
+            //   categories: [...data.categories],
+            // },
           },
         };
       case 2:
@@ -148,7 +139,6 @@ const HomePage = () => {
               text: data.title ? data.title : "TITLE",
               align: "center",
             },
-            // labels: series.monthDataSeries1.dates,
             xaxis: {
               type: "datetime",
             },
@@ -279,12 +269,9 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(state.chartId).options}
             series={chartData(state.chartId).series}
-            type="line"
+            type="area"
             height={500}
           />
-        </div>
-
-        <div>
           <DataModal
             showDataModal={showDataModal}
             setShowDataModal={setShowDataModal}

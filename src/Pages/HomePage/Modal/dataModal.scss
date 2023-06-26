@@ -1,0 +1,37 @@
+// Modal.scss
+
+.modal-content {
+  // Customize the modal content styles here
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  
+  .form-group {
+    margin-right: 1rem;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  
+  .btn {
+    margin-left: 0.5rem;
+    
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}
