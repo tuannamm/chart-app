@@ -24,7 +24,6 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
 
     data.push(newData);
     setData([title, ...data]);
-
     setShowDataModal(false);
   };
 
