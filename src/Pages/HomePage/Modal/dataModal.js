@@ -1,162 +1,108 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import { Modal, Button } from "react-bootstrap";
 
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-
-import constant from "../../../utils/constant";
-import "./dataModal.scss";
-
-const DataModal = (props) => {
-  const { showDataModal, setShowDataModal, setData } = props;
+const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
   const [title, setTitle] = useState("");
-  const [name, setName] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [dataLabel, setDataLabel] = useState([]);
+  const [label, setLabel] = useState("");
+  const [items, setItems] = useState([{ x: "", y: "" }]);
 
-  const inputArr = [
-    {
-      type: "text",
-      label: "Label",
-    },
-    {
-      type: "text",
-      label: "Data",
-    },
-  ];
-
-  const [arr, setArr] = useState(inputArr);
-
-  const addInput = (e) => {
-    e.preventDefault();
-    setArr((s) => {
-      return [
-        ...s,
+  const handleSaveData = () => {
+    const newData = {
+      series: [
         {
-          type: "text",
-          label: "Label",
+          label: label,
+          data: items,
         },
-        {
-          type: "text",
-          label: "Data",
-        },
-      ];
-    });
+      ],
+    };
+
+    setTitle("");
+    setLabel("");
+    setItems([{ x: "", y: "" }]);
+
+    // data?.push(newData);
+
+    data.push(newData);
+    setData([title, ...data]);
+    setShowDataModal(false);
   };
 
-  const addLabel = (e) => {
-    setCategories([...categories, e]);
+  const handleAddItem = () => {
+    setItems([...items, { x: "", y: "" }]);
   };
 
-  const addDataLabel = (e) => {
-    setDataLabel([...dataLabel, e]);
-  };
-
-  const handleSave = () => {
-    setData({
-      title,
-      name,
-      categories,
-      dataLabel,
-    });
-    handleClose();
-    toast.success("Created successfully!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+  const handleItemChange = (index, field, value) => {
+    const updatedItems = [...items];
+    updatedItems[index][field] = value;
+    setItems(updatedItems);
   };
 
   const handleClose = () => {
     setShowDataModal(false);
-    setCategories([]);
-    setDataLabel([]);
   };
 
   return (
-    <>
-      <Modal show={showDataModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Data</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form className="row g-3">
-            <div className="col-md-6">
-              <label className="form-label">{constant.title}</label>
-              <input
-                type="text"
-                className="form-control"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label">{constant.name}</label>
-              <input
-                type="text"
-                className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
+    <Modal show={showDataModal} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Add Data</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
 
-            {/* <div className="col-md-6">
-              <label className="form-label">Label</label>
+        <h3>Items</h3>
+        {items.map((item, index) => (
+          <div key={index} className="item">
+            <div className="form-group">
+              <label htmlFor="label">Label</label>
               <input
                 type="text"
-                className="form-control"
-                // value={label}
-                // onChange={(e) => setUsername(e.target.value)}
+                id="label"
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
               />
             </div>
-            <div className="col-md-6">
-              <label className="form-label">Data</label>
+            <div className="form-group">
+              <label htmlFor={`x-${index}`}>X</label>
               <input
                 type="text"
-                className="form-control"
-                // value={username}
-                // onChange={(e) => setUsername(e.target.value)}
+                id={`x-${index}`}
+                value={item.x}
+                onChange={(e) => handleItemChange(index, "x", e.target.value)}
               />
-            </div> */}
-            {arr.map((item, index) => {
-              return (
-                <div className="col-md-6">
-                  <label className="form-label">{item.label}</label>
-                  <input
-                    className="form-control"
-                    value={item.value}
-                    id={index}
-                    type={item.type}
-                    onBlur={(e) => {
-                      e.preventDefault();
-                      item.label === "Label"
-                        ? addLabel(e.target.value)
-                        : addDataLabel(e.target.value);
-                    }}
-                  />
-                </div>
-              );
-            })}
-            <div>
-              <button onClick={(e) => addInput(e)}>+</button>
             </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            {constant.close}
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            {constant.save_changes}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+            <div className="form-group">
+              <label htmlFor={`y-${index}`}>Y</label>
+              <input
+                type="text"
+                id={`y-${index}`}
+                value={item.y}
+                onChange={(e) => handleItemChange(index, "y", e.target.value)}
+              />
+            </div>
+          </div>
+        ))}
+        <Button variant="secondary" onClick={handleAddItem}>
+          Add Item
+        </Button>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="primary" onClick={handleSaveData}>
+          Save
+        </Button>
+        <Button variant="secondary" onClick={() => setShowDataModal(false)}>
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
+
 export default DataModal;

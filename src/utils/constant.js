@@ -11,7 +11,7 @@ const constant = {
   go_to_homepage: " Go to Homepage",
   close: "Close",
   title: "Title",
-  name: "Name",
+  name: "Data label",
   save_changes: "Save Changes",
   properties: "Properties",
   import_data: "Import data",

@@ -27,20 +27,17 @@ const HomePage = () => {
   const [lines, setLines] = useState([]);
   const isDrawing = useRef(false);
 
-  const [data, setData] = useState({
-    title: "",
-    name: "",
-    categories: [],
-    dataLabel: [],
-  });
+  const [data, setData] = useState([]);
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
   });
 
+  console.log("data", data);
+
   const download = (
     image,
-    { name = `${data.title}`, extension = "jpg" } = {}
+    { name = `${data?.title}`, extension = "jpg" } = {}
   ) => {
     const a = document.createElement("a");
     a.href = image;
@@ -88,16 +85,10 @@ const HomePage = () => {
       case 1:
       case 2:
         return {
-          series: [
-            {
-              name: data.name ? data.name : "",
-              data: [...data.dataLabel],
-            },
-          ],
+          series: [] || [...data[0].series],
           options: {
             chart: {
               height: 350,
-              type: "line",
               zoom: {
                 enabled: true,
               },
@@ -112,19 +103,19 @@ const HomePage = () => {
             stroke: {
               curve: "straight",
             },
-
+            title: {
+              text: data.length > 0 ? data[0].title : "TITLE",
+              align: "center",
+            },
             grid: {
               row: {
                 colors: ["#f3f3f3", "transparent"],
                 opacity: 0.5,
               },
             },
-            xaxis: {
-              categories: [...data.categories],
-            },
-            legend: {
-              horizontalAlign: "left",
-            },
+            // xaxis: {
+            //   categories: [...data.categories],
+            // },
           },
         };
         return {
@@ -152,7 +143,6 @@ const HomePage = () => {
               text: data.title ? data.title : "TITLE",
               align: "center",
             },
-            // labels: series.monthDataSeries1.dates,
             xaxis: {
               type: "datetime",
             },
@@ -279,18 +269,13 @@ const HomePage = () => {
               </Stage>
             </div>
           )}
-          <div>
-            {" "}
-            <ReactApexCharts
-              className="apex-chart"
-              options={chartData(state.chartId).options}
-              series={chartData(state.chartId).series}
-              height={500}
-            />
-          </div>
-        </div>
-
-        <div>
+          <ReactApexCharts
+            className="apex-chart"
+            options={chartData(state.chartId).options}
+            series={chartData(state.chartId).series}
+            type="area"
+            height={500}
+          />
           <DataModal
             showDataModal={showDataModal}
             setShowDataModal={setShowDataModal}
