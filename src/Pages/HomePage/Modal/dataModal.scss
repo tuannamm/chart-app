@@ -1,37 +1,59 @@
-// Modal.scss
-
-.modal-content {
-  // Customize the modal content styles here
+/* Custom CSS for DataModal */
+.data-modal {
+  /* Add your custom styles here */
 }
 
-.form-group {
+.data-modal .form-group {
   margin-bottom: 1rem;
 }
 
-.item {
+.data-modal .series-item {
+  margin-bottom: 1rem;
+}
+
+.data-modal .series-item h5 {
+  margin-bottom: 0.5rem;
+}
+
+.data-modal .item {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  
-  .form-group {
-    margin-right: 1rem;
-    
-    &:last-child {
-      margin-right: 0;
-    }
-  }
+  margin-bottom: 0.5rem;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
-  
-  .btn {
-    margin-left: 0.5rem;
-    
-    &:first-child {
-      margin-left: 0;
-    }
-  }
+.data-modal .item .form-group {
+  margin-right: 1rem;
+}
+
+.data-modal .item .form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.data-modal .item .form-group input {
+  width: 100%;
+}
+
+.data-modal .form-group input[type="text"] {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.data-modal .form-group input[type="text"]::placeholder {
+  color: #999;
+}
+
+.data-modal .form-group input[type="text"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.data-modal .form-group button {
+  margin-right: 0.5rem;
+}
+
+.data-modal .modal-footer {
+  justify-content: space-between;
 }

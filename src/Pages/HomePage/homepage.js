@@ -33,11 +33,9 @@ const HomePage = () => {
     quality: 1.0,
   });
 
-  console.log("data", data);
-
   const download = (
     image,
-    { name = `${data?.title}`, extension = "jpg" } = {}
+    { name = `${data[0]?.title}`, extension = "jpg" } = {}
   ) => {
     const a = document.createElement("a");
     a.href = image;
@@ -85,7 +83,47 @@ const HomePage = () => {
       case 1:
       case 2:
         return {
-          series: [] || [...data[0].series],
+          series: [
+            {
+              name: "Nam",
+              data: [
+                {
+                  x: "Thang 1",
+                  y: "100",
+                },
+                {
+                  x: "Thang 2",
+                  y: "200",
+                },
+              ],
+            },
+            {
+              name: "Toan",
+              data: [
+                {
+                  x: "Thang 1",
+                  y: "50",
+                },
+                {
+                  x: "Thang 2",
+                  y: "100",
+                },
+              ],
+            },
+            {
+              name: "Namm",
+              data: [
+                {
+                  x: "Thang 1",
+                  y: "50",
+                },
+                {
+                  x: "Thang 2",
+                  y: "100",
+                },
+              ],
+            },
+          ],
           options: {
             chart: {
               height: 350,
@@ -103,57 +141,15 @@ const HomePage = () => {
             stroke: {
               curve: "straight",
             },
-            title: {
-              text: data.length > 0 ? data[0].title : "TITLE",
-              align: "center",
-            },
             grid: {
               row: {
                 colors: ["#f3f3f3", "transparent"],
                 opacity: 0.5,
               },
             },
-            // xaxis: {
-            //   categories: [...data.categories],
-            // },
           },
         };
-        return {
-          series: [
-            {
-              name: "STOCK ABC",
-              data: [...data.dataLabel],
-            },
-          ],
-          options: {
-            chart: {
-              type: "area",
-              height: 350,
-              zoom: {
-                enabled: false,
-              },
-            },
-            dataLabels: {
-              enabled: false,
-            },
-            stroke: {
-              curve: "straight",
-            },
-            title: {
-              text: data.title ? data.title : "TITLE",
-              align: "center",
-            },
-            xaxis: {
-              type: "datetime",
-            },
-            yaxis: {
-              opposite: true,
-            },
-            legend: {
-              horizontalAlign: "left",
-            },
-          },
-        };
+
       default:
         return true;
     }
@@ -273,7 +269,7 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(state.chartId).options}
             series={chartData(state.chartId).series}
-            type="area"
+            type="bar"
             height={500}
           />
           <DataModal

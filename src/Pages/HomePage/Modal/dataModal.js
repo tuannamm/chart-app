@@ -1,40 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
   const [title, setTitle] = useState("");
-  const [label, setLabel] = useState("");
-  const [items, setItems] = useState([{ x: "", y: "" }]);
+  const [series, setSeries] = useState([]);
+  const [newName, setNewName] = useState("");
+  const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      const lastData = data[data.length - 1];
+      setTitle(lastData.title);
+      setSeries(lastData.series);
+    }
+  }, [data]);
 
   const handleSaveData = () => {
     const newData = {
-      series: [
-        {
-          label: label,
-          data: items,
-        },
-      ],
+      title: title,
+      series: series,
     };
 
+    setData([...data, newData]);
     setTitle("");
-    setLabel("");
-    setItems([{ x: "", y: "" }]);
-
-    // data?.push(newData);
-
-    data.push(newData);
-    setData([title, ...data]);
+    setSeries([]);
     setShowDataModal(false);
   };
 
   const handleAddItem = () => {
-    setItems([...items, { x: "", y: "" }]);
+    setNewItems([...newItems, { x: "", y: "" }]);
   };
 
   const handleItemChange = (index, field, value) => {
-    const updatedItems = [...items];
+    const updatedItems = [...newItems];
     updatedItems[index][field] = value;
-    setItems(updatedItems);
+    setNewItems(updatedItems);
+  };
+
+  const handleAddNewName = () => {
+    const newSeries = {
+      name: newName,
+      data: newItems,
+    };
+
+    setSeries([...series, newSeries]);
+    setNewName("");
+    setNewItems([{ x: "", y: "" }]);
   };
 
   const handleClose = () => {
@@ -44,7 +55,7 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
   return (
     <Modal show={showDataModal} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add Data</Modal.Title>
+        <Modal.Title>DATA</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <div className="form-group">
@@ -54,35 +65,70 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            placeholder="Chart title"
           />
         </div>
 
-        <h3>Items</h3>
-        {items.map((item, index) => (
+        <h3>Series</h3>
+        {series.map((seriesItem, seriesIndex) => (
+          <div key={seriesIndex} className="series-item">
+            <h5>Series Name: {seriesItem.name}</h5>
+            {seriesItem.data.map((item, itemIndex) => (
+              <div key={itemIndex} className="item">
+                <div className="form-group">
+                  <label htmlFor={`x-${seriesIndex}-${itemIndex}`}>X</label>
+                  <input
+                    type="text"
+                    id={`x-${seriesIndex}-${itemIndex}`}
+                    value={item.x}
+                    onChange={(e) =>
+                      handleItemChange(itemIndex, "x", e.target.value)
+                    }
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor={`y-${seriesIndex}-${itemIndex}`}>Y</label>
+                  <input
+                    type="text"
+                    id={`y-${seriesIndex}-${itemIndex}`}
+                    value={item.y}
+                    onChange={(e) =>
+                      handleItemChange(itemIndex, "y", e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+
+        <h3>Add New Name</h3>
+        <div className="form-group">
+          <label htmlFor="newName">Name</label>
+          <input
+            type="text"
+            id="newName"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            placeholder="New Name"
+          />
+        </div>
+        {newItems.map((item, index) => (
           <div key={index} className="item">
             <div className="form-group">
-              <label htmlFor="label">Label</label>
+              <label htmlFor={`new-x-${index}`}>X</label>
               <input
                 type="text"
-                id="label"
-                value={label}
-                onChange={(e) => setLabel(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor={`x-${index}`}>X</label>
-              <input
-                type="text"
-                id={`x-${index}`}
+                id={`new-x-${index}`}
                 value={item.x}
                 onChange={(e) => handleItemChange(index, "x", e.target.value)}
               />
             </div>
             <div className="form-group">
-              <label htmlFor={`y-${index}`}>Y</label>
+              <label htmlFor={`new-y-${index}`}>Y</label>
               <input
                 type="text"
-                id={`y-${index}`}
+                id={`new-y-${index}`}
                 value={item.y}
                 onChange={(e) => handleItemChange(index, "y", e.target.value)}
               />
@@ -92,12 +138,15 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
         <Button variant="secondary" onClick={handleAddItem}>
           Add Item
         </Button>
+        <Button variant="secondary" onClick={handleAddNewName}>
+          Add New Name
+        </Button>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSaveData}>
           Save
         </Button>
-        <Button variant="secondary" onClick={() => setShowDataModal(false)}>
+        <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>
       </Modal.Footer>
