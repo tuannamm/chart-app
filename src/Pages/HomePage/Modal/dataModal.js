@@ -134,7 +134,7 @@ const DataModal = ({
           </div>
         ))}
 
-        <h3>Add New Name</h3>
+        <h4>Add New Name</h4>
         <div className="form-group">
           <label htmlFor="newName">Name</label>
           <input
