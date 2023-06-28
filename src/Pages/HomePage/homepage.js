@@ -1,4 +1,4 @@
-import React, { createRef, useState, useRef } from "react";
+import React, { createRef, useState, useRef, useCallback } from "react";
 import "./homepage.scss";
 
 import { useLocation } from "react-router-dom";
@@ -16,6 +16,7 @@ const HomePage = () => {
 
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
+  const [selectedDataIndex, setSelectedDataIndex] = useState(null);
 
   const [drag, setDrag] = useState({
     isDragging: false,
@@ -83,47 +84,7 @@ const HomePage = () => {
       case 1:
       case 2:
         return {
-          series: [
-            {
-              name: "Nam",
-              data: [
-                {
-                  x: "Thang 1",
-                  y: "100",
-                },
-                {
-                  x: "Thang 2",
-                  y: "200",
-                },
-              ],
-            },
-            {
-              name: "Toan",
-              data: [
-                {
-                  x: "Thang 1",
-                  y: "50",
-                },
-                {
-                  x: "Thang 2",
-                  y: "100",
-                },
-              ],
-            },
-            {
-              name: "Namm",
-              data: [
-                {
-                  x: "Thang 1",
-                  y: "50",
-                },
-                {
-                  x: "Thang 2",
-                  y: "100",
-                },
-              ],
-            },
-          ],
+          series: [] || data[0]?.series,
           options: {
             chart: {
               height: 350,
@@ -132,7 +93,7 @@ const HomePage = () => {
               },
             },
             title: {
-              text: data.title ? data.title : "TITLE",
+              text: data[0]?.title ? data[0]?.title : "TITLE",
               align: "center",
             },
             dataLabels: {
@@ -155,7 +116,12 @@ const HomePage = () => {
     }
   };
 
+  // const handleShowDataModal = () => {
+  //   setShowDataModal(true);
+  // };
+
   const handleShowDataModal = () => {
+    setSelectedDataIndex(null); // Clear the selected index when showing the modal
     setShowDataModal(true);
   };
 
@@ -181,6 +147,8 @@ const HomePage = () => {
   const handleMouseUp = () => {
     isDrawing.current = false;
   };
+
+  console.log("Xxxx", data);
 
   return (
     <>
@@ -277,6 +245,8 @@ const HomePage = () => {
             setShowDataModal={setShowDataModal}
             data={data}
             setData={setData}
+            selectedDataIndex={selectedDataIndex}
+            setSelectedDataIndex={setSelectedDataIndex}
           />
         </div>
       </div>

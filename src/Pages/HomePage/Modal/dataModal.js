@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
+import "./dataModal.scss";
+
+const DataModal = ({
+  showDataModal,
+  setShowDataModal,
+  data,
+  setData,
+  selectedIndex,
+  setSelectedDataIndex,
+}) => {
   const [title, setTitle] = useState("");
   const [series, setSeries] = useState([]);
   const [newName, setNewName] = useState("");
   const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
 
   useEffect(() => {
-    if (data.length > 0) {
-      const lastData = data[data.length - 1];
-      setTitle(lastData.title);
-      setSeries(lastData.series);
+    if (
+      selectedIndex !== null &&
+      selectedIndex >= 0 &&
+      data.length > selectedIndex
+    ) {
+      const selectedData = data[selectedIndex];
+      setTitle(selectedData.title);
+      setSeries(selectedData.series);
+    } else {
+      setTitle("");
+      setSeries([]);
     }
-  }, [data]);
+  }, [data, selectedIndex]);
 
   const handleSaveData = () => {
     const newData = {
@@ -21,9 +37,21 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
       series: series,
     };
 
-    setData([...data, newData]);
+    if (
+      selectedIndex !== null &&
+      selectedIndex >= 0 &&
+      selectedIndex < data.length
+    ) {
+      const updatedData = [...data];
+      updatedData[selectedIndex] = newData; // Update the existing data entry at the selected index
+      setData(updatedData);
+    } else {
+      setData([...data, newData]); // Add new data entry
+    }
+
     setTitle("");
     setSeries([]);
+    setSelectedDataIndex(null);
     setShowDataModal(false);
   };
 
@@ -49,6 +77,10 @@ const DataModal = ({ showDataModal, setShowDataModal, data, setData }) => {
   };
 
   const handleClose = () => {
+    setTitle("");
+    setSeries([]);
+    setNewName("");
+    setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
   };
 
