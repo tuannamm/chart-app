@@ -9,7 +9,6 @@ const DataModal = ({
   data,
   setData,
   selectedIndex,
-  setSelectedDataIndex,
 }) => {
   const [title, setTitle] = useState("");
   const [series, setSeries] = useState([]);
@@ -19,7 +18,7 @@ const DataModal = ({
     if (
       selectedIndex !== null &&
       selectedIndex >= 0 &&
-      data.length > selectedIndex
+      selectedIndex < data.length
     ) {
       const selectedData = data[selectedIndex];
       setTitle(selectedData.title);
@@ -42,15 +41,16 @@ const DataModal = ({
       selectedIndex < data.length
     ) {
       const updatedData = [...data];
-      updatedData[selectedIndex] = newData; // Update the existing data entry at the selected index
+      updatedData[selectedIndex] = newData;
       setData(updatedData);
     } else {
-      setData([...data, newData]); // Add new data entry
+      setData([...data, newData]);
     }
 
     setTitle("");
     setSeries([]);
-    setSelectedDataIndex(null);
+    setNewName("");
+    setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
   };
 
@@ -166,10 +166,10 @@ const DataModal = ({
             </div>
           </div>
         ))}
-        <Button variant="secondary" onClick={handleAddItem}>
+        <Button className="add" variant="secondary" onClick={handleAddItem}>
           Add Item
         </Button>
-        <Button variant="secondary" onClick={handleAddNewName}>
+        <Button className="" variant="secondary" onClick={handleAddNewName}>
           Add New Name
         </Button>
       </Modal.Body>
