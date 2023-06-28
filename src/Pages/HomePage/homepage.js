@@ -1,4 +1,10 @@
-import React, { createRef, useState, useRef, useCallback } from "react";
+import React, {
+  createRef,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import "./homepage.scss";
 
 import { useLocation } from "react-router-dom";
@@ -79,12 +85,14 @@ const HomePage = () => {
     setCanvasVisible(false);
   };
 
+  console.log("series", data[0]?.series);
+
   const chartData = (chartId) => {
     switch (chartId) {
       case 1:
       case 2:
         return {
-          series: [] || data[0]?.series,
+          series: data && data?.length > 0 ? [...data[0]?.series] : [],
           options: {
             chart: {
               height: 350,
@@ -115,6 +123,10 @@ const HomePage = () => {
         return true;
     }
   };
+
+  useEffect(() => {
+    chartData(state?.chartId);
+  }, [data]);
 
   // const handleShowDataModal = () => {
   //   setShowDataModal(true);
@@ -147,8 +159,6 @@ const HomePage = () => {
   const handleMouseUp = () => {
     isDrawing.current = false;
   };
-
-  console.log("Xxxx", data);
 
   return (
     <>
