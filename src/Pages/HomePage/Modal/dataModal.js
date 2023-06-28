@@ -15,7 +15,6 @@ const DataModal = ({
   const [series, setSeries] = useState([]);
   const [newName, setNewName] = useState("");
   const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
-
   useEffect(() => {
     if (
       selectedIndex !== null &&
