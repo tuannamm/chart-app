@@ -1,4 +1,10 @@
-import React, { createRef, useState, useRef, useEffect } from "react";
+import React, {
+  createRef,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import "./homepage.scss";
 
 import { useLocation } from "react-router-dom";
@@ -9,6 +15,7 @@ import { toast } from "react-toastify";
 
 import constant from "../../utils/constant";
 import DataModal from "./Modal/dataModal";
+import LineModal from "./Modal/lineModal";
 
 const HomePage = () => {
   const { state } = useLocation();
@@ -17,11 +24,12 @@ const HomePage = () => {
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [selectedDataIndex, setSelectedDataIndex] = useState(null);
+  const [chartType, setChartType] = useState("Line");
 
   const [drag, setDrag] = useState({
     isDragging: false,
-    x: 50,
-    y: 50,
+    x: 100,
+    y: 100,
   });
 
   const [tool, setTool] = useState("pen");
@@ -79,44 +87,47 @@ const HomePage = () => {
     setCanvasVisible(false);
   };
 
-  console.log("series", data[0]?.series);
+  const chartData = useCallback(
+    (chartId) => {
+      switch (chartId) {
+        case 1:
+        case 2:
+          return {
+            series: data && data?.length > 0 ? [...data[0]?.series] : [],
+            options: {
+              chart: {
+                height: 350,
 
-  const chartData = (chartId) => {
-    switch (chartId) {
-      case 1:
-      case 2:
-        return {
-          series: data && data?.length > 0 ? [...data[0]?.series] : [],
-          options: {
-            chart: {
-              height: 350,
-              zoom: {
+                zoom: {
+                  enabled: true,
+                },
+              },
+              title: {
+                text: data[0]?.title ? data[0]?.title : "TITLE",
+                align: "center",
+              },
+              dataLabels: {
                 enabled: true,
               },
-            },
-            title: {
-              text: data[0]?.title ? data[0]?.title : "TITLE",
-              align: "center",
-            },
-            dataLabels: {
-              enabled: true,
-            },
-            stroke: {
-              curve: "straight",
-            },
-            grid: {
-              row: {
-                colors: ["#f3f3f3", "transparent"],
-                opacity: 0.5,
+              stroke: {
+                curve: "straight",
+              },
+              grid: {
+                row: {
+                  colors: ["#f3f3f3", "transparent"],
+                  opacity: 0.5,
+                },
               },
             },
-          },
-        };
+          };
+        default:
+          return true;
+      }
+    },
+    [data, chartType]
+  );
 
-      default:
-        return true;
-    }
-  };
+  console.log("data", data);
 
   useEffect(() => {
     chartData(state?.chartId);
@@ -241,16 +252,36 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(state.chartId).options}
             series={chartData(state.chartId).series}
-            type="bar"
+            type="line"
             height={500}
           />
-          <DataModal
+          <select
+            value={chartType}
+            className="form-select"
+            aria-label="Default select example"
+            onChange={(e) => setChartType(e.target.value)}
+          >
+            {constant.chartTypes.map((type, index) => (
+              <option key={index} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+
+          {/* <DataModal
             showDataModal={showDataModal}
             setShowDataModal={setShowDataModal}
             data={data}
             setData={setData}
             selectedDataIndex={selectedDataIndex}
             setSelectedDataIndex={setSelectedDataIndex}
+          /> */}
+          <LineModal
+            showDataModal={showDataModal}
+            setShowDataModal={setShowDataModal}
+            series={data}
+            setSeries={setData}
+            selectedIndex={selectedDataIndex}
           />
         </div>
       </div>

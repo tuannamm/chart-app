@@ -116,7 +116,7 @@ const DataModal = ({
   };
 
   return (
-    <Modal show={showDataModal} onHide={handleClose}>
+    <Modal show={showDataModal} onHide={handleClose} className="modal">
       <Modal.Header closeButton>
         <Modal.Title>DATA</Modal.Title>
       </Modal.Header>
@@ -158,7 +158,7 @@ const DataModal = ({
                 <div className="form-group">
                   <label htmlFor={`y-${seriesIndex}-${itemIndex}`}>Y</label>
                   <input
-                    type="text"
+                    type="number"
                     id={`y-${seriesIndex}-${itemIndex}`}
                     value={item.y}
                     onChange={(e) =>
@@ -174,6 +174,12 @@ const DataModal = ({
                 </div>
                 <Button
                   variant="secondary"
+                  onClick={() => handleItemChange(itemIndex, seriesIndex)}
+                >
+                  Edit Item
+                </Button>
+                <Button
+                  variant="secondary"
                   onClick={() => handleDeleteItem(itemIndex, seriesIndex)}
                 >
                   Delete Item
@@ -182,7 +188,6 @@ const DataModal = ({
             ))}
           </div>
         ))}
-
         <h4>Add New Name</h4>
         <div className="form-group">
           <label htmlFor="newName">Name</label>
@@ -208,7 +213,7 @@ const DataModal = ({
             <div className="form-group">
               <label htmlFor={`new-y-${index}`}>Y</label>
               <input
-                type="text"
+                type="number"
                 id={`new-y-${index}`}
                 value={item.y}
                 onChange={(e) => handleItemChange(index, "y", e.target.value)}
