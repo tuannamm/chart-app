@@ -24,7 +24,7 @@ const HomePage = () => {
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [selectedDataIndex, setSelectedDataIndex] = useState(null);
-  const [chartType, setChartType] = useState("Line");
+  const [chartType, setChartType] = useState("");
 
   const [drag, setDrag] = useState({
     isDragging: false,
@@ -268,21 +268,24 @@ const HomePage = () => {
             ))}
           </select>
 
-          {/* <DataModal
-            showDataModal={showDataModal}
-            setShowDataModal={setShowDataModal}
-            data={data}
-            setData={setData}
-            selectedDataIndex={selectedDataIndex}
-            setSelectedDataIndex={setSelectedDataIndex}
-          /> */}
-          <LineModal
-            showDataModal={showDataModal}
-            setShowDataModal={setShowDataModal}
-            series={data}
-            setSeries={setData}
-            selectedIndex={selectedDataIndex}
-          />
+          {state?.chartId === 1 || chartType === "line" ? (
+            <LineModal
+              showDataModal={showDataModal}
+              setShowDataModal={setShowDataModal}
+              series={data}
+              setSeries={setData}
+              selectedIndex={selectedDataIndex}
+            />
+          ) : (
+            <DataModal
+              showDataModal={showDataModal}
+              setShowDataModal={setShowDataModal}
+              data={data}
+              setData={setData}
+              selectedDataIndex={selectedDataIndex}
+              setSelectedDataIndex={setSelectedDataIndex}
+            />
+          )}
         </div>
       </div>
     </>
