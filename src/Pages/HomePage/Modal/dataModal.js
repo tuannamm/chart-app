@@ -47,6 +47,7 @@ const DataModal = ({
       setData([...data, newData]);
     }
 
+    // Reset the state variables here after saving data
     setTitle("");
     setSeries([]);
     setNewName("");
@@ -76,10 +77,10 @@ const DataModal = ({
   };
 
   const handleClose = () => {
-    setTitle("");
-    setSeries([]);
-    setNewName("");
-    setNewItems([{ x: "", y: "" }]);
+    // setTitle("");
+    // setSeries([]);
+    // setNewName("");
+    // setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
   };
 
@@ -169,7 +170,11 @@ const DataModal = ({
         <Button className="add" variant="secondary" onClick={handleAddItem}>
           Add Item
         </Button>
-        <Button className="" variant="secondary" onClick={handleAddNewName}>
+        <Button
+          className="add ml-3"
+          variant="secondary"
+          onClick={handleAddNewName}
+        >
           Add New Name
         </Button>
       </Modal.Body>
