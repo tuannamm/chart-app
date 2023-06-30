@@ -14,20 +14,21 @@ const DataModal = ({
   const [series, setSeries] = useState([]);
   const [newName, setNewName] = useState("");
   const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
-  useEffect(() => {
-    if (
-      selectedIndex !== null &&
-      selectedIndex >= 0 &&
-      selectedIndex < data.length
-    ) {
-      const selectedData = data[selectedIndex];
-      setTitle(selectedData.title);
-      setSeries(selectedData.series);
-    } else {
-      setTitle("");
-      setSeries([]);
-    }
-  }, [data, selectedIndex]);
+
+  // useEffect(() => {
+  //   if (
+  //     selectedIndex !== null &&
+  //     selectedIndex >= 0 &&
+  //     selectedIndex < data.length
+  //   ) {
+  //     const selectedData = data[selectedIndex];
+  //     setTitle(selectedData.title);
+  //     setSeries(selectedData.series);
+  //   } else {
+  //     setTitle("");
+  //     setSeries([]);
+  //   }
+  // }, [data, selectedIndex]);
 
   const handleSaveData = () => {
     const newData = {
@@ -44,14 +45,14 @@ const DataModal = ({
       updatedData[selectedIndex] = newData;
       setData(updatedData);
     } else {
-      setData([...data, newData]);
+      setData([newData]);
     }
 
     // Reset the state variables here after saving data
-    setTitle("");
-    setSeries([]);
-    setNewName("");
-    setNewItems([{ x: "", y: "" }]);
+    // setTitle("");
+    // setSeries([]);
+    // setNewName("");
+    // setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
   };
 
@@ -59,10 +60,34 @@ const DataModal = ({
     setNewItems([...newItems, { x: "", y: "" }]);
   };
 
-  const handleItemChange = (index, field, value) => {
-    const updatedItems = [...newItems];
-    updatedItems[index][field] = value;
-    setNewItems(updatedItems);
+  useEffect(() => {
+    if (
+      selectedIndex !== null &&
+      selectedIndex >= 0 &&
+      selectedIndex < data.length
+    ) {
+      const selectedData = data[selectedIndex];
+      setTitle(selectedData.title);
+      setSeries(selectedData.series);
+    }
+  }, [data, selectedIndex, showDataModal]);
+
+  const handleItemChange = (
+    index,
+    field,
+    value,
+    isExistingItem = false,
+    seriesIndex
+  ) => {
+    if (isExistingItem) {
+      const updatedSeries = [...series];
+      updatedSeries[seriesIndex].data[index][field] = value;
+      setSeries(updatedSeries);
+    } else {
+      const updatedItems = [...newItems];
+      updatedItems[index][field] = value;
+      setNewItems(updatedItems);
+    }
   };
 
   const handleAddNewName = () => {
@@ -82,6 +107,12 @@ const DataModal = ({
     // setNewName("");
     // setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
+  };
+
+  const handleDeleteItem = (itemIndex, seriesIndex) => {
+    const updatedSeries = [...series];
+    updatedSeries[seriesIndex].data.splice(itemIndex, 1);
+    setSeries(updatedSeries);
   };
 
   return (
@@ -114,7 +145,13 @@ const DataModal = ({
                     id={`x-${seriesIndex}-${itemIndex}`}
                     value={item.x}
                     onChange={(e) =>
-                      handleItemChange(itemIndex, "x", e.target.value)
+                      handleItemChange(
+                        itemIndex,
+                        "x",
+                        e.target.value,
+                        true,
+                        seriesIndex
+                      )
                     }
                   />
                 </div>
@@ -125,10 +162,22 @@ const DataModal = ({
                     id={`y-${seriesIndex}-${itemIndex}`}
                     value={item.y}
                     onChange={(e) =>
-                      handleItemChange(itemIndex, "y", e.target.value)
+                      handleItemChange(
+                        itemIndex,
+                        "y",
+                        e.target.value,
+                        true,
+                        seriesIndex
+                      )
                     }
                   />
                 </div>
+                <Button
+                  variant="secondary"
+                  onClick={() => handleDeleteItem(itemIndex, seriesIndex)}
+                >
+                  Delete Item
+                </Button>
               </div>
             ))}
           </div>
