@@ -14,6 +14,11 @@ const DataModal = ({
   const [series, setSeries] = useState([]);
   const [newName, setNewName] = useState("");
   const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
+
+  // Save the last values
+  const [savedTitle, setSavedTitle] = useState("");
+  const [savedSeries, setSavedSeries] = useState([]);
+
   useEffect(() => {
     if (
       selectedIndex !== null &&
@@ -24,10 +29,10 @@ const DataModal = ({
       setTitle(selectedData.title);
       setSeries(selectedData.series);
     } else {
-      setTitle("");
-      setSeries([]);
+      setTitle(savedTitle);
+      setSeries(savedSeries);
     }
-  }, [data, selectedIndex]);
+  }, [data, selectedIndex, savedTitle, savedSeries]);
 
   const handleSaveData = () => {
     const newData = {
@@ -47,6 +52,8 @@ const DataModal = ({
       setData([...data, newData]);
     }
 
+    setSavedTitle("");
+    setSavedSeries([]);
     setTitle("");
     setSeries([]);
     setNewName("");
@@ -71,11 +78,14 @@ const DataModal = ({
     };
 
     setSeries([...series, newSeries]);
+    setSavedSeries([...series, newSeries]); // Also save new series
     setNewName("");
     setNewItems([{ x: "", y: "" }]);
   };
 
   const handleClose = () => {
+    setSavedTitle(title); // Save the current title before closing
+    setSavedSeries(series); // Save the current series before closing
     setTitle("");
     setSeries([]);
     setNewName("");
@@ -169,14 +179,21 @@ const DataModal = ({
         <Button className="add" variant="secondary" onClick={handleAddItem}>
           Add Item
         </Button>
-        <Button className="" variant="secondary" onClick={handleAddNewName}>
+        <Button
+          className="add"
+          style={{ marginLeft: "5px" }}
+          variant="secondary"
+          onClick={handleAddNewName}
+        >
           Add New Name
         </Button>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleSaveData}>
-          Save
-        </Button>
+        {series.length > 0 && (
+          <Button variant="primary" onClick={handleSaveData}>
+            Save
+          </Button>
+        )}
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>

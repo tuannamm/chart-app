@@ -1,4 +1,10 @@
-import React, { createRef, useState, useRef, useEffect } from "react";
+import React, {
+  createRef,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import "./homepage.scss";
 
 import { useLocation } from "react-router-dom";
@@ -36,7 +42,7 @@ const HomePage = () => {
 
   const download = (
     image,
-    { name = `${data[0]?.title}`, extension = "jpg" } = {}
+    { name = `${data[data.length - 1]?.title}`, extension = "jpg" } = {}
   ) => {
     const a = document.createElement("a");
     a.href = image;
@@ -79,44 +85,52 @@ const HomePage = () => {
     setCanvasVisible(false);
   };
 
-  console.log("series", data[0]?.series);
+  console.log("series", data);
 
-  const chartData = (chartId) => {
-    switch (chartId) {
-      case 1:
-      case 2:
-        return {
-          series: data && data?.length > 0 ? [...data[0]?.series] : [],
-          options: {
-            chart: {
-              height: 350,
-              zoom: {
+  const chartData = useCallback(
+    (chartId) => {
+      switch (chartId) {
+        case 1:
+        case 2:
+          return {
+            series:
+              data && data?.length > 0
+                ? [...data[data.length - 1]?.series]
+                : [],
+            options: {
+              chart: {
+                height: 350,
+                zoom: {
+                  enabled: true,
+                },
+              },
+              title: {
+                text: data[data.length - 1]?.title
+                  ? data[data.length - 1]?.title
+                  : "TITLE",
+                align: "center",
+              },
+              dataLabels: {
                 enabled: true,
               },
-            },
-            title: {
-              text: data[0]?.title ? data[0]?.title : "TITLE",
-              align: "center",
-            },
-            dataLabels: {
-              enabled: true,
-            },
-            stroke: {
-              curve: "straight",
-            },
-            grid: {
-              row: {
-                colors: ["#f3f3f3", "transparent"],
-                opacity: 0.5,
+              stroke: {
+                curve: "straight",
+              },
+              grid: {
+                row: {
+                  colors: ["#f3f3f3", "transparent"],
+                  opacity: 0.5,
+                },
               },
             },
-          },
-        };
+          };
 
-      default:
-        return true;
-    }
-  };
+        default:
+          return true;
+      }
+    },
+    [data]
+  );
 
   useEffect(() => {
     chartData(state?.chartId);
