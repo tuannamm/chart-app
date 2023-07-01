@@ -15,6 +15,7 @@ const constant = {
   save_changes: "Save Changes",
   properties: "Properties",
   import_data: "Import data",
+  chartTypes: ["line", "bar", "pie", "scatter", "radar", "area"], // Add this line
 
   // Navbar
   user: "User",

@@ -1,0 +1,50 @@
+.line-modal {
+  width: 100%;
+  margin: 0 auto;
+
+  .modal-header {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .modal-body {
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0.5rem;
+      position: relative;
+      .input-label {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+      }
+       .icons-remove {
+          position: absolute;
+          right: 25px;
+          bottom: 13px;
+          cursor: pointer;
+          &:hover {
+            color: red
+          }
+        }
+
+      .input-field {
+        padding: 0.5rem;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        font-size: 1rem;
+      }
+    }
+
+    .serie-group {
+      margin-bottom: 1rem;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      padding: 1rem;
+    }
+  }
+}

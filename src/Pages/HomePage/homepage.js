@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 
 import constant from "../../utils/constant";
 import DataModal from "./Modal/dataModal";
+import LineModal from "./Modal/lineModal";
 
 const HomePage = () => {
   const { state } = useLocation();
@@ -23,11 +24,12 @@ const HomePage = () => {
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [selectedDataIndex, setSelectedDataIndex] = useState(null);
+  const [chartType, setChartType] = useState("");
 
   const [drag, setDrag] = useState({
     isDragging: false,
-    x: 50,
-    y: 50,
+    x: 100,
+    y: 100,
   });
 
   const [tool, setTool] = useState("pen");
@@ -85,29 +87,23 @@ const HomePage = () => {
     setCanvasVisible(false);
   };
 
-  console.log("series", data);
-
   const chartData = useCallback(
     (chartId) => {
       switch (chartId) {
         case 1:
         case 2:
           return {
-            series:
-              data && data?.length > 0
-                ? [...data[data.length - 1]?.series]
-                : [],
+            series: data && data?.length > 0 ? [...data[0]?.series] : [],
             options: {
               chart: {
                 height: 350,
+
                 zoom: {
                   enabled: true,
                 },
               },
               title: {
-                text: data[data.length - 1]?.title
-                  ? data[data.length - 1]?.title
-                  : "TITLE",
+                text: data[0]?.title ? data[0]?.title : "TITLE",
                 align: "center",
               },
               dataLabels: {
@@ -124,13 +120,14 @@ const HomePage = () => {
               },
             },
           };
-
         default:
           return true;
       }
     },
-    [data]
+    [data, chartType]
   );
+
+  console.log("data", data);
 
   useEffect(() => {
     chartData(state?.chartId);
@@ -255,17 +252,40 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(state.chartId).options}
             series={chartData(state.chartId).series}
-            type="bar"
+            type="line"
             height={500}
           />
-          <DataModal
-            showDataModal={showDataModal}
-            setShowDataModal={setShowDataModal}
-            data={data}
-            setData={setData}
-            selectedDataIndex={selectedDataIndex}
-            setSelectedDataIndex={setSelectedDataIndex}
-          />
+          <select
+            value={chartType}
+            className="form-select"
+            aria-label="Default select example"
+            onChange={(e) => setChartType(e.target.value)}
+          >
+            {constant.chartTypes.map((type, index) => (
+              <option key={index} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+
+          {state?.chartId === 1 || chartType === "line" ? (
+            <LineModal
+              showDataModal={showDataModal}
+              setShowDataModal={setShowDataModal}
+              data={data}
+              setData={setData}
+              selectedIndex={selectedDataIndex}
+            />
+          ) : (
+            <DataModal
+              showDataModal={showDataModal}
+              setShowDataModal={setShowDataModal}
+              data={data}
+              setData={setData}
+              selectedDataIndex={selectedDataIndex}
+              setSelectedDataIndex={setSelectedDataIndex}
+            />
+          )}
         </div>
       </div>
     </>

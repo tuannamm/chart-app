@@ -1,27 +1,14 @@
 [
     {
-        "name": "test",
-        "data": [
+        "title": "test",
+        "series": [
             {
-                "x": "thang 1",
-                "y": "20"
-            },
-            {
-                "x": "thang 2",
-                "y": "50"
-            }
-        ]
-    },
-    {
-        "name": "tste2",
-        "data": [
-            {
-                "x": "thang 1",
-                "y": "35"
-            },
-            {
-                "x": "thang 2",
-                "y": "90"
+                "name": "tset",
+                "data": [
+                    "12",
+                    "20",
+                    "2"
+                ]
             }
         ]
     }

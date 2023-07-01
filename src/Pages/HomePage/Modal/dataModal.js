@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 import "./dataModal.scss";
+import icons from "../../../utils/icons";
+
+const { AiOutlineDelete } = icons;
 
 const DataModal = ({
   showDataModal,
@@ -15,24 +18,20 @@ const DataModal = ({
   const [newName, setNewName] = useState("");
   const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
 
-  // Save the last values
-  const [savedTitle, setSavedTitle] = useState("");
-  const [savedSeries, setSavedSeries] = useState([]);
-
-  useEffect(() => {
-    if (
-      selectedIndex !== null &&
-      selectedIndex >= 0 &&
-      selectedIndex < data.length
-    ) {
-      const selectedData = data[selectedIndex];
-      setTitle(selectedData.title);
-      setSeries(selectedData.series);
-    } else {
-      setTitle(savedTitle);
-      setSeries(savedSeries);
-    }
-  }, [data, selectedIndex, savedTitle, savedSeries]);
+  // useEffect(() => {
+  //   if (
+  //     selectedIndex !== null &&
+  //     selectedIndex >= 0 &&
+  //     selectedIndex < data.length
+  //   ) {
+  //     const selectedData = data[selectedIndex];
+  //     setTitle(selectedData.title);
+  //     setSeries(selectedData.series);
+  //   } else {
+  //     setTitle("");
+  //     setSeries([]);
+  //   }
+  // }, [data, selectedIndex]);
 
   const handleSaveData = () => {
     const newData = {
@@ -49,15 +48,14 @@ const DataModal = ({
       updatedData[selectedIndex] = newData;
       setData(updatedData);
     } else {
-      setData([...data, newData]);
+      setData([newData]);
     }
 
-    setSavedTitle("");
-    setSavedSeries([]);
-    setTitle("");
-    setSeries([]);
-    setNewName("");
-    setNewItems([{ x: "", y: "" }]);
+    // Reset the state variables here after saving data
+    // setTitle("");
+    // setSeries([]);
+    // setNewName("");
+    // setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
   };
 
@@ -65,10 +63,34 @@ const DataModal = ({
     setNewItems([...newItems, { x: "", y: "" }]);
   };
 
-  const handleItemChange = (index, field, value) => {
-    const updatedItems = [...newItems];
-    updatedItems[index][field] = value;
-    setNewItems(updatedItems);
+  useEffect(() => {
+    if (
+      selectedIndex !== null &&
+      selectedIndex >= 0 &&
+      selectedIndex < data.length
+    ) {
+      const selectedData = data[selectedIndex];
+      setTitle(selectedData.title);
+      setSeries(selectedData.series);
+    }
+  }, [data, selectedIndex, showDataModal]);
+
+  const handleItemChange = (
+    index,
+    field,
+    value,
+    isExistingItem = false,
+    seriesIndex
+  ) => {
+    if (isExistingItem) {
+      const updatedSeries = [...series];
+      updatedSeries[seriesIndex].data[index][field] = value;
+      setSeries(updatedSeries);
+    } else {
+      const updatedItems = [...newItems];
+      updatedItems[index][field] = value;
+      setNewItems(updatedItems);
+    }
   };
 
   const handleAddNewName = () => {
@@ -78,23 +100,26 @@ const DataModal = ({
     };
 
     setSeries([...series, newSeries]);
-    setSavedSeries([...series, newSeries]); // Also save new series
     setNewName("");
     setNewItems([{ x: "", y: "" }]);
   };
 
   const handleClose = () => {
-    setSavedTitle(title); // Save the current title before closing
-    setSavedSeries(series); // Save the current series before closing
-    setTitle("");
-    setSeries([]);
-    setNewName("");
-    setNewItems([{ x: "", y: "" }]);
+    // setTitle("");
+    // setSeries([]);
+    // setNewName("");
+    // setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
   };
 
+  const handleDeleteItem = (itemIndex, seriesIndex) => {
+    const updatedSeries = [...series];
+    updatedSeries[seriesIndex].data.splice(itemIndex, 1);
+    setSeries(updatedSeries);
+  };
+
   return (
-    <Modal show={showDataModal} onHide={handleClose}>
+    <Modal show={showDataModal} onHide={handleClose} className="modal">
       <Modal.Header closeButton>
         <Modal.Title>DATA</Modal.Title>
       </Modal.Header>
@@ -117,35 +142,55 @@ const DataModal = ({
             {seriesItem.data.map((item, itemIndex) => (
               <div key={itemIndex} className="item">
                 <div className="form-group">
-                  <label htmlFor={`x-${seriesIndex}-${itemIndex}`}>X</label>
                   <input
                     type="text"
                     id={`x-${seriesIndex}-${itemIndex}`}
                     value={item.x}
                     onChange={(e) =>
-                      handleItemChange(itemIndex, "x", e.target.value)
+                      handleItemChange(
+                        itemIndex,
+                        "x",
+                        e.target.value,
+                        true,
+                        seriesIndex
+                      )
                     }
+                    placeholder="Label"
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor={`y-${seriesIndex}-${itemIndex}`}>Y</label>
                   <input
-                    type="text"
+                    type="number"
                     id={`y-${seriesIndex}-${itemIndex}`}
                     value={item.y}
                     onChange={(e) =>
-                      handleItemChange(itemIndex, "y", e.target.value)
+                      handleItemChange(
+                        itemIndex,
+                        "y",
+                        e.target.value,
+                        true,
+                        seriesIndex
+                      )
                     }
+                    placeholder="Value"
                   />
                 </div>
+                {/* <Button
+                  variant="secondary"
+                  onClick={() => handleItemChange(itemIndex, seriesIndex)}
+                >
+                  Edit Item
+                </Button> */}
+                <AiOutlineDelete
+                  className="icons-remove"
+                  onClick={() => handleDeleteItem(itemIndex, seriesIndex)}
+                />
               </div>
             ))}
           </div>
         ))}
 
-        <h4>Add New Name</h4>
         <div className="form-group">
-          <label htmlFor="newName">Name</label>
           <input
             type="text"
             id="newName"
@@ -157,21 +202,21 @@ const DataModal = ({
         {newItems.map((item, index) => (
           <div key={index} className="item">
             <div className="form-group">
-              <label htmlFor={`new-x-${index}`}>X</label>
               <input
                 type="text"
                 id={`new-x-${index}`}
                 value={item.x}
                 onChange={(e) => handleItemChange(index, "x", e.target.value)}
+                placeholder="Label"
               />
             </div>
             <div className="form-group">
-              <label htmlFor={`new-y-${index}`}>Y</label>
               <input
-                type="text"
+                type="number"
                 id={`new-y-${index}`}
                 value={item.y}
                 onChange={(e) => handleItemChange(index, "y", e.target.value)}
+                placeholder="Value"
               />
             </div>
           </div>
@@ -180,8 +225,7 @@ const DataModal = ({
           Add Item
         </Button>
         <Button
-          className="add"
-          style={{ marginLeft: "5px" }}
+          className="add ml-3"
           variant="secondary"
           onClick={handleAddNewName}
         >
@@ -189,11 +233,9 @@ const DataModal = ({
         </Button>
       </Modal.Body>
       <Modal.Footer>
-        {series.length > 0 && (
-          <Button variant="primary" onClick={handleSaveData}>
-            Save
-          </Button>
-        )}
+        <Button variant="primary" onClick={handleSaveData}>
+          Save
+        </Button>
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>

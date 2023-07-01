@@ -9,7 +9,7 @@ import {
   FaGithub,
   FaRegLaughWink,
 } from "react-icons/fa";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiOutlineLoading3Quarters, AiOutlineDelete } from "react-icons/ai";
 
 const icons = {
   FiMail,
@@ -23,6 +23,7 @@ const icons = {
   FaGithub,
   FaRegLaughWink,
   AiOutlineLoading3Quarters,
+  AiOutlineDelete,
 };
 
 export default icons;
