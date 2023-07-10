@@ -48,6 +48,14 @@
     width: 100%;
     max-width: 800px; /* Set a maximum width if needed */
     margin: 20px auto; /* Center the chart container */
+    .chart {
+      position: relative;
+      .apex-chart {
+        position: relative;
+        z-index: 1;
+      }
+    }
+    
     
     .container {
       position: relative;
@@ -60,12 +68,6 @@
     }
   }
 
-
-  .apex-chart {
-    position: relative;
-    z-index: 1;
-  }
-  
   .canvas-container {
     width: 55%;
     height: 100%;

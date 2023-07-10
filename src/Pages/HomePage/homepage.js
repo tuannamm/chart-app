@@ -10,21 +10,29 @@ import "./homepage.scss";
 import { useLocation } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
 import { useScreenshot, createFileName } from "use-react-screenshot";
+import { fabric } from "fabric";
 import { Stage, Layer, Circle, Line, Rect } from "react-konva";
 import { toast } from "react-toastify";
+import GroupButton from "../../components/ButtonGroup";
 
 import constant from "../../utils/constant";
+import Switch from "../../components/Switch/switch";
 import DataModal from "./Modal/dataModal";
 import LineModal from "./Modal/lineModal";
+import MixedModal from "./Modal/mixedModal";
 
 const HomePage = () => {
   const { state } = useLocation();
   const ref = createRef(null);
+  const chartRef = useRef(null);
+  const canvasRef = useRef(null);
 
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [selectedDataIndex, setSelectedDataIndex] = useState(null);
   const [chartType, setChartType] = useState("");
+  const [theme, setTheme] = useState(false);
+  const [lineStyle, setLineStyle] = useState("smooth");
 
   const [drag, setDrag] = useState({
     isDragging: false,
@@ -85,19 +93,47 @@ const HomePage = () => {
 
   const handleRemoveCanvas = () => {
     setCanvasVisible(false);
+    // const fabricCanvas = document.querySelector(".canvas-container");
+    // if (fabricCanvas) {
+    //   fabricCanvas.remove();
+    // }
   };
+  // const handleButtonClick = () => {
+  //   if (!isCanvasVisible) {
+  //     setCanvasVisible(true);
+
+  //     setTimeout(() => {
+  //       if (chartRef.current) {
+  //         const fabricCanvas = document.createElement("canvas");
+  //         fabricCanvas.id = "fabric-canvas";
+  //         fabricCanvas.style.position = "absolute";
+  //         fabricCanvas.style.top = "0";
+  //         fabricCanvas.style.left = "0";
+  //         fabricCanvas.width = chartRef.current.clientWidth;
+  //         fabricCanvas.height = chartRef.current.clientHeight;
+  //         fabricCanvas.style.zIndex = "1000";
+  //         chartRef.current.appendChild(fabricCanvas);
+
+  //         const canvas = new fabric.Canvas("fabric-canvas", {
+  //           isDrawingMode: true,
+  //         });
+  //       }
+  //     }, 0);
+  //   }
+  // };
 
   const chartData = useCallback(
     (chartId) => {
       switch (chartId) {
         case 1:
         case 2:
+        case 3:
+        case 5:
           return {
             series: data && data?.length > 0 ? [...data[0]?.series] : [],
             options: {
               chart: {
                 height: 350,
-
                 zoom: {
                   enabled: true,
                 },
@@ -110,12 +146,28 @@ const HomePage = () => {
                 enabled: true,
               },
               stroke: {
-                curve: "straight",
+                curve: lineStyle,
               },
               grid: {
                 row: {
                   colors: ["#f3f3f3", "transparent"],
                   opacity: 0.5,
+                },
+              },
+              theme: {
+                mode: theme ? "dark" : "light",
+                palette: "palette4",
+              },
+              labels: data[0]?.labels ? data[0]?.labels : [],
+              fill: {
+                opacity: [0.85, 0.25, 1],
+                gradient: {
+                  inverseColors: false,
+                  shade: "light",
+                  type: "vertical",
+                  opacityFrom: 0.85,
+                  opacityTo: 0.55,
+                  stops: [0, 100, 100, 100],
                 },
               },
             },
@@ -124,24 +176,17 @@ const HomePage = () => {
           return true;
       }
     },
-    [data, chartType]
+    [data, chartType, theme, lineStyle]
   );
-
-  console.log("data", data);
 
   useEffect(() => {
     chartData(state?.chartId);
   }, [data]);
 
-  // const handleShowDataModal = () => {
-  //   setShowDataModal(true);
-  // };
-
   const handleShowDataModal = () => {
-    setSelectedDataIndex(null); // Clear the selected index when showing the modal
+    setSelectedDataIndex(null);
     setShowDataModal(true);
   };
-
   const handleMouseDown = (e) => {
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
@@ -156,7 +201,6 @@ const HomePage = () => {
     const point = stage.getPointerPosition();
     let lastLine = lines[lines.length - 1];
     lastLine.points = lastLine.points.concat([point.x, point.y]);
-
     lines.splice(lines.length - 1, 1, lastLine);
     setLines(lines.concat());
   };
@@ -164,6 +208,8 @@ const HomePage = () => {
   const handleMouseUp = () => {
     isDrawing.current = false;
   };
+
+  console.log("Xxxx", data);
 
   return (
     <>
@@ -252,21 +298,9 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(state.chartId).options}
             series={chartData(state.chartId).series}
-            type="line"
+            type="area"
             height={500}
           />
-          <select
-            value={chartType}
-            className="form-select"
-            aria-label="Default select example"
-            onChange={(e) => setChartType(e.target.value)}
-          >
-            {constant.chartTypes.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
 
           {state?.chartId === 1 || chartType === "line" ? (
             <LineModal
@@ -286,7 +320,25 @@ const HomePage = () => {
               setSelectedDataIndex={setSelectedDataIndex}
             />
           )}
+
+          {/* <MixedModal
+            showDataModal={showDataModal}
+            setShowDataModal={setShowDataModal}
+            data={data}
+            setData={setData}
+            selectedDataIndex={selectedDataIndex}
+          /> */}
         </div>
+        {data && data?.length > 0 && (
+          <div className="chart-properties">
+            <Switch
+              title="Dark theme"
+              onChange={() => setTheme(!theme)}
+              state={theme}
+            />
+            <GroupButton title="Line style" setLineStyle={setLineStyle} />
+          </div>
+        )}
       </div>
     </>
   );

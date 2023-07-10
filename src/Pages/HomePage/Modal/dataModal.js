@@ -175,12 +175,6 @@ const DataModal = ({
                     placeholder="Value"
                   />
                 </div>
-                {/* <Button
-                  variant="secondary"
-                  onClick={() => handleItemChange(itemIndex, seriesIndex)}
-                >
-                  Edit Item
-                </Button> */}
                 <AiOutlineDelete
                   className="icons-remove"
                   onClick={() => handleDeleteItem(itemIndex, seriesIndex)}

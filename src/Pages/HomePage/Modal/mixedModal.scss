@@ -1,0 +1,65 @@
+.mixed-modal {
+  .modal-header {
+    background: #f7f7f7;
+    color: #333;
+    .modal-title {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  }
+
+  .modal-body {
+    .input-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      .input-field {
+        flex: 1;
+        margin-right: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      
+      .icons-remove {
+        cursor: pointer;
+        color: red;
+      }
+    }
+
+    .serie-group {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 20px;
+
+      .input-group:first-child {
+        justify-content: space-between;
+      }
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      &:hover {
+        background: #0056b3;
+      }
+    }
+  }
+
+  .modal-footer {
+    button {
+      width: auto;
+      margin-right: 10px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
