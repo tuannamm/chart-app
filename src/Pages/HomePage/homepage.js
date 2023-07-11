@@ -14,6 +14,7 @@ import { fabric } from "fabric";
 import { Stage, Layer, Circle, Line, Rect } from "react-konva";
 import { toast } from "react-toastify";
 import GroupButton from "../../components/ButtonGroup";
+import { useSelector } from "react-redux";
 
 import constant from "../../utils/constant";
 import Switch from "../../components/Switch/switch";
@@ -39,6 +40,8 @@ const HomePage = () => {
     x: 100,
     y: 100,
   });
+
+  const chartId = useSelector((state) => state?.chartReducer);
 
   const [tool, setTool] = useState("pen");
   const [lines, setLines] = useState([]);
@@ -209,8 +212,6 @@ const HomePage = () => {
     isDrawing.current = false;
   };
 
-  console.log("Xxxx", data);
-
   return (
     <>
       <div className="homepage-container">
@@ -296,13 +297,13 @@ const HomePage = () => {
           )}
           <ReactApexCharts
             className="apex-chart"
-            options={chartData(state.chartId).options}
-            series={chartData(state.chartId).series}
-            type="area"
+            options={chartData(chartId.id).options}
+            series={chartData(chartId.id).series}
+            type="line"
             height={500}
           />
 
-          {state?.chartId === 1 || chartType === "line" ? (
+          {chartId?.id === 1 || chartType === "line" ? (
             <LineModal
               showDataModal={showDataModal}
               setShowDataModal={setShowDataModal}

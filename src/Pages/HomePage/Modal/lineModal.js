@@ -15,7 +15,7 @@ const LineModal = ({
 }) => {
   const [title, setTitle] = useState("");
   const [labels, setLabels] = useState([""]);
-  const [series, setSeries] = useState([{ name: "", type: "", data: [""] }]);
+  const [series, setSeries] = useState([{ name: "", data: [""] }]);
 
   useEffect(() => {
     if (showDataModal) {
@@ -38,12 +38,6 @@ const LineModal = ({
     setSeries(updatedSeries);
   };
 
-  const handleTypeChange = (seriesIndex, value) => {
-    const updatedSeries = [...series];
-    updatedSeries[seriesIndex].type = value;
-    setSeries(updatedSeries);
-  };
-
   const handleDataChange = (seriesIndex, dataIndex, value) => {
     const updatedSeries = [...series];
     updatedSeries[seriesIndex].data[dataIndex] = value;
@@ -63,7 +57,7 @@ const LineModal = ({
   };
 
   const handleAddSeries = () => {
-    setSeries([...series, { name: "", type: "", data: [""] }]);
+    setSeries([...series, { name: "", data: [""] }]);
   };
 
   const handleAddLabel = () => {
@@ -81,7 +75,7 @@ const LineModal = ({
       updatedData[selectedIndex] = newData;
       setData(updatedData);
     } else {
-      setData([...data, newData]);
+      setData([newData]);
     }
     setShowDataModal(false);
   };
@@ -140,7 +134,11 @@ const LineModal = ({
           </div>
         ))}
 
-        <Button variant="secondary" onClick={handleAddLabel}>
+        <Button
+          variant="secondary"
+          style={{ marginBottom: "0.5rem" }}
+          onClick={handleAddLabel}
+        >
           Add Label
         </Button>
 

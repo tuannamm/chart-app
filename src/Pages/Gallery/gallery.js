@@ -5,11 +5,13 @@ import "../../components/Header/header.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 
 import Setting from "../../Setting/setting";
 import Spinner from "../../components/AtomicSpinner/AtomicSpinner";
 import constant from "../../utils/constant";
 import icons from "../../utils/icons";
+import { setChartId } from "../../store/action/chartAction";
 
 const { FaChartPie } = icons;
 
@@ -54,6 +56,7 @@ const chartListData = [
 
 const Gallery = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loadingScreen, setLoadingScreen] = useState(undefined);
 
   const handleLogin = () => {
@@ -69,6 +72,15 @@ const Gallery = () => {
       setLoadingScreen(true);
     }, 1500);
   }, []);
+
+  const handleSelectChart = (chartId) => {
+    navigate("/home", {
+      state: {
+        chartId: chartId,
+      },
+    });
+    dispatch(setChartId(chartId));
+  };
 
   return (
     <>
@@ -106,14 +118,8 @@ const Gallery = () => {
                 chartListData.map((chart) => (
                   <Card
                     style={{ width: "25rem", height: "20rem" }}
-                    key={chart.id}
-                    onClick={() =>
-                      navigate("/home", {
-                        state: {
-                          chartId: chart?.id,
-                        },
-                      })
-                    }
+                    key={chart?.id}
+                    onClick={() => handleSelectChart(chart?.id)}
                     className="card-chart"
                   >
                     <Card.Img
