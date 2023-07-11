@@ -184,7 +184,7 @@ const HomePage = () => {
   );
 
   useEffect(() => {
-    chartData(state?.chartId);
+    chartData(chartId?.id);
   }, [data]);
 
   const handleShowDataModal = () => {

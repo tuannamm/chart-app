@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./lineModal.scss";
 import icons from "../../../utils/icons";
@@ -19,21 +19,7 @@ const LineModal = ({
   const [labels, setLabels] = useState([""]);
   const [series, setSeries] = useState([{ name: "", data: [""] }]);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (showDataModal) {
-      if (
-        selectedIndex !== null &&
-        selectedIndex >= 0 &&
-        selectedIndex < data.length
-      ) {
-        const selectedData = data[selectedIndex];
-        setTitle(selectedData.title);
-        setLabels(selectedData.labels);
-        setSeries(selectedData.series);
-      }
-    }
-  }, [data, selectedIndex, showDataModal]);
+  const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
   const handleNameChange = (seriesIndex, value) => {
     const updatedSeries = [...series];
@@ -105,6 +91,33 @@ const LineModal = ({
     updatedLabels.splice(labelIndex, 1);
     setLabels(updatedLabels);
   };
+
+  // useEffect(() => {
+  //   if (showDataModal && dataChart) {
+  //     setTitle(dataChart.title || "");
+  //     setLabels(dataChart.labels || [""]);
+  //     setSeries(dataChart.series || [{ name: "", data: [""] }]);
+  //   } else {
+  //     setTitle("");
+  //     setLabels([""]);
+  //     setSeries([{ name: "", data: [""] }]);
+  //   }
+  // }, [showDataModal, dataChart]);
+
+  useEffect(() => {
+    if (showDataModal) {
+      if (
+        selectedIndex !== null &&
+        selectedIndex >= 0 &&
+        selectedIndex < data.length
+      ) {
+        const selectedData = data[selectedIndex];
+        setTitle(selectedData.title);
+        setLabels(selectedData.labels);
+        setSeries(selectedData.series);
+      }
+    }
+  }, [data, selectedIndex, showDataModal]);
 
   return (
     <Modal show={showDataModal} onHide={handleClose} className="line-modal">
