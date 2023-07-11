@@ -7,6 +7,7 @@ import { NavLink } from "react-bootstrap";
 import icons from "../../utils/icons";
 import constant from "../../utils/constant";
 import Setting from "../../Setting/setting";
+import { Link } from "react-router-dom";
 
 const { FaChartPie } = icons;
 
@@ -23,15 +24,15 @@ const NavBar = (props) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <NavLink href="/user" className="nav-link">
+              <Link to="/user" className="nav-link">
                 {constant.user}
-              </NavLink>
-              <NavLink href="/admin" className="nav-link">
+              </Link>
+              <Link to="/admin" className="nav-link">
                 {constant.admin}
-              </NavLink>
-              <NavLink href="/gallery" className="nav-link">
+              </Link>
+              <Link to="/gallery" className="nav-link">
                 {constant.gallery}
-              </NavLink>
+              </Link>
             </Nav>
             <Setting />
           </Navbar.Collapse>

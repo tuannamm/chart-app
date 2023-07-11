@@ -42,12 +42,13 @@ const HomePage = () => {
   });
 
   const chartId = useSelector((state) => state?.chartReducer);
+  const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
   const [tool, setTool] = useState("pen");
   const [lines, setLines] = useState([]);
   const isDrawing = useRef(false);
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(dataChart || []);
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,

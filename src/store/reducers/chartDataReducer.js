@@ -1,16 +1,13 @@
-// redux/reducers.js
-import { SET_CHART_ID } from "../action/chartAction";
-
 const initialState = {
-  id: null,
+  data: [],
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case SET_CHART_ID:
+    case "SET_CHART_DATA":
       return {
         ...state,
-        id: action.payload,
+        data: action.payload,
       };
     default:
       return state;

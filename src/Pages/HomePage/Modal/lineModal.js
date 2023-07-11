@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 
 import "./lineModal.scss";
 import icons from "../../../utils/icons";
+import { setChartData } from "../../../store/action/chartAction";
 
 const { AiOutlineDelete } = icons;
 
@@ -16,6 +18,7 @@ const LineModal = ({
   const [title, setTitle] = useState("");
   const [labels, setLabels] = useState([""]);
   const [series, setSeries] = useState([{ name: "", data: [""] }]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (showDataModal) {
@@ -77,6 +80,7 @@ const LineModal = ({
     } else {
       setData([newData]);
     }
+    dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
 
