@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 
 import "./dataModal.scss";
 import icons from "../../../utils/icons";
+import { setChartData } from "../../../store/action/chartAction";
 
 const { AiOutlineDelete } = icons;
 
@@ -13,6 +15,7 @@ const DataModal = ({
   setData,
   selectedIndex,
 }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [series, setSeries] = useState([]);
   const [newName, setNewName] = useState("");
@@ -56,6 +59,7 @@ const DataModal = ({
     // setSeries([]);
     // setNewName("");
     // setNewItems([{ x: "", y: "" }]);
+    dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
 
