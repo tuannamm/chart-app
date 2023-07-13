@@ -1,9 +1,13 @@
 .homepage-container {
-  margin: 1.25rem 0.625rem; /* Adjust the margin as needed */
+  width: 85%;
+  min-height: 500px;
+  margin: 1.5rem auto; 
   border: 0.0625rem solid black;
   border-radius: 0.625rem;
-  min-height: 100vh;
+  
   background-color: white;
+ 
+
   
   .feature-button {
     display: flex;
