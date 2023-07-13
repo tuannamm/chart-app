@@ -340,18 +340,20 @@ const HomePage = () => {
             )}
           </div>
         </div>
-        <div
-          className="chart-container"
-          ref={chartRef}
-          style={{ position: "relative" }}
-        >
-          <ReactApexCharts
-            className="apex-chart"
-            options={chartData(chartId.id).options}
-            series={chartData(chartId.id).series}
-            type="line"
-            height={500}
-          />
+        <div className="chart-container">
+          <div
+            className="chart"
+            ref={chartRef}
+            style={{ position: "relative" }}
+          >
+            <ReactApexCharts
+              className="apex-chart"
+              options={chartData(chartId.id).options}
+              series={chartData(chartId.id).series}
+              type="line"
+              height={500}
+            />
+          </div>
 
           {chartId?.id === 1 || chartType === "line" ? (
             <LineModal

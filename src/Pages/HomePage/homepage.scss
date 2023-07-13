@@ -65,6 +65,17 @@
   
   }
 
-
+  .canvas-container{
+    position: absolute;
+    top: -515px;
+    left: 0px;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    #fabric-canvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
   
 }
