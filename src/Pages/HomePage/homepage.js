@@ -80,7 +80,6 @@ const HomePage = () => {
           fabricCanvas.style.position = "absolute";
           fabricCanvas.style.top = "0";
           fabricCanvas.style.left = "0";
-          // fabricCanvas.style.opacity = "0";
           fabricCanvas.width = chartRef.current.clientWidth;
           fabricCanvas.height = chartRef.current.clientHeight;
           fabricCanvas.style.zIndex = "1000";
@@ -182,6 +181,9 @@ const HomePage = () => {
       left: 100,
       top: 100,
       hasControls: true,
+      fill: "transparent",
+      stroke: "black",
+      strokeWidth: 2,
     };
 
     switch (selectedShape) {
@@ -202,12 +204,69 @@ const HomePage = () => {
           height: 100,
         });
         break;
+      case "line":
+        newShape = new fabric.Line([50, 100, 200, 200], {
+          left: 170,
+          top: 150,
+          stroke: "black",
+          strokeWidth: 2,
+        });
+        break;
+      case "text":
+        newShape = new fabric.IText("Hello, World!", {
+          left: 100,
+          top: 100,
+          fontSize: 30,
+          editable: true,
+        });
+        break;
+      case "freeDraw":
+        canvasRef.current.isDrawingMode = true;
+        canvasRef.current.freeDrawingBrush.width = 5;
+        canvasRef.current.freeDrawingBrush.color = "#000000";
+        return;
+      case "rectangle":
+        newShape = new fabric.Rect({
+          ...shapeProperties,
+          width: 200,
+          height: 100,
+        });
+        break;
       default:
-        newShape = new fabric.Circle({ ...shapeProperties, radius: 50 });
+        return;
     }
 
     canvasRef.current.add(newShape);
   };
+
+  useEffect(() => {
+    if (selectedShape !== "freeDraw" && canvasRef.current) {
+      canvasRef.current.isDrawingMode = false;
+    }
+  }, [selectedShape]);
+
+  const removeSelectedShape = () => {
+    const activeObject = canvasRef.current.getActiveObject();
+
+    if (activeObject) {
+      canvasRef.current.remove(activeObject);
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Backspace") {
+        removeSelectedShape();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Make sure to clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <>
@@ -219,14 +278,19 @@ const HomePage = () => {
             </button>
             {isAnnotateButtonClicked && (
               <>
-                {/* Adding dropdown menu for shapes selection */}
                 <select
-                  onChange={(e) => setSelectedShape(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedShape(e.target.value);
+                  }}
                   value={selectedShape}
                 >
                   <option value="circle">Circle</option>
                   <option value="square">Square</option>
                   <option value="triangle">Triangle</option>
+                  <option value="freeDraw">Free Draw</option>
+                  <option value="line">Line</option>
+                  <option value="rectangle">Rectangle</option>
+                  <option value="text">Text</option>
                 </select>
                 <button className="btn" onClick={addShape}>
                   Add Shape
@@ -255,63 +319,6 @@ const HomePage = () => {
           ref={chartRef}
           style={{ position: "relative" }}
         >
-          {/* {isCanvasVisible && (
-            <div className="canvas-container">
-              <Stage
-                onMouseDown={handleMouseDown}
-                onMousemove={handleMouseMove}
-                onMouseup={handleMouseUp}
-                width={1500}
-                height={500}
-              >
-                <Layer>
-                  {lines.map((line, i) => (
-                    <Line
-                      key={i}
-                      points={line.points}
-                      stroke="#df4b26"
-                      strokeWidth={5}
-                      tension={0.5}
-                      draggable
-                      globalCompositeOperation={
-                        line.tool === "eraser"
-                          ? "destination-out"
-                          : "source-over"
-                      }
-                    />
-                  ))}
-                  <Rect
-                    width={100}
-                    height={100}
-                    draggable
-                    fill="red"
-                    shadowBlur={10}
-                  />
-                  <Circle
-                    x={drag.x}
-                    y={drag.y}
-                    radius={50}
-                    fill="green"
-                    draggable
-                    onDragStart={() => {
-                      setDrag({
-                        ...drag,
-                        isDragging: true,
-                      });
-                    }}
-                    onDragEnd={(e) => {
-                      setDrag({
-                        ...drag,
-                        isDragging: false,
-                        x: e.target.x(),
-                        y: e.target.y(),
-                      });
-                    }}
-                  />
-                </Layer>
-              </Stage>
-            </div>
-          )} */}
           <ReactApexCharts
             className="apex-chart"
             options={chartData(chartId.id).options}
