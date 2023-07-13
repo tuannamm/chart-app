@@ -7,11 +7,9 @@ import React, {
 } from "react";
 import "./homepage.scss";
 
-import { useLocation } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 import { fabric } from "fabric";
-import { Stage, Layer, Circle, Line, Rect } from "react-konva";
 import { toast } from "react-toastify";
 import GroupButton from "../../components/ButtonGroup";
 import { useSelector } from "react-redux";
@@ -23,7 +21,6 @@ import LineModal from "./Modal/lineModal";
 import MixedModal from "./Modal/mixedModal";
 
 const HomePage = () => {
-  const { state } = useLocation();
   const ref = createRef(null);
   const chartRef = useRef(null);
   const canvasRef = useRef(null);
@@ -34,21 +31,14 @@ const HomePage = () => {
   const [chartType, setChartType] = useState("");
   const [theme, setTheme] = useState(false);
   const [lineStyle, setLineStyle] = useState("smooth");
-
-  const [drag, setDrag] = useState({
-    isDragging: false,
-    x: 100,
-    y: 100,
-  });
+  const [isAnnotateButtonClicked, setAnnotateButtonClicked] = useState(false);
+  const [selectedShape, setSelectedShape] = useState("circle");
 
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
-  const [tool, setTool] = useState("pen");
-  const [lines, setLines] = useState([]);
-  const isDrawing = useRef(false);
-
   const [data, setData] = useState(dataChart || []);
+
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
@@ -78,26 +68,10 @@ const HomePage = () => {
     });
   };
 
-  // const handleButtonClick = () => {
-  //   // setCanvasVisible(true);
-  //   // setAnnotateClicked(true);
-
-  //   if (!isCanvasVisible) {
-  //     setCanvasVisible(true);
-  //   }
-  // };
-
-  // // useEffect(() => {
-  // //   if (isCanvasVisible && isAnnotateClicked) {
-  // //     const apexChartContainer = document.querySelector(".apex-chart");
-  // //     const canvas = document.querySelector("canvas-container");
-  // //     apexChartContainer.appendChild(canvas);
-  // //   }
-  // // }, [isCanvasVisible, isAnnotateClicked]);
-
   const handleButtonClick = () => {
     if (!isCanvasVisible) {
       setCanvasVisible(true);
+      setAnnotateButtonClicked(true);
 
       setTimeout(() => {
         if (chartRef.current) {
@@ -113,20 +87,9 @@ const HomePage = () => {
 
           chartRef.current.appendChild(fabricCanvas);
 
-          const triangle = new fabric.Triangle({
-            width: 100,
-            height: 100,
-
-            left: 100,
-            top: 100,
-            hasControls: true, // this makes the triangle resizable
-          });
-
           const canvas = new fabric.Canvas("fabric-canvas", {
             // isDrawingMode: true,
           });
-
-          canvas.add(triangle);
 
           canvas.setBackgroundColor(
             "rgba(0,0,0,0)",
@@ -141,34 +104,7 @@ const HomePage = () => {
 
   const handleRemoveCanvas = () => {
     setCanvasVisible(false);
-    // const fabricCanvas = document.querySelector(".canvas-container");
-    // if (fabricCanvas) {
-    //   fabricCanvas.remove();
-    // }
   };
-  // const handleButtonClick = () => {
-  //   if (!isCanvasVisible) {
-  //     setCanvasVisible(true);
-
-  //     setTimeout(() => {
-  //       if (chartRef.current) {
-  //         const fabricCanvas = document.createElement("canvas");
-  //         fabricCanvas.id = "fabric-canvas";
-  //         fabricCanvas.style.position = "absolute";
-  //         fabricCanvas.style.top = "0";
-  //         fabricCanvas.style.left = "0";
-  //         fabricCanvas.width = chartRef.current.clientWidth;
-  //         fabricCanvas.height = chartRef.current.clientHeight;
-  //         fabricCanvas.style.zIndex = "1000";
-  //         chartRef.current.appendChild(fabricCanvas);
-
-  //         const canvas = new fabric.Canvas("fabric-canvas", {
-  //           isDrawingMode: true,
-  //         });
-  //       }
-  //     }, 0);
-  //   }
-  // };
 
   const chartData = useCallback(
     (chartId) => {
@@ -176,7 +112,9 @@ const HomePage = () => {
         case 1:
         case 2:
         case 3:
+        case 4:
         case 5:
+        case 6:
           return {
             series: data && data?.length > 0 ? [...data[0]?.series] : [],
             options: {
@@ -235,26 +173,40 @@ const HomePage = () => {
     setSelectedDataIndex(null);
     setShowDataModal(true);
   };
-  const handleMouseDown = (e) => {
-    isDrawing.current = true;
-    const pos = e.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y] }]);
-  };
 
-  const handleMouseMove = (e) => {
-    if (!isDrawing.current) {
-      return;
+  const addShape = () => {
+    if (!canvasRef.current) return;
+
+    let newShape;
+    const shapeProperties = {
+      left: 100,
+      top: 100,
+      hasControls: true,
+    };
+
+    switch (selectedShape) {
+      case "circle":
+        newShape = new fabric.Circle({ ...shapeProperties, radius: 50 });
+        break;
+      case "square":
+        newShape = new fabric.Rect({
+          ...shapeProperties,
+          width: 100,
+          height: 100,
+        });
+        break;
+      case "triangle":
+        newShape = new fabric.Triangle({
+          ...shapeProperties,
+          width: 100,
+          height: 100,
+        });
+        break;
+      default:
+        newShape = new fabric.Circle({ ...shapeProperties, radius: 50 });
     }
-    const stage = e.target.getStage();
-    const point = stage.getPointerPosition();
-    let lastLine = lines[lines.length - 1];
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
-    lines.splice(lines.length - 1, 1, lastLine);
-    setLines(lines.concat());
-  };
 
-  const handleMouseUp = () => {
-    isDrawing.current = false;
+    canvasRef.current.add(newShape);
   };
 
   return (
@@ -265,6 +217,22 @@ const HomePage = () => {
             <button className="btn" onClick={handleButtonClick}>
               {constant.annotate}
             </button>
+            {isAnnotateButtonClicked && (
+              <>
+                {/* Adding dropdown menu for shapes selection */}
+                <select
+                  onChange={(e) => setSelectedShape(e.target.value)}
+                  value={selectedShape}
+                >
+                  <option value="circle">Circle</option>
+                  <option value="square">Square</option>
+                  <option value="triangle">Triangle</option>
+                </select>
+                <button className="btn" onClick={addShape}>
+                  Add Shape
+                </button>
+              </>
+            )}
             <button className="btn">{constant.properties}</button>
             <button className="btn" onClick={handleShowDataModal}>
               {constant.data}
