@@ -345,15 +345,13 @@ const HomePage = () => {
           ref={chartRef}
           style={{ position: "relative" }}
         >
-          <div className="chart">
-            <ReactApexCharts
-              className="apex-chart"
-              options={chartData(chartId.id).options}
-              series={chartData(chartId.id).series}
-              type="line"
-              height={500}
-            />
-          </div>
+          <ReactApexCharts
+            className="apex-chart"
+            options={chartData(chartId.id).options}
+            series={chartData(chartId.id).series}
+            type="rangeArea"
+            height={500}
+          />
 
           {chartId?.id === 1 || chartType === "line" ? (
             <LineModal
@@ -362,6 +360,7 @@ const HomePage = () => {
               data={data}
               setData={setData}
               selectedIndex={selectedDataIndex}
+              className="modal-dialog modal-dialog-centered"
             />
           ) : (
             <DataModal
