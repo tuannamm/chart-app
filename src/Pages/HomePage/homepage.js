@@ -78,22 +78,66 @@ const HomePage = () => {
     });
   };
 
-  const handleButtonClick = () => {
-    // setCanvasVisible(true);
-    // setAnnotateClicked(true);
+  // const handleButtonClick = () => {
+  //   // setCanvasVisible(true);
+  //   // setAnnotateClicked(true);
 
+  //   if (!isCanvasVisible) {
+  //     setCanvasVisible(true);
+  //   }
+  // };
+
+  // // useEffect(() => {
+  // //   if (isCanvasVisible && isAnnotateClicked) {
+  // //     const apexChartContainer = document.querySelector(".apex-chart");
+  // //     const canvas = document.querySelector("canvas-container");
+  // //     apexChartContainer.appendChild(canvas);
+  // //   }
+  // // }, [isCanvasVisible, isAnnotateClicked]);
+
+  const handleButtonClick = () => {
     if (!isCanvasVisible) {
       setCanvasVisible(true);
+
+      setTimeout(() => {
+        if (chartRef.current) {
+          const fabricCanvas = document.createElement("canvas");
+          fabricCanvas.id = "fabric-canvas";
+          fabricCanvas.style.position = "absolute";
+          fabricCanvas.style.top = "0";
+          fabricCanvas.style.left = "0";
+          // fabricCanvas.style.opacity = "0";
+          fabricCanvas.width = chartRef.current.clientWidth;
+          fabricCanvas.height = chartRef.current.clientHeight;
+          fabricCanvas.style.zIndex = "1000";
+
+          chartRef.current.appendChild(fabricCanvas);
+
+          const triangle = new fabric.Triangle({
+            width: 100,
+            height: 100,
+
+            left: 100,
+            top: 100,
+            hasControls: true, // this makes the triangle resizable
+          });
+
+          const canvas = new fabric.Canvas("fabric-canvas", {
+            // isDrawingMode: true,
+          });
+
+          canvas.add(triangle);
+
+          canvas.setBackgroundColor(
+            "rgba(0,0,0,0)",
+            canvas.renderAll.bind(canvas)
+          );
+
+          canvasRef.current = canvas;
+        }
+      }, 0);
     }
   };
-
-  // useEffect(() => {
-  //   if (isCanvasVisible && isAnnotateClicked) {
-  //     const apexChartContainer = document.querySelector(".apex-chart");
-  //     const canvas = document.querySelector("canvas-container");
-  //     apexChartContainer.appendChild(canvas);
-  //   }
-  // }, [isCanvasVisible, isAnnotateClicked]);
 
   const handleRemoveCanvas = () => {
     setCanvasVisible(false);
@@ -238,8 +282,12 @@ const HomePage = () => {
             )}
           </div>
         </div>
-        <div className="chart-container" ref={ref}>
-          {isCanvasVisible && (
+        <div
+          className="chart-container"
+          ref={chartRef}
+          style={{ position: "relative" }}
+        >
+          {/* {isCanvasVisible && (
             <div className="canvas-container">
               <Stage
                 onMouseDown={handleMouseDown}
@@ -295,7 +343,7 @@ const HomePage = () => {
                 </Layer>
               </Stage>
             </div>
-          )}
+          )} */}
           <ReactApexCharts
             className="apex-chart"
             options={chartData(chartId.id).options}
