@@ -33,6 +33,8 @@ const HomePage = () => {
   const [lineStyle, setLineStyle] = useState("smooth");
   const [isAnnotateButtonClicked, setAnnotateButtonClicked] = useState(false);
   const [selectedShape, setSelectedShape] = useState("circle");
+  const [selectedShapeObject, setSelectedShapeObject] = useState(null);
+  const [shapeModalVisible, setShapeModalVisible] = useState(false);
 
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
@@ -262,11 +264,35 @@ const HomePage = () => {
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // Make sure to clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      canvasRef.current.on("mouse:dblclick", (event) => {
+        if (event.target) {
+          setSelectedShapeObject(event.target);
+          setShapeModalVisible(true);
+        }
+      });
+    }
+    return () => {
+      if (canvasRef.current) {
+        // Clean up event listeners
+        canvasRef.current.off("mouse:dblclick");
+      }
+    };
+  }, [canvasRef]);
+
+  const handleModalSubmit = ({ width, color }) => {
+    if (selectedShapeObject) {
+      selectedShapeObject.set({ width, fill: color });
+      canvasRef.current.renderAll();
+    }
+    setShapeModalVisible(false);
+  };
 
   return (
     <>
