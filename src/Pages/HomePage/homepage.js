@@ -14,6 +14,17 @@ import Switch from "../../components/Switch/switch";
 import DataModal from "./Modal/dataModal";
 import LineModal from "./Modal/lineModal";
 import MixedModal from "./Modal/mixedModal";
+import icons from "../../utils/icons";
+
+const {
+  IoTextOutline,
+  BsCircle,
+  BsSquare,
+  BsTriangle,
+  BsPencil,
+  GiStraightPipe,
+  BiRectangle,
+} = icons;
 
 const HomePage = () => {
   const chartRef = useRef(null);
@@ -67,7 +78,6 @@ const HomePage = () => {
   const handleButtonClick = () => {
     if (!isCanvasVisible) {
       setCanvasVisible(true);
-      setAnnotateButtonClicked(true);
 
       setTimeout(() => {
         if (chartRef.current) {
@@ -98,7 +108,12 @@ const HomePage = () => {
   };
 
   const handleRemoveCanvas = () => {
+    const allCanvases = document.getElementsByTagName("canvas");
+    while (allCanvases.length > 0) {
+      allCanvases[0].parentNode.removeChild(allCanvases[0]);
+    }
     setCanvasVisible(false);
+    canvasRef.current = null;
   };
 
   const chartData = useCallback(
@@ -252,7 +267,13 @@ const HomePage = () => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Backspace") {
-        removeSelectedShape();
+        const activeObject = canvasRef.current.getActiveObject();
+        if (
+          activeObject &&
+          !(activeObject instanceof fabric.IText && activeObject.isEditing)
+        ) {
+          canvasRef.current.remove(activeObject);
+        }
       }
     };
 
@@ -301,22 +322,32 @@ const HomePage = () => {
                 }}
                 onClick={handleButtonClick}
               >
-                <Dropdown.Toggle>Select Shape</Dropdown.Toggle>
+                <Dropdown.Toggle>Annotation</Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item eventKey="circle">Circle</Dropdown.Item>
-                  <Dropdown.Item eventKey="square">Square</Dropdown.Item>
-                  <Dropdown.Item eventKey="triangle">Triangle</Dropdown.Item>
-                  <Dropdown.Item eventKey="freeDraw">Free Draw</Dropdown.Item>
-                  <Dropdown.Item eventKey="line">Line</Dropdown.Item>
-                  <Dropdown.Item eventKey="rectangle">Rectangle</Dropdown.Item>
-                  <Dropdown.Item eventKey="text">Text</Dropdown.Item>
+                  <Dropdown.Item eventKey="circle">
+                    <BsCircle /> Circle
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="square">
+                    <BsSquare /> Square
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="triangle">
+                    <BsTriangle /> Triangle
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="freeDraw">
+                    <BsPencil /> Free Draw
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="line">
+                    <GiStraightPipe /> Line
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="rectangle">
+                    <BiRectangle /> Rectangle
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="text">
+                    <IoTextOutline /> Text
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-
-              <button className="btn" onClick={addShape}>
-                Add Shape
-              </button>
             </>
 
             <button className="btn">{constant.properties}</button>
@@ -350,13 +381,20 @@ const HomePage = () => {
           />
 
           {chartId?.id === 1 || chartType === "line" ? (
-            <LineModal
+            // <LineModal
+            //   showDataModal={showDataModal}
+            //   setShowDataModal={setShowDataModal}
+            //   data={data}
+            //   setData={setData}
+            //   selectedIndex={selectedDataIndex}
+            //   className="modal-dialog modal-dialog-centered"
+            // />
+            <MixedModal
               showDataModal={showDataModal}
               setShowDataModal={setShowDataModal}
               data={data}
               setData={setData}
-              selectedIndex={selectedDataIndex}
-              className="modal-dialog modal-dialog-centered"
+              selectedDataIndex={selectedDataIndex}
             />
           ) : (
             <DataModal

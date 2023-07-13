@@ -4,7 +4,7 @@
     color: #333;
     .modal-title {
       font-weight: bold;
-      font-size: 1.2em;
+      font-size: 1.2rem; // 1.2em -> 1.2rem
     }
   }
 
@@ -12,13 +12,13 @@
     .input-group {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
+      margin-bottom: 0.625rem; // 10px -> 0.625rem
       .input-field {
         flex: 1;
-        margin-right: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        margin-right: 0.625rem; // 10px -> 0.625rem
+        padding: 0.625rem; // 10px -> 0.625rem
+        border: 0.0625rem solid #ccc; // 1px -> 0.0625rem
+        border-radius: 0.25rem; // 4px -> 0.25rem
       }
       
       .icons-remove {
@@ -28,10 +28,10 @@
     }
 
     .serie-group {
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding: 20px;
+      margin-bottom: 1.25rem; // 20px -> 1.25rem
+      border: 0.0625rem solid #ccc; // 1px -> 0.0625rem
+      border-radius: 0.25rem; // 4px -> 0.25rem
+      padding: 1.25rem; // 20px -> 1.25rem
 
       .input-group:first-child {
         justify-content: space-between;
@@ -41,9 +41,9 @@
     button {
       display: block;
       width: 100%;
-      padding: 10px;
+      padding: 0.625rem; // 10px -> 0.625rem
       border: none;
-      border-radius: 4px;
+      border-radius: 0.25rem; // 4px -> 0.25rem
       background: #007bff;
       color: white;
       cursor: pointer;
@@ -56,10 +56,47 @@
   .modal-footer {
     button {
       width: auto;
-      margin-right: 10px;
+      margin-right: 0.625rem; // 10px -> 0.625rem
       &:last-child {
         margin-right: 0;
       }
     }
   }
+
+
+  @media (max-width: 576px) {  // for screens smaller than 576px
+    .modal-header {
+      .modal-title {
+        font-size: 1.5rem;  // increase font size for small screens
+      }
+    }
+
+    .modal-body {
+      .input-group {
+        flex-direction: column;  // stack the elements vertically
+        margin-bottom: 1rem;
+
+        .input-field {
+          margin-right: 0;  // remove the right margin for small screens
+          margin-bottom: 0.625rem;  // add bottom margin instead
+        }
+      }
+
+      .serie-group {
+        padding: 1rem;
+      }
+
+      button {
+        padding: 0.875rem;
+      }
+    }
+
+    .modal-footer {
+      button {
+        margin-right: 0;  // remove the right margin for small screens
+        margin-bottom: 0.625rem;  // add bottom margin instead
+      }
+    }
+  }
+
 }

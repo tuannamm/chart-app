@@ -12,7 +12,7 @@
 
     .modal-header {
       background-color: #f8f9fa;
-      border-bottom: 1px solid #dee2e6;
+      border-bottom: 0.0625rem solid #dee2e6;
 
       .modal-title {
         color: #212529;
@@ -30,8 +30,8 @@
         position: relative;
         .icons-remove {
           position: absolute;
-          right: 25px;
-          bottom: 13px;
+          right: 1.5625rem;
+          bottom: 0.8125rem;
           cursor: pointer;
           &:hover {
             color: red
@@ -45,7 +45,7 @@
 
         input {
           padding: 0.5rem;
-          border: 1px solid #ced4da;
+          border: 0.0625rem solid #ced4da;
           border-radius: 0.25rem;
         }
       }
@@ -75,7 +75,7 @@
         }
       }
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 48rem) {
         h3, h4 {
           font-size: 1rem;
         }
@@ -99,7 +99,7 @@
 
     .modal-footer {
       background-color: #f8f9fa;
-      border-top: 1px solid #dee2e6;
+      border-top: 0.0625rem solid #dee2e6;
 
       button {
         padding: 0.5rem 1rem;
@@ -129,7 +129,7 @@
         }
       }
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 48rem) {
         button {
           padding: 0.3rem 0.6rem;
           margin-top: 0.5rem;
@@ -137,14 +137,12 @@
       }
     }
 
-    
-
     .ml-3 {
       margin-left: 0.5rem;
     } 
   }
 
-  @media screen and (max-width: 576px) {
+  @media screen and (max-width: 36rem) {
     .modal-content {
       width: 90%;
     }
@@ -154,9 +152,9 @@
     }
   }
 
-  @media screen and (min-width: 576px) {
+  @media screen and (min-width: 36rem) {
     .modal-dialog {
-      max-width: 500px;
+      max-width: 31.25rem;
       margin: 1.75rem auto;
     }
   }
