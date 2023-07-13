@@ -340,12 +340,12 @@ const HomePage = () => {
             )}
           </div>
         </div>
-        <div className="chart-container">
-          <div
-            className="chart"
-            ref={chartRef}
-            style={{ position: "relative" }}
-          >
+        <div
+          className="chart-container"
+          ref={chartRef}
+          style={{ position: "relative" }}
+        >
+          <div className="chart">
             <ReactApexCharts
               className="apex-chart"
               options={chartData(chartId.id).options}
