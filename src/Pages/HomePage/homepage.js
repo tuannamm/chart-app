@@ -1,18 +1,13 @@
-import React, {
-  createRef,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import "./homepage.scss";
 
 import ReactApexCharts from "react-apexcharts";
 import { useScreenshot, createFileName } from "use-react-screenshot";
 import { fabric } from "fabric";
 import { toast } from "react-toastify";
-import GroupButton from "../../components/ButtonGroup";
 import { useSelector } from "react-redux";
+import Dropdown from "react-bootstrap/Dropdown";
+import GroupButton from "../../components/ButtonGroup";
 
 import constant from "../../utils/constant";
 import Switch from "../../components/Switch/switch";
@@ -21,7 +16,6 @@ import LineModal from "./Modal/lineModal";
 import MixedModal from "./Modal/mixedModal";
 
 const HomePage = () => {
-  const ref = createRef(null);
   const chartRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -57,7 +51,7 @@ const HomePage = () => {
   };
 
   const downloadScreenshot = async () => {
-    await takeScreenShot(ref.current).then(download);
+    await takeScreenShot(chartRef.current).then(download);
     toast.success("Download successfully!", {
       position: "top-right",
       autoClose: 2000,
@@ -175,7 +169,7 @@ const HomePage = () => {
     setShowDataModal(true);
   };
 
-  const addShape = () => {
+  const addShape = (shape) => {
     if (!canvasRef.current) return;
 
     let newShape;
@@ -188,7 +182,7 @@ const HomePage = () => {
       strokeWidth: 2,
     };
 
-    switch (selectedShape) {
+    switch (shape) {
       case "circle":
         newShape = new fabric.Circle({ ...shapeProperties, radius: 50 });
         break;
@@ -299,30 +293,32 @@ const HomePage = () => {
       <div className="homepage-container">
         <div className="feature-button">
           <div className="feature-button-left">
-            <button className="btn" onClick={handleButtonClick}>
-              {constant.annotate}
-            </button>
-            {isAnnotateButtonClicked && (
-              <>
-                <select
-                  onChange={(e) => {
-                    setSelectedShape(e.target.value);
-                  }}
-                  value={selectedShape}
-                >
-                  <option value="circle">Circle</option>
-                  <option value="square">Square</option>
-                  <option value="triangle">Triangle</option>
-                  <option value="freeDraw">Free Draw</option>
-                  <option value="line">Line</option>
-                  <option value="rectangle">Rectangle</option>
-                  <option value="text">Text</option>
-                </select>
-                <button className="btn" onClick={addShape}>
-                  Add Shape
-                </button>
-              </>
-            )}
+            <>
+              <Dropdown
+                onSelect={(selectedKey) => {
+                  setSelectedShape(selectedKey);
+                  addShape(selectedKey);
+                }}
+                onClick={handleButtonClick}
+              >
+                <Dropdown.Toggle>Select Shape</Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item eventKey="circle">Circle</Dropdown.Item>
+                  <Dropdown.Item eventKey="square">Square</Dropdown.Item>
+                  <Dropdown.Item eventKey="triangle">Triangle</Dropdown.Item>
+                  <Dropdown.Item eventKey="freeDraw">Free Draw</Dropdown.Item>
+                  <Dropdown.Item eventKey="line">Line</Dropdown.Item>
+                  <Dropdown.Item eventKey="rectangle">Rectangle</Dropdown.Item>
+                  <Dropdown.Item eventKey="text">Text</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+
+              <button className="btn" onClick={addShape}>
+                Add Shape
+              </button>
+            </>
+
             <button className="btn">{constant.properties}</button>
             <button className="btn" onClick={handleShowDataModal}>
               {constant.data}
@@ -349,7 +345,7 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(chartId.id).options}
             series={chartData(chartId.id).series}
-            type="rangeArea"
+            type="line"
             height={500}
           />
 
