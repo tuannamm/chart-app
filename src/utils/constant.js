@@ -1,7 +1,8 @@
 const constant = {
   app_name: "Chart App",
-  description: "Modern & Interactive Open-source Charts",
-  get_started: "GET STARTED",
+  description:
+    "Make beautiful, interactive, and insightful data visualizations using our free online graph maker",
+  get_started: "CREATE GRAPHS NOW",
   dont_have_account: "Don't have an account yet?",
   hello: "Hello, who are you?",
   email: "Email",

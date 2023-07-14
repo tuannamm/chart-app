@@ -120,7 +120,7 @@ const LineModal = ({
   }, [data, selectedIndex, showDataModal]);
 
   return (
-    <Modal show={showDataModal} onHide={handleClose} className="line-modal">
+    <Modal show={showDataModal} onHide={handleClose} className="line-modal ">
       <Modal.Header closeButton className="modal-header">
         <Modal.Title className="modal-title">Line Data</Modal.Title>
       </Modal.Header>

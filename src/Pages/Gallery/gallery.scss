@@ -8,11 +8,11 @@
     @media (max-width: 48rem) {
       grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
     }
-    gap: 1.25rem; /* Add some gap between the cards */
+    gap: 1.25rem;
     margin-top: 0.625rem;
     padding: 1.25rem;
-    justify-items: center; /* Center the cards horizontally */
-    justify-content: center; /* Center the grid horizontally */
+    justify-items: center;
+    justify-content: center;
   }
   .card-chart {
     text-align: center;

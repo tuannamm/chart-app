@@ -16,7 +16,7 @@ const NavBar = (props) => {
   return (
     <div>
       {" "}
-      <Navbar bg="light" expand="lg" className="header-container">
+      <Navbar bg="white" expand="md" className="header-container">
         <Container>
           <NavLink to="/home" className="nav-link navbar-brand ">
             <FaChartPie size={"2em"} color={"00bfff"} /> {constant.app_name}

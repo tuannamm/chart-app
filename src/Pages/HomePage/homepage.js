@@ -15,6 +15,8 @@ import DataModal from "./Modal/dataModal";
 import LineModal from "./Modal/lineModal";
 import MixedModal from "./Modal/mixedModal";
 import icons from "../../utils/icons";
+import ShapeModal from "./Modal/shapeModal";
+import { set } from "lodash";
 
 const {
   IoTextOutline,
@@ -36,11 +38,12 @@ const HomePage = () => {
   const [chartType, setChartType] = useState("");
   const [theme, setTheme] = useState(false);
   const [lineStyle, setLineStyle] = useState("smooth");
-  const [isAnnotateButtonClicked, setAnnotateButtonClicked] = useState(false);
-  const [selectedShape, setSelectedShape] = useState("circle");
-  const [selectedShapeObject, setSelectedShapeObject] = useState(null);
-  const [shapeModalVisible, setShapeModalVisible] = useState(false);
 
+  const [selectedShape, setSelectedShape] = useState("circle");
+  const [shapeModalVisible, setShapeModalVisible] = useState(false);
+  const [selectedShapeObject, setSelectedShapeObject] = useState(null);
+  const [shapeWidth, setShapeWidth] = useState(null);
+  const [shapeColor, setShapeColor] = useState("#000000");
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
@@ -256,14 +259,6 @@ const HomePage = () => {
     }
   }, [selectedShape]);
 
-  const removeSelectedShape = () => {
-    const activeObject = canvasRef.current.getActiveObject();
-
-    if (activeObject) {
-      canvasRef.current.remove(activeObject);
-    }
-  };
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Backspace") {
@@ -295,19 +290,29 @@ const HomePage = () => {
     }
     return () => {
       if (canvasRef.current) {
-        // Clean up event listeners
         canvasRef.current.off("mouse:dblclick");
       }
     };
   }, [canvasRef]);
 
-  const handleModalSubmit = ({ width, color }) => {
-    if (selectedShapeObject) {
-      selectedShapeObject.set({ width, fill: color });
-      canvasRef.current.renderAll();
+  useEffect(() => {
+    if (canvasRef.current) {
+      canvasRef.current.on("mouse:dblclick", function (event) {
+        if (event.target) {
+          setSelectedShapeObject(event.target);
+          setShapeWidth(event.target.width);
+          setShapeColor(event.target.fill);
+          setShapeModalVisible(true);
+        }
+      });
     }
-    setShapeModalVisible(false);
-  };
+
+    return () => {
+      if (canvasRef.current) {
+        canvasRef.current.off("mouse:dblclick");
+      }
+    };
+  }, [canvasRef]);
 
   return (
     <>
@@ -381,22 +386,21 @@ const HomePage = () => {
           />
 
           {chartId?.id === 1 || chartType === "line" ? (
-            // <LineModal
-            //   showDataModal={showDataModal}
-            //   setShowDataModal={setShowDataModal}
-            //   data={data}
-            //   setData={setData}
-            //   selectedIndex={selectedDataIndex}
-            //   className="modal-dialog modal-dialog-centered"
-            // />
-            <MixedModal
+            <LineModal
               showDataModal={showDataModal}
               setShowDataModal={setShowDataModal}
               data={data}
               setData={setData}
-              selectedDataIndex={selectedDataIndex}
+              selectedIndex={selectedDataIndex}
             />
           ) : (
+            // <MixedModal
+            //   showDataModal={showDataModal}
+            //   setShowDataModal={setShowDataModal}
+            //   data={data}
+            //   setData={setData}
+            //   selectedDataIndex={selectedDataIndex}
+            // />
             <DataModal
               showDataModal={showDataModal}
               setShowDataModal={setShowDataModal}
@@ -406,6 +410,16 @@ const HomePage = () => {
               setSelectedDataIndex={setSelectedDataIndex}
             />
           )}
+          <ShapeModal
+            selectedShapeObject={selectedShapeObject}
+            shapeModalVisible={shapeModalVisible}
+            setShapeModalVisible={setShapeModalVisible}
+            shapeWidth={shapeWidth}
+            setShapeWidth={setShapeWidth}
+            shapeColor={shapeColor}
+            setShapeColor={setShapeColor}
+            canvasRef={canvasRef}
+          />
 
           {/* <MixedModal
             showDataModal={showDataModal}
