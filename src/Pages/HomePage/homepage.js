@@ -16,7 +16,6 @@ import LineModal from "./Modal/lineModal";
 import MixedModal from "./Modal/mixedModal";
 import icons from "../../utils/icons";
 import ShapeModal from "./Modal/shapeModal";
-import { set } from "lodash";
 
 const {
   IoTextOutline,
@@ -42,8 +41,9 @@ const HomePage = () => {
   const [selectedShape, setSelectedShape] = useState("circle");
   const [shapeModalVisible, setShapeModalVisible] = useState(false);
   const [selectedShapeObject, setSelectedShapeObject] = useState(null);
-  const [shapeWidth, setShapeWidth] = useState(null);
+  const [shapeStrokeWidth, setShapeStrokeWidth] = useState(null);
   const [shapeColor, setShapeColor] = useState("#000000");
+  const [shapeLineStyle, setShapeLineStyle] = useState(null);
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
@@ -281,28 +281,13 @@ const HomePage = () => {
 
   useEffect(() => {
     if (canvasRef.current) {
-      canvasRef.current.on("mouse:dblclick", (event) => {
-        if (event.target) {
-          setSelectedShapeObject(event.target);
-          setShapeModalVisible(true);
-        }
-      });
-    }
-    return () => {
-      if (canvasRef.current) {
-        canvasRef.current.off("mouse:dblclick");
-      }
-    };
-  }, [canvasRef]);
-
-  useEffect(() => {
-    if (canvasRef.current) {
       canvasRef.current.on("mouse:dblclick", function (event) {
         if (event.target) {
           setSelectedShapeObject(event.target);
-          setShapeWidth(event.target.width);
+          setShapeStrokeWidth(event.target.width);
           setShapeColor(event.target.fill);
           setShapeModalVisible(true);
+          console.log("Xxx");
         }
       });
     }
@@ -312,7 +297,13 @@ const HomePage = () => {
         canvasRef.current.off("mouse:dblclick");
       }
     };
-  }, [canvasRef]);
+  }, [
+    canvasRef,
+    setShapeStrokeWidth,
+    setShapeColor,
+    setSelectedShapeObject,
+    setShapeModalVisible,
+  ]);
 
   return (
     <>
@@ -414,11 +405,13 @@ const HomePage = () => {
             selectedShapeObject={selectedShapeObject}
             shapeModalVisible={shapeModalVisible}
             setShapeModalVisible={setShapeModalVisible}
-            shapeWidth={shapeWidth}
-            setShapeWidth={setShapeWidth}
+            shapeStrokeWidth={shapeStrokeWidth}
+            setShapeStrokeWidth={setShapeStrokeWidth}
             shapeColor={shapeColor}
             setShapeColor={setShapeColor}
             canvasRef={canvasRef}
+            shapeLineStyle={shapeLineStyle}
+            setShapeLineStyle={setShapeLineStyle}
           />
 
           {/* <MixedModal
