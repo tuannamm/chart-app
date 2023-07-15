@@ -284,12 +284,14 @@ const HomePage = () => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Backspace") {
-        const activeObject = canvasRef.current.getActiveObject();
-        if (
-          activeObject &&
-          !(activeObject instanceof fabric.IText && activeObject.isEditing)
-        ) {
-          canvasRef.current.remove(activeObject);
+        if (canvasRef.current) {
+          const activeObject = canvasRef.current.getActiveObject();
+          if (
+            activeObject &&
+            !(activeObject instanceof fabric.IText && activeObject.isEditing)
+          ) {
+            canvasRef.current.remove(activeObject);
+          }
         }
       }
     };
@@ -299,7 +301,7 @@ const HomePage = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [showDataModal]);
+  }, []);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -392,7 +394,7 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(chartId.id).options}
             series={chartData(chartId.id).series}
-            type="line"
+            type="bar"
             height={500}
           />
 

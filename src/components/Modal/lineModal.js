@@ -19,7 +19,6 @@ const LineModal = ({
   const [labels, setLabels] = useState([""]);
   const [series, setSeries] = useState([{ name: "", data: [""] }]);
   const dispatch = useDispatch();
-  const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
   const handleNameChange = (seriesIndex, value) => {
     const updatedSeries = [...series];
@@ -119,6 +118,8 @@ const LineModal = ({
     }
   }, [data, selectedIndex, showDataModal]);
 
+  console.log("data", data);
+
   return (
     <Modal show={showDataModal} onHide={handleClose} className="line-modal ">
       <Modal.Header closeButton className="modal-header">
@@ -204,7 +205,7 @@ const LineModal = ({
         ))}
 
         <Button variant="secondary" onClick={handleAddSeries}>
-          Add Series
+          Add Dataset
         </Button>
       </Modal.Body>
       <Modal.Footer>

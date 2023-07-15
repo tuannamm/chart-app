@@ -199,7 +199,7 @@ const MixedModal = ({
         ))}
 
         <Button variant="secondary" onClick={handleAddSeries}>
-          Add Series
+          Add Dataset
         </Button>
       </Modal.Body>
       <Modal.Footer>

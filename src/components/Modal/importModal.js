@@ -3,6 +3,8 @@ import { Modal, Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 
+import "./importModal.scss";
+
 function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
   const [selectedFile, setSelectedFile] = useState();
 

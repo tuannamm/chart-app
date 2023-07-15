@@ -139,7 +139,7 @@ const DataModal = ({
           />
         </div>
 
-        <h3>Series</h3>
+        <h3>Dataset</h3>
         {series.map((seriesItem, seriesIndex) => (
           <div key={seriesIndex} className="series-item">
             <h5>Series Name: {seriesItem.name}</h5>
@@ -227,7 +227,7 @@ const DataModal = ({
           variant="secondary"
           onClick={handleAddNewName}
         >
-          Add New Name
+          Add Dataset
         </Button>
       </Modal.Body>
       <Modal.Footer>

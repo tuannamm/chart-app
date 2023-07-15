@@ -1,0 +1,66 @@
+.ExcelImportModal {
+  .modal-header {
+    background-color: #344955;
+    color: #F9EBEA;
+
+    .modal-title {
+      font-weight: 500;
+      font-size: 1.5em;
+    }
+
+    .close {
+      color: #F9EBEA;
+      opacity: 0.8;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .modal-body {
+    background-color: #232F34;
+
+    input[type="file"] {
+      display: block;
+      margin-bottom: 20px;
+      border: 1px solid #4A6572;
+      padding: 10px;
+      border-radius: 4px;
+      color: #F9EBEA;
+      background-color: #4A6572;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      background-color: #F9AA33;
+      border-color: #F9AA33;
+      color: #232F34;
+      font-weight: 500;
+
+      &:hover,
+      &:focus {
+        background-color: #FFB74D;
+        border-color: #FFB74D;
+      }
+    }
+  }
+
+  .modal-footer {
+    background-color: #344955;
+
+    .btn {
+      padding: 8px 12px;
+      background-color: #F9AA33;
+      border-color: #F9AA33;
+      color: #232F34;
+      font-weight: 500;
+
+      &:hover,
+      &:focus {
+        background-color: #FFB74D;
+        border-color: #FFB74D;
+      }
+    }
+  }
+}
