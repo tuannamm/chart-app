@@ -4,10 +4,16 @@ import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 
 import "./importModal.scss";
+import { useDispatch } from "react-redux";
+import { setChartData } from "../../store/action/chartAction";
 
-function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
-  const [selectedFile, setSelectedFile] = useState();
-
+function ExcelImportModal({
+  showImportModal,
+  setShowImportModal,
+  setData,
+  chartId,
+}) {
+  const dispatch = useDispatch();
   const fileHandler = (event) => {
     let file = event.target.files[0];
 
@@ -38,6 +44,7 @@ function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
       ];
 
       setData(data);
+      dispatch(setChartData(data));
     };
     setShowImportModal(false);
     reader.readAsBinaryString(file);

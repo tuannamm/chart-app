@@ -17,6 +17,7 @@ import DataModal from "../../components/Modal/dataModal";
 import LineModal from "../../components/Modal/lineModal";
 import MixedModal from "../../components/Modal/mixedModal";
 import ShapeModal from "../../components/Modal/shapeModal";
+import PieModal from "../../components/Modal/pieModal";
 import ExcelImportModal from "../../components/Modal/importModal";
 
 const {
@@ -51,6 +52,8 @@ const HomePage = () => {
 
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
+
+  console.log(chartId);
 
   const [data, setData] = useState(dataChart || []);
 
@@ -164,6 +167,7 @@ const HomePage = () => {
               },
               labels: data[0]?.labels ? data[0]?.labels : [],
               fill: {
+                type: "solid",
                 opacity: [0.85, 0.25, 1],
                 gradient: {
                   inverseColors: true,
@@ -322,6 +326,8 @@ const HomePage = () => {
     };
   });
 
+  console.log("data", data);
+
   return (
     <>
       <div className="homepage-container">
@@ -394,12 +400,12 @@ const HomePage = () => {
             className="apex-chart"
             options={chartData(chartId.id).options}
             series={chartData(chartId.id).series}
-            type="bar"
+            type="pie"
             height={500}
           />
 
-          {chartId?.id === 1 || chartType === "line" ? (
-            <LineModal
+          {chartId?.id === 4 || chartType === "line" ? (
+            <PieModal
               showDataModal={showDataModal}
               setShowDataModal={setShowDataModal}
               data={data}
@@ -442,6 +448,7 @@ const HomePage = () => {
             showImportModal={showImportModal}
             setShowImportModal={setShowImportModal}
             setData={setData}
+            chartId={chartId}
           />
 
           {/* <MixedModal

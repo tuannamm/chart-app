@@ -37,8 +37,8 @@ const chartListData = [
   {
     id: 4,
     img: "avc",
-    title: "BAR",
-    url: "https://res.cloudinary.com/dgd57kdbo/image/upload/v1686807289/bar_twq9sx.png",
+    title: "PIE",
+    url: "https://res.cloudinary.com/dgd57kdbo/image/upload/v1689434938/pie_mqqfaw.png",
   },
   {
     id: 5,
@@ -49,8 +49,8 @@ const chartListData = [
   {
     id: 6,
     img: "avc",
-    title: "RANGE AREA",
-    url: "https://res.cloudinary.com/dgd57kdbo/image/upload/v1686799435/rangeArea_xyelt7.png",
+    title: "POLAR",
+    url: "https://res.cloudinary.com/dgd57kdbo/image/upload/v1689435155/polar_vpmwwj.png",
   },
 ];
 

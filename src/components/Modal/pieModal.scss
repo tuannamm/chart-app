@@ -1,0 +1,40 @@
+.line-modal {
+  .modal-header {
+  }
+
+  .modal-body {
+    .input-group {
+    }
+
+    .pair-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+
+      .input-group {
+        flex: 1;
+
+        &:first-child {
+          margin-right: 1rem;
+        }
+
+        .input-field {
+          width: 100%;
+        }
+      }
+    }
+
+    .icons-remove {
+      position: relative;
+      top: 0.8rem;
+      bottom: 1rem;
+      cursor: pointer;
+      &:hover {
+        color:red;
+      }
+    }
+  }
+
+  .modal-footer {
+  }
+}

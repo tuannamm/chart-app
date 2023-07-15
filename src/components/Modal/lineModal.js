@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import "./lineModal.scss";
 import icons from "../../utils/icons";
@@ -117,8 +117,6 @@ const LineModal = ({
       }
     }
   }, [data, selectedIndex, showDataModal]);
-
-  console.log("data", data);
 
   return (
     <Modal show={showDataModal} onHide={handleClose} className="line-modal ">
