@@ -6,11 +6,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import App from "./App";
 
-import WelcomePage from "./Pages/WelcomePage/welcomePage";
+import WelcomePage from "./Pages/WelcomePage";
 import Gallery from "./Pages/Gallery/gallery";
-import HomePage from "./Pages/HomePage/homepage";
-import Admin from "./Pages/Admin/admin";
-import User from "./Pages/User/user";
+import HomePage from "./Pages/HomePage";
+import Admin from "./Pages/Admin";
+import User from "./Pages/User";
 
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/Signup";

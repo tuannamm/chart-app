@@ -1,12 +1,12 @@
 import React from "react";
-import "./user.scss";
 
-import Header from "../../components/Header/Header";
-import Avatar from "../../components/Avatar/Avatar";
-import Profile from "../../components/Profile/Profile";
+import Header from "../../components/Header";
+import Avatar from "../../components/Avatar";
+import Profile from "../../components/Profile";
 
 import icons from "../../utils/icons";
 import constant from "../../utils/constant";
+import "./user.scss";
 
 const { FiSettings } = icons;
 

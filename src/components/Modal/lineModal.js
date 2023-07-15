@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
-import "./mixedModal.scss";
-import icons from "../../../utils/icons";
+import { useDispatch, useSelector } from "react-redux";
+
+import "./lineModal.scss";
+import icons from "../../utils/icons";
+import { setChartData } from "../../store/action/chartAction";
 
 const { AiOutlineDelete } = icons;
 
-const MixedModal = ({
+const LineModal = ({
   showDataModal,
   setShowDataModal,
   data,
@@ -14,34 +17,13 @@ const MixedModal = ({
 }) => {
   const [title, setTitle] = useState("");
   const [labels, setLabels] = useState([""]);
-  const [series, setSeries] = useState([
-    { name: "", type: "line", data: [""] },
-  ]);
-
-  useEffect(() => {
-    if (showDataModal) {
-      if (
-        selectedIndex !== null &&
-        selectedIndex >= 0 &&
-        selectedIndex < data.length
-      ) {
-        const selectedData = data[selectedIndex];
-        setTitle(selectedData.title);
-        setLabels(selectedData.labels);
-        setSeries(selectedData.series);
-      }
-    }
-  }, [data, selectedIndex, showDataModal]);
+  const [series, setSeries] = useState([{ name: "", data: [""] }]);
+  const dispatch = useDispatch();
+  const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
   const handleNameChange = (seriesIndex, value) => {
     const updatedSeries = [...series];
     updatedSeries[seriesIndex].name = value;
-    setSeries(updatedSeries);
-  };
-
-  const handleTypeChange = (seriesIndex, value) => {
-    const updatedSeries = [...series];
-    updatedSeries[seriesIndex].type = value;
     setSeries(updatedSeries);
   };
 
@@ -51,6 +33,12 @@ const MixedModal = ({
     setSeries(updatedSeries);
   };
 
+  const handleLabelChange = (labelIndex, value) => {
+    const updatedLabels = [...labels];
+    updatedLabels[labelIndex] = value;
+    setLabels(updatedLabels);
+  };
+
   const handleAddData = (seriesIndex) => {
     const updatedSeries = [...series];
     updatedSeries[seriesIndex].data.push("");
@@ -58,7 +46,11 @@ const MixedModal = ({
   };
 
   const handleAddSeries = () => {
-    setSeries([...series, { name: "", type: "line", data: [""] }]);
+    setSeries([...series, { name: "", data: [""] }]);
+  };
+
+  const handleAddLabel = () => {
+    setLabels([...labels, ""]);
   };
 
   const handleSaveData = () => {
@@ -74,6 +66,7 @@ const MixedModal = ({
     } else {
       setData([newData]);
     }
+    dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
 
@@ -93,26 +86,43 @@ const MixedModal = ({
     setSeries(updatedSeries);
   };
 
-  const handleAddLabel = () => {
-    setLabels([...labels, ""]);
-  };
-
-  const handleLabelChange = (labelIndex, value) => {
-    const updatedLabels = [...labels];
-    updatedLabels[labelIndex] = value;
-    setLabels(updatedLabels);
-  };
-
   const handleRemoveLabel = (labelIndex) => {
     const updatedLabels = [...labels];
     updatedLabels.splice(labelIndex, 1);
     setLabels(updatedLabels);
   };
 
+  // useEffect(() => {
+  //   if (showDataModal && dataChart) {
+  //     setTitle(dataChart.title || "");
+  //     setLabels(dataChart.labels || [""]);
+  //     setSeries(dataChart.series || [{ name: "", data: [""] }]);
+  //   } else {
+  //     setTitle("");
+  //     setLabels([""]);
+  //     setSeries([{ name: "", data: [""] }]);
+  //   }
+  // }, [showDataModal, dataChart]);
+
+  useEffect(() => {
+    if (showDataModal) {
+      if (
+        selectedIndex !== null &&
+        selectedIndex >= 0 &&
+        selectedIndex < data.length
+      ) {
+        const selectedData = data[selectedIndex];
+        setTitle(selectedData.title);
+        setLabels(selectedData.labels);
+        setSeries(selectedData.series);
+      }
+    }
+  }, [data, selectedIndex, showDataModal]);
+
   return (
-    <Modal show={showDataModal} onHide={handleClose} className="mixed-modal">
+    <Modal show={showDataModal} onHide={handleClose} className="line-modal ">
       <Modal.Header closeButton className="modal-header">
-        <Modal.Title className="modal-title">Mixed Data</Modal.Title>
+        <Modal.Title className="modal-title">Line Data</Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <div className="input-group">
@@ -126,13 +136,13 @@ const MixedModal = ({
         </div>
 
         {labels.map((label, labelIndex) => (
-          <div key={labelIndex} className="input-group">
+          <div key={`label-${labelIndex}`} className="input-group">
             <input
               type="text"
               value={label}
               onChange={(e) => handleLabelChange(labelIndex, e.target.value)}
               className="input-field"
-              placeholder={`Label ${labelIndex}`}
+              placeholder={`Label ${labelIndex + 1}`}
             />
             <AiOutlineDelete
               className="icons-remove"
@@ -141,12 +151,16 @@ const MixedModal = ({
           </div>
         ))}
 
-        <Button variant="secondary" onClick={handleAddLabel}>
+        <Button
+          variant="secondary"
+          style={{ marginBottom: "0.5rem" }}
+          onClick={handleAddLabel}
+        >
           Add Label
         </Button>
 
         {series.map((serie, seriesIndex) => (
-          <div key={seriesIndex} className="serie-group">
+          <div key={`series-${seriesIndex}`} className="serie-group">
             <div className="input-group">
               <input
                 type="text"
@@ -155,15 +169,7 @@ const MixedModal = ({
                 className="input-field"
                 placeholder="Name"
               />
-              <select
-                value={serie.type}
-                onChange={(e) => handleTypeChange(seriesIndex, e.target.value)}
-                className="select-field"
-              >
-                <option value="line">Line</option>
-                <option value="area">Area</option>
-                <option value="column">Column</option>
-              </select>
+
               <AiOutlineDelete
                 className="icons-remove"
                 onClick={() => handleRemoveSeries(seriesIndex)}
@@ -171,7 +177,7 @@ const MixedModal = ({
             </div>
 
             {serie.data.map((value, dataIndex) => (
-              <div key={dataIndex} className="input-group">
+              <div key={`data-${dataIndex}`} className="input-group">
                 <input
                   type="number"
                   value={value}
@@ -179,7 +185,7 @@ const MixedModal = ({
                     handleDataChange(seriesIndex, dataIndex, e.target.value)
                   }
                   className="input-field"
-                  placeholder={`Data ${dataIndex}`}
+                  placeholder={`Data ${dataIndex + 1}`}
                 />
                 <AiOutlineDelete
                   className="icons-remove"
@@ -202,11 +208,15 @@ const MixedModal = ({
         </Button>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleSaveData}>Save</Button>
-        <Button onClick={handleClose}>Close</Button>
+        <Button variant="primary" onClick={handleSaveData}>
+          Save
+        </Button>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default MixedModal;
+export default LineModal;

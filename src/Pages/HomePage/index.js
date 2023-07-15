@@ -9,14 +9,15 @@ import { useSelector } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import GroupButton from "../../components/ButtonGroup";
 
-import constant from "../../utils/constant";
-import Switch from "../../components/Switch/switch";
-import DataModal from "./Modal/dataModal";
-import LineModal from "./Modal/lineModal";
-import MixedModal from "./Modal/mixedModal";
 import icons from "../../utils/icons";
-import ShapeModal from "./Modal/shapeModal";
-import ExcelImportModal from "./Modal/importModal";
+import constant from "../../utils/constant";
+
+import Switch from "../../components/Switch";
+import DataModal from "../../components/Modal/dataModal";
+import LineModal from "../../components/Modal/lineModal";
+import MixedModal from "../../components/Modal/mixedModal";
+import ShapeModal from "../../components/Modal/shapeModal";
+import ExcelImportModal from "../../components/Modal/importModal";
 
 const {
   IoTextOutline,
@@ -165,7 +166,7 @@ const HomePage = () => {
               fill: {
                 opacity: [0.85, 0.25, 1],
                 gradient: {
-                  inverseColors: false,
+                  inverseColors: true,
                   shade: "light",
                   type: "vertical",
                   opacityFrom: 0.85,
@@ -179,7 +180,7 @@ const HomePage = () => {
           return true;
       }
     },
-    [data, chartType, theme, lineStyle]
+    [data, theme, lineStyle]
   );
 
   useEffect(() => {
@@ -298,7 +299,7 @@ const HomePage = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [showDataModal]);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -318,8 +319,6 @@ const HomePage = () => {
       }
     };
   });
-
-  console.log("data", data);
 
   return (
     <>

@@ -3,8 +3,8 @@ import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
 import "./dataModal.scss";
-import icons from "../../../utils/icons";
-import { setChartData } from "../../../store/action/chartAction";
+import icons from "../../utils/icons";
+import { setChartData } from "../../store/action/chartAction";
 
 const { AiOutlineDelete } = icons;
 

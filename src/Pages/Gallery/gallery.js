@@ -8,7 +8,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
 import Setting from "../../Setting/setting";
-import Spinner from "../../components/AtomicSpinner/AtomicSpinner";
+import Spinner from "../../components/AtomicSpinner";
 import constant from "../../utils/constant";
 import icons from "../../utils/icons";
 import { setChartId } from "../../store/action/chartAction";

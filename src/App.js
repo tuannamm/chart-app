@@ -3,8 +3,8 @@ import "./App.scss";
 import { Outlet } from "react-router-dom";
 
 // import component
-import Header from "./components/Header/Header";
-import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
+import Header from "./components/Header";
+import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "react-toastify";
 
 const App = () => {
