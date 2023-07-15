@@ -16,6 +16,7 @@ import LineModal from "./Modal/lineModal";
 import MixedModal from "./Modal/mixedModal";
 import icons from "../../utils/icons";
 import ShapeModal from "./Modal/shapeModal";
+import ExcelImportModal from "./Modal/importModal";
 
 const {
   IoTextOutline,
@@ -45,6 +46,7 @@ const HomePage = () => {
   const [shapeColor, setShapeColor] = useState("#000000");
   const [shapeLineStyle, setShapeLineStyle] = useState(null);
   const [shapeStrokeColor, setShapeStrokeColor] = useState(null);
+  const [showImportModal, setShowImportModal] = useState(false);
 
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
@@ -317,6 +319,8 @@ const HomePage = () => {
     };
   });
 
+  console.log("data", data);
+
   return (
     <>
       <div className="homepage-container">
@@ -367,7 +371,9 @@ const HomePage = () => {
             </button>
           </div>
           <div className="feature-button-right">
-            <button className="btn">{constant.import_data}</button>
+            <button className="btn" onClick={() => setShowImportModal(true)}>
+              {constant.import_data}
+            </button>
             <button className="btn" onClick={downloadScreenshot}>
               {constant.download}
             </button>
@@ -429,6 +435,12 @@ const HomePage = () => {
             setShapeLineStyle={setShapeLineStyle}
             shapeStrokeColor={shapeStrokeColor}
             setShapeStrokeColor={setShapeStrokeColor}
+          />
+
+          <ExcelImportModal
+            showImportModal={showImportModal}
+            setShowImportModal={setShowImportModal}
+            setData={setData}
           />
 
           {/* <MixedModal

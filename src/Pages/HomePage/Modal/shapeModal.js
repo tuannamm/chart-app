@@ -1,6 +1,8 @@
 import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
+import "./shapeModal.scss";
+
 const ShapeModal = ({
   selectedShapeObject,
   shapeModalVisible,
@@ -35,7 +37,7 @@ const ShapeModal = ({
       selectedShapeObject.set({
         scaleX: scaleFactor,
         fill: shapeColor,
-        stroke: shapeStrokeColor, // add this line to set the stroke color
+        stroke: shapeStrokeColor,
       });
       selectedShapeObject.set({
         strokeDashArray: getStrokeDashArray(shapeLineStyle),
