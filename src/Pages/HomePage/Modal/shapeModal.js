@@ -52,8 +52,6 @@ const ShapeModal = ({
             <Form.Label>Stroke Width</Form.Label>
             <Form.Control
               type="range"
-              min="0"
-              max="2"
               value={shapeStrokeWidth}
               onChange={(e) => setShapeStrokeWidth(e.target.value)}
             />

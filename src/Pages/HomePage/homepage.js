@@ -287,7 +287,6 @@ const HomePage = () => {
           setShapeStrokeWidth(event.target.width);
           setShapeColor(event.target.fill);
           setShapeModalVisible(true);
-          console.log("Xxx");
         }
       });
     }
@@ -297,13 +296,7 @@ const HomePage = () => {
         canvasRef.current.off("mouse:dblclick");
       }
     };
-  }, [
-    canvasRef,
-    setShapeStrokeWidth,
-    setShapeColor,
-    setSelectedShapeObject,
-    setShapeModalVisible,
-  ]);
+  });
 
   return (
     <>
