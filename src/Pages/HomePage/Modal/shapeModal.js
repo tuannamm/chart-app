@@ -11,6 +11,8 @@ const ShapeModal = ({
   setShapeColor,
   shapeLineStyle,
   setShapeLineStyle,
+  shapeStrokeColor,
+  setShapeStrokeColor,
   canvasRef,
 }) => {
   const getStrokeDashArray = (style) => {
@@ -30,7 +32,11 @@ const ShapeModal = ({
   const handleModalSubmit = () => {
     if (selectedShapeObject) {
       const scaleFactor = shapeStrokeWidth / selectedShapeObject.strokeWidth;
-      selectedShapeObject.set({ scaleX: scaleFactor, fill: shapeColor });
+      selectedShapeObject.set({
+        scaleX: scaleFactor,
+        fill: shapeColor,
+        stroke: shapeStrokeColor, // add this line to set the stroke color
+      });
       selectedShapeObject.set({
         strokeDashArray: getStrokeDashArray(shapeLineStyle),
       });
@@ -53,16 +59,17 @@ const ShapeModal = ({
             <Form.Control
               type="range"
               value={shapeStrokeWidth}
+              min={1}
+              max={5}
               onChange={(e) => setShapeStrokeWidth(e.target.value)}
             />
           </Form.Group>
-
-          <Form.Group controlId="shapeColor">
-            <Form.Label>Color</Form.Label>
+          <Form.Group controlId="shapeStrokeColor">
+            <Form.Label>Stroke Color</Form.Label>
             <Form.Control
               type="color"
-              value={shapeColor}
-              onChange={(e) => setShapeColor(e.target.value)}
+              value={shapeStrokeColor}
+              onChange={(e) => setShapeStrokeColor(e.target.value)}
             />
           </Form.Group>
 
@@ -78,6 +85,14 @@ const ShapeModal = ({
               <option value="dotted">Dotted</option>
               <option value="double">Double</option>
             </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="shapeColor">
+            <Form.Label>Color</Form.Label>
+            <Form.Control
+              type="color"
+              value={shapeColor}
+              onChange={(e) => setShapeColor(e.target.value)}
+            />
           </Form.Group>
         </Form>
       </Modal.Body>

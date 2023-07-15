@@ -25,6 +25,7 @@ const {
   BsPencil,
   GiStraightPipe,
   BiRectangle,
+  MdArrowForward,
 } = icons;
 
 const HomePage = () => {
@@ -37,13 +38,14 @@ const HomePage = () => {
   const [chartType, setChartType] = useState("");
   const [theme, setTheme] = useState(false);
   const [lineStyle, setLineStyle] = useState("smooth");
-
   const [selectedShape, setSelectedShape] = useState("circle");
   const [shapeModalVisible, setShapeModalVisible] = useState(false);
   const [selectedShapeObject, setSelectedShapeObject] = useState(null);
   const [shapeStrokeWidth, setShapeStrokeWidth] = useState(null);
   const [shapeColor, setShapeColor] = useState("#000000");
   const [shapeLineStyle, setShapeLineStyle] = useState(null);
+  const [shapeStrokeColor, setShapeStrokeColor] = useState(null);
+
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
@@ -226,6 +228,23 @@ const HomePage = () => {
           strokeWidth: 2,
         });
         break;
+      case "arrow":
+        newShape = new fabric.Line([50, 100, 200, 200], {
+          left: 170,
+          top: 150,
+          stroke: "black",
+          strokeWidth: 2,
+        });
+        let triangle = new fabric.Triangle({
+          left: newShape.x2,
+          top: newShape.y2,
+          angle: -45,
+          width: 20,
+          height: 20,
+          fill: "black",
+        });
+        canvasRef.current.add(newShape, triangle);
+        break;
       case "text":
         newShape = new fabric.IText("Hello, World!", {
           left: 100,
@@ -326,6 +345,9 @@ const HomePage = () => {
                   <Dropdown.Item eventKey="freeDraw">
                     <BsPencil /> Free Draw
                   </Dropdown.Item>
+                  <Dropdown.Item eventKey="arrow">
+                    <MdArrowForward /> Arrow
+                  </Dropdown.Item>
                   <Dropdown.Item eventKey="line">
                     <GiStraightPipe /> Line
                   </Dropdown.Item>
@@ -405,6 +427,8 @@ const HomePage = () => {
             canvasRef={canvasRef}
             shapeLineStyle={shapeLineStyle}
             setShapeLineStyle={setShapeLineStyle}
+            shapeStrokeColor={shapeStrokeColor}
+            setShapeStrokeColor={setShapeStrokeColor}
           />
 
           {/* <MixedModal

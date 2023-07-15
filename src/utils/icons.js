@@ -18,6 +18,7 @@ import {
 import { AiOutlineLoading3Quarters, AiOutlineDelete } from "react-icons/ai";
 import { GiStraightPipe } from "react-icons/gi";
 import { IoTextOutline } from "react-icons/io5";
+import { MdArrowForward } from "react-icons/md";
 
 const icons = {
   FiMail,
@@ -39,6 +40,7 @@ const icons = {
   GiStraightPipe,
   BiRectangle,
   IoTextOutline,
+  MdArrowForward,
 };
 
 export default icons;
