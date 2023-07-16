@@ -63,4 +63,19 @@
       }
     }
   }
+
+  .drag-drop-styling {
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 50px;
+    text-align: center;
+    cursor: pointer;
+    color: #444;
+  }
+  
+  .drag-drop-styling.dragging {
+    border: 2px dashed #000;
+    background: #eee;
+  }
+  
 }

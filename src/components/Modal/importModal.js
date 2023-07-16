@@ -7,6 +7,47 @@ import "./importModal.scss";
 import { useDispatch } from "react-redux";
 import { setChartData } from "../../store/action/chartAction";
 
+function DragDrop({ handleFile }) {
+  const [drag, setDrag] = useState(false);
+
+  const dragOver = (e) => {
+    e.preventDefault();
+    setDrag(true);
+  };
+
+  const dragEnter = (e) => {
+    e.preventDefault();
+    setDrag(true);
+  };
+
+  const dragLeave = (e) => {
+    e.preventDefault();
+    setDrag(false);
+  };
+
+  const fileDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files.length) {
+      handleFile(files);
+    }
+    setDrag(false);
+  };
+
+  return (
+    <div
+      className={`drag-drop-styling ${drag ? "dragging" : ""}`}
+      onDragOver={dragOver}
+      onDragEnter={dragEnter}
+      onDragLeave={dragLeave}
+      onDrop={fileDrop}
+    >
+      Drag &amp; Drop your Excel file here or click to select file
+      <input type="file" onChange={(e) => handleFile(e.target.files)} />
+    </div>
+  );
+}
+
 function ExcelImportModal({
   showImportModal,
   setShowImportModal,
@@ -14,8 +55,28 @@ function ExcelImportModal({
   chartId,
 }) {
   const dispatch = useDispatch();
-  const fileHandler = (event) => {
-    let file = event.target.files[0];
+
+  const fileHandler = (files) => {
+    let file = files[0];
+
+    if (
+      ![
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ].includes(file.type)
+    ) {
+      toast.error("Invalid file input, select an Excel file", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = (evt) => {
@@ -45,19 +106,20 @@ function ExcelImportModal({
 
       setData(data);
       dispatch(setChartData(data));
+      setShowImportModal(false);
+      toast.success("Import successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     };
-    setShowImportModal(false);
+
     reader.readAsBinaryString(file);
-    toast.success("Import successfully!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
   };
 
   const downloadSampleFile = () => {
@@ -82,7 +144,6 @@ function ExcelImportModal({
 
     const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
 
-    // Create a URL for the blob
     const blobURL = window.URL.createObjectURL(blob);
 
     const link = document.createElement("a");
@@ -97,10 +158,10 @@ function ExcelImportModal({
         <Modal.Title>Import Excel File</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <input type="file" onChange={fileHandler} style={{ padding: "10px" }} />
         <Button onClick={downloadSampleFile} style={{ marginTop: "10px" }}>
           Download Sample Excel File
         </Button>
+        <DragDrop handleFile={fileHandler} />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setShowImportModal(false)}>
