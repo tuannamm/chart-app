@@ -13,28 +13,13 @@ const DataModal = ({
   setShowDataModal,
   data,
   setData,
-  selectedIndex,
+  selectedDataIndex,
 }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [series, setSeries] = useState([]);
   const [newName, setNewName] = useState("");
   const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
-
-  // useEffect(() => {
-  //   if (
-  //     selectedIndex !== null &&
-  //     selectedIndex >= 0 &&
-  //     selectedIndex < data.length
-  //   ) {
-  //     const selectedData = data[selectedIndex];
-  //     setTitle(selectedData.title);
-  //     setSeries(selectedData.series);
-  //   } else {
-  //     setTitle("");
-  //     setSeries([]);
-  //   }
-  // }, [data, selectedIndex]);
 
   const handleSaveData = () => {
     const newData = {
@@ -43,22 +28,17 @@ const DataModal = ({
     };
 
     if (
-      selectedIndex !== null &&
-      selectedIndex >= 0 &&
-      selectedIndex < data.length
+      selectedDataIndex !== null &&
+      selectedDataIndex >= 0 &&
+      selectedDataIndex < data.length
     ) {
       const updatedData = [...data];
-      updatedData[selectedIndex] = newData;
+      updatedData[selectedDataIndex] = newData;
       setData(updatedData);
     } else {
       setData([newData]);
     }
 
-    // Reset the state variables here after saving data
-    // setTitle("");
-    // setSeries([]);
-    // setNewName("");
-    // setNewItems([{ x: "", y: "" }]);
     dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
@@ -69,15 +49,15 @@ const DataModal = ({
 
   useEffect(() => {
     if (
-      selectedIndex !== null &&
-      selectedIndex >= 0 &&
-      selectedIndex < data.length
+      selectedDataIndex !== null &&
+      selectedDataIndex >= 0 &&
+      selectedDataIndex < data.length
     ) {
-      const selectedData = data[selectedIndex];
+      const selectedData = data[selectedDataIndex];
       setTitle(selectedData.title);
       setSeries(selectedData.series);
     }
-  }, [data, selectedIndex, showDataModal]);
+  }, [data, selectedDataIndex, showDataModal]);
 
   const handleItemChange = (
     index,

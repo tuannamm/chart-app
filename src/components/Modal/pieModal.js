@@ -8,7 +8,7 @@ import { setChartData } from "../../store/action/chartAction";
 
 const { AiOutlineDelete } = icons;
 
-const LineModal = ({
+const PineModal = ({
   showDataModal,
   setShowDataModal,
   data,
@@ -86,7 +86,7 @@ const LineModal = ({
   return (
     <Modal show={showDataModal} onHide={handleClose} className="line-modal">
       <Modal.Header closeButton className="modal-header">
-        <Modal.Title className="modal-title">Line Data</Modal.Title>
+        <Modal.Title className="modal-title">Pine Data</Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <div className="input-group">
@@ -144,4 +144,4 @@ const LineModal = ({
   );
 };
 
-export default LineModal;
+export default PineModal;

@@ -6,10 +6,9 @@ import { useScreenshot, createFileName } from "use-react-screenshot";
 import { fabric } from "fabric";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import Dropdown from "react-bootstrap/Dropdown";
+
 import GroupButton from "../../components/ButtonGroup";
 
-import icons from "../../utils/icons";
 import constant from "../../utils/constant";
 
 import Switch from "../../components/Switch";
@@ -19,17 +18,7 @@ import MixedModal from "../../components/Modal/mixedModal";
 import ShapeModal from "../../components/Modal/shapeModal";
 import PieModal from "../../components/Modal/pieModal";
 import ExcelImportModal from "../../components/Modal/importModal";
-
-const {
-  IoTextOutline,
-  BsCircle,
-  BsSquare,
-  BsTriangle,
-  BsPencil,
-  GiStraightPipe,
-  BiRectangle,
-  MdArrowForward,
-} = icons;
+import DropdownAnnotate from "../../components/Dropdown";
 
 const HomePage = () => {
   const chartRef = useRef(null);
@@ -38,7 +27,6 @@ const HomePage = () => {
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [selectedDataIndex, setSelectedDataIndex] = useState(null);
-  const [chartType, setChartType] = useState("");
   const [theme, setTheme] = useState(false);
   const [lineStyle, setLineStyle] = useState("smooth");
   const [selectedShape, setSelectedShape] = useState("circle");
@@ -52,8 +40,6 @@ const HomePage = () => {
 
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
-
-  console.log(chartId);
 
   const [data, setData] = useState(dataChart || []);
 
@@ -127,69 +113,47 @@ const HomePage = () => {
     canvasRef.current = null;
   };
 
-  const chartData = useCallback(
-    (chartId) => {
-      switch (chartId) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-          return {
-            series: data && data?.length > 0 ? [...data[0]?.series] : [],
-            options: {
-              chart: {
-                height: 350,
-                zoom: {
-                  enabled: true,
-                },
-              },
-              title: {
-                text: data[0]?.title ? data[0]?.title : "TITLE",
-                align: "center",
-              },
-              dataLabels: {
-                enabled: true,
-              },
-              stroke: {
-                curve: lineStyle,
-              },
-              grid: {
-                row: {
-                  colors: ["#f3f3f3", "transparent"],
-                  opacity: 0.5,
-                },
-              },
-              theme: {
-                mode: theme ? "dark" : "light",
-                palette: "palette4",
-              },
-              labels: data[0]?.labels ? data[0]?.labels : [],
-              fill: {
-                type: "solid",
-                opacity: [0.85, 0.25, 1],
-                gradient: {
-                  inverseColors: true,
-                  shade: "light",
-                  type: "vertical",
-                  opacityFrom: 0.85,
-                  opacityTo: 0.55,
-                  stops: [0, 100, 100, 100],
-                },
-              },
-            },
-          };
-        default:
-          return true;
-      }
-    },
-    [data, theme, lineStyle]
-  );
+  const chartData = {
+    series: data[0]?.series ? data[0]?.series : [],
+    options: {
+      chart: {
+        height: 350,
+        zoom: {
+          enabled: true,
+        },
+        animations: {
+          enable: true,
+        },
+      },
 
-  useEffect(() => {
-    chartData(chartId?.id);
-  }, [data]);
+      title: {
+        text: data[0]?.title ? data[0]?.title : "TITLE",
+        align: "center",
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      stroke: {
+        curve: lineStyle,
+      },
+
+      grid: {
+        row: {
+          colors: ["#f3f3f3", "transparent"],
+          opacity: 0.5,
+        },
+      },
+      theme: {
+        palette: "palette4",
+      },
+
+      labels: data[0]?.labels ? data[0]?.labels : [],
+      fill: {
+        type: "solid",
+        opacity: [0.85, 0.25, 1],
+      },
+    },
+  };
 
   const handleShowDataModal = () => {
     setSelectedDataIndex(null);
@@ -279,12 +243,14 @@ const HomePage = () => {
     canvasRef.current.add(newShape);
   };
 
+  // free draw
   useEffect(() => {
     if (selectedShape !== "freeDraw" && canvasRef.current) {
       canvasRef.current.isDrawingMode = false;
     }
   }, [selectedShape]);
 
+  // delete selected shape
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Backspace") {
@@ -307,6 +273,7 @@ const HomePage = () => {
     };
   }, []);
 
+  // double click to open modal properties shape
   useEffect(() => {
     if (canvasRef.current) {
       canvasRef.current.on("mouse:dblclick", function (event) {
@@ -326,52 +293,82 @@ const HomePage = () => {
     };
   });
 
-  console.log("data", data);
+  const modal = (chartId) => {
+    switch (chartId) {
+      case 1:
+      case 2:
+        return (
+          <LineModal
+            showDataModal={showDataModal}
+            setShowDataModal={setShowDataModal}
+            data={data}
+            setData={setData}
+            selectedIndex={selectedDataIndex}
+          />
+        );
+      case 3:
+      case 6:
+        return (
+          <DataModal
+            showDataModal={showDataModal}
+            setShowDataModal={setShowDataModal}
+            data={data}
+            setData={setData}
+            selectedDataIndex={selectedDataIndex}
+          />
+        );
+      case 4:
+        return (
+          <PieModal
+            showDataModal={showDataModal}
+            setShowDataModal={setShowDataModal}
+            data={data}
+            setData={setData}
+            selectedIndex={selectedDataIndex}
+          />
+        );
+      case 5:
+        return (
+          <MixedModal
+            showDataModal={showDataModal}
+            setShowDataModal={setShowDataModal}
+            data={data}
+            setData={setData}
+            selectedDataIndex={selectedDataIndex}
+          />
+        );
+      default:
+        return;
+    }
+  };
+
+  const typeChart = (chartId) => {
+    switch (chartId) {
+      case 1:
+        return "line";
+      case 2:
+        return "area";
+      case 3:
+        return "bar";
+      case 4:
+        return "pie";
+      case 5:
+        return "mixed";
+      default:
+        return;
+    }
+  };
 
   return (
     <>
       <div className="homepage-container">
         <div className="feature-button">
           <div className="feature-button-left">
-            <>
-              <Dropdown
-                onSelect={(selectedKey) => {
-                  setSelectedShape(selectedKey);
-                  addShape(selectedKey);
-                }}
-                onClick={handleButtonClick}
-              >
-                <Dropdown.Toggle>Annotation</Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item eventKey="circle">
-                    <BsCircle /> Circle
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="square">
-                    <BsSquare /> Square
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="triangle">
-                    <BsTriangle /> Triangle
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="freeDraw">
-                    <BsPencil /> Free Draw
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="arrow">
-                    <MdArrowForward /> Arrow
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="line">
-                    <GiStraightPipe /> Line
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="rectangle">
-                    <BiRectangle /> Rectangle
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="text">
-                    <IoTextOutline /> Text
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </>
-
+            <DropdownAnnotate
+              setSelectedShape={setSelectedShape}
+              addShape={addShape}
+              handleButtonClick={handleButtonClick}
+            />
             <button className="btn">{constant.properties}</button>
             <button className="btn" onClick={handleShowDataModal}>
               {constant.data}
@@ -398,37 +395,14 @@ const HomePage = () => {
         >
           <ReactApexCharts
             className="apex-chart"
-            options={chartData(chartId.id).options}
-            series={chartData(chartId.id).series}
-            type="pie"
+            options={chartData.options}
+            series={chartData.series}
+            type={typeChart(chartId?.id)}
             height={500}
           />
 
-          {chartId?.id === 4 || chartType === "line" ? (
-            <PieModal
-              showDataModal={showDataModal}
-              setShowDataModal={setShowDataModal}
-              data={data}
-              setData={setData}
-              selectedIndex={selectedDataIndex}
-            />
-          ) : (
-            // <MixedModal
-            //   showDataModal={showDataModal}
-            //   setShowDataModal={setShowDataModal}
-            //   data={data}
-            //   setData={setData}
-            //   selectedDataIndex={selectedDataIndex}
-            // />
-            <DataModal
-              showDataModal={showDataModal}
-              setShowDataModal={setShowDataModal}
-              data={data}
-              setData={setData}
-              selectedDataIndex={selectedDataIndex}
-              setSelectedDataIndex={setSelectedDataIndex}
-            />
-          )}
+          {modal(chartId.id)}
+
           <ShapeModal
             selectedShapeObject={selectedShapeObject}
             shapeModalVisible={shapeModalVisible}
@@ -450,14 +424,6 @@ const HomePage = () => {
             setData={setData}
             chartId={chartId}
           />
-
-          {/* <MixedModal
-            showDataModal={showDataModal}
-            setShowDataModal={setShowDataModal}
-            data={data}
-            setData={setData}
-            selectedDataIndex={selectedDataIndex}
-          /> */}
         </div>
         {data && data?.length > 0 && (
           <div className="chart-properties">

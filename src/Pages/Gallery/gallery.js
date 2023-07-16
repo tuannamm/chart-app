@@ -49,8 +49,8 @@ const chartListData = [
   {
     id: 6,
     img: "avc",
-    title: "POLAR",
-    url: "https://res.cloudinary.com/dgd57kdbo/image/upload/v1689435155/polar_vpmwwj.png",
+    title: "TREE MAP",
+    url: "https://res.cloudinary.com/dgd57kdbo/image/upload/v1689438668/Screen_Shot_2023-07-15_at_23.30.04_zzirxj.png",
   },
 ];
 
@@ -76,7 +76,7 @@ const Gallery = () => {
   const handleSelectChart = (chartId) => {
     navigate("/home", {
       state: {
-        chartId: chartId,
+        id: chartId,
       },
     });
     dispatch(setChartId(chartId));
