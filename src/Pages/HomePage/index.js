@@ -51,6 +51,7 @@ const HomePage = () => {
     quality: 1.0,
   });
 
+  console.log(data);
   const download = (
     image,
     { name = `${data[data.length - 1]?.title}`, extension = "jpg" } = {}
@@ -152,7 +153,7 @@ const HomePage = () => {
       labels: data[0]?.labels ? data[0]?.labels : [],
       fill: {
         type: "solid",
-        opacity: [0.85, 0.25, 1],
+        // opacity: [0.85, 0.25, 1],
       },
     },
   };
@@ -382,8 +383,7 @@ const HomePage = () => {
         <div className="feature-button-right">
           <button className="btn" onClick={() => setShowImportModal(true)}>
             <span>
-              <BiImport className="icons text" />
-              {constant.import_data}
+              <BiImport className="icons text" /> {constant.import_data}
             </span>
             <span>
               <BiImport className="icons text" />
@@ -446,7 +446,7 @@ const HomePage = () => {
           showImportModal={showImportModal}
           setShowImportModal={setShowImportModal}
           setData={setData}
-          chartId={chartId}
+          chartId={chartId.id}
         />
       </div>
       {data && data?.length > 0 && (

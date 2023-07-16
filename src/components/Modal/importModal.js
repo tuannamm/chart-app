@@ -10,12 +10,49 @@ import "./importModal.scss";
 
 const { BiDownload } = icons;
 
-function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
+const ExcelImportModal = ({
+  showImportModal,
+  setShowImportModal,
+  setData,
+  chartId,
+}) => {
   const dispatch = useDispatch();
   const dropRef = useRef();
   const fileInputRef = useRef();
 
+  const downloadXlsxFile = (workbook, fileName) => {
+    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+
+    const s2ab = (s) => {
+      const buf = new ArrayBuffer(s.length);
+      const view = new Uint8Array(buf);
+      for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+      return buf;
+    };
+
+    const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+
+    const blobURL = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = blobURL;
+    link.download = fileName;
+    link.click();
+  };
+
   const handleFileUpload = (event) => {
+    if (chartId === 1 || chartId === 2) {
+      handleLineChartFile(event);
+    } else if (chartId === 4) {
+      handlePieChartFile(event);
+    } else if (chartId === 3) {
+      handleColumnChartFile(event);
+    } else if (chartId === 6) {
+      handleColumnChartFile(event);
+    }
+  };
+
+  const handleLineChartFile = (event) => {
     let file = event.target.files[0];
 
     if (
@@ -78,6 +115,142 @@ function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
     reader.readAsBinaryString(file);
   };
 
+  const handlePieChartFile = (event) => {
+    let file = event.target.files[0];
+
+    if (
+      ![
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ].includes(file.type)
+    ) {
+      toast.error("Invalid file input, select an Excel file", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const workbook = XLSX.read(bstr, { type: "binary" });
+
+      const worksheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[worksheetName];
+
+      const raw_data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      const title = raw_data[0][0];
+      const labels = [];
+      const series = [];
+
+      for (let i = 1; i < raw_data.length; i++) {
+        labels.push(raw_data[i][0]);
+        series.push(parseInt(raw_data[i][1]));
+      }
+
+      const data = [
+        {
+          title,
+          labels,
+          series,
+        },
+      ];
+
+      setData(data);
+      dispatch(setChartData(data));
+      setShowImportModal(false);
+      toast.success("Import successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    };
+    reader.readAsBinaryString(file);
+  };
+
+  const handleColumnChartFile = (event) => {
+    let file = event.target.files[0];
+
+    if (
+      ![
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ].includes(file.type)
+    ) {
+      toast.error("Invalid file input, select an Excel file", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const workbook = XLSX.read(bstr, { type: "binary" });
+
+      const worksheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[worksheetName];
+
+      const raw_data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+      const title = raw_data[0][0]; // Assuming title is the first cell of the first row
+      const seriesNames = ["Series 1", "Series 2"]; // Add more series names as per your requirement
+      const series = [];
+
+      for (let j = 0; j < seriesNames.length; j++) {
+        const data = [];
+        for (let i = 1; i < raw_data.length; i++) {
+          data.push({
+            x: raw_data[i][0],
+            y: raw_data[i][j + 1],
+          });
+        }
+        series.push({
+          name: seriesNames[j],
+          data: data,
+        });
+      }
+
+      const data = [
+        {
+          title,
+          series,
+        },
+      ];
+
+      setData(data);
+      dispatch(setChartData(data));
+      setShowImportModal(false);
+      toast.success("Import successfully!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    };
+    reader.readAsBinaryString(file);
+  };
+
   const handleDragEnter = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -104,33 +277,49 @@ function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
   };
 
   const downloadSampleFile = () => {
-    const ws = XLSX.utils.aoa_to_sheet([
-      ["My Excel Title"],
-      ["", "Label1", "Label2"],
-      ["Dataset1", "Value", "Value"],
-      ["Dataset2", "Value", "Value"],
-    ]);
-
+    let ws;
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
-    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+    switch (chartId) {
+      case 1:
+      case 2:
+        ws = XLSX.utils.aoa_to_sheet([
+          ["My Excel Title"],
+          ["", "Label1", "Label2"],
+          ["Dataset1", "Value", "Value"],
+          ["Dataset2", "Value", "Value"],
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        downloadXlsxFile(wb, "LineChartSample.xlsx");
+        break;
 
-    const s2ab = (s) => {
-      const buf = new ArrayBuffer(s.length);
-      const view = new Uint8Array(buf);
-      for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
-      return buf;
-    };
+      case 3:
+      case 6:
+        ws = XLSX.utils.aoa_to_sheet([
+          ["My Excel Title"],
+          ["", "Nam", "Nom"],
+          ["Thang 1", "12", "45"],
+          ["Thang 2", "18", "67"],
+          ["Thang 3", "56", "76"],
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        downloadXlsxFile(wb, "ColumnChartSample.xlsx");
+        break;
 
-    const blob = new Blob([s2ab(wbout)], { type: "application/octet-stream" });
+      case 4:
+        ws = XLSX.utils.aoa_to_sheet([
+          ["My Excel Title"],
+          ["Label1", "Value1"],
+          ["Label2", "Value2"],
+          ["Label3", "Value3"],
+        ]);
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        downloadXlsxFile(wb, "PieChartSample.xlsx");
+        break;
 
-    const blobURL = window.URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.href = blobURL;
-    link.download = "sample.xlsx";
-    link.click();
+      default:
+        return;
+    }
   };
 
   return (
@@ -174,6 +363,6 @@ function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default ExcelImportModal;
