@@ -41,6 +41,7 @@ const constant = {
   properties: "Properties",
   data: "Data",
   import_data: "Import data",
+  export_data: "Export data",
   download: "Download",
   cancel: "Cancel",
 };

@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import GroupButton from "../../components/ButtonGroup";
 
 import constant from "../../utils/constant";
+import icons from "../../utils/icons";
 
 import Switch from "../../components/Switch";
 import DataModal from "../../components/Modal/dataModal";
@@ -19,6 +20,8 @@ import ShapeModal from "../../components/Modal/shapeModal";
 import PieModal from "../../components/Modal/pieModal";
 import ExcelImportModal from "../../components/Modal/importModal";
 import DropdownAnnotate from "../../components/Dropdown";
+
+const { BiData, BiDownload, BiImport, BiExport } = icons;
 
 const HomePage = () => {
   const chartRef = useRef(null);
@@ -125,7 +128,6 @@ const HomePage = () => {
           enable: true,
         },
       },
-
       title: {
         text: data[0]?.title ? data[0]?.title : "TITLE",
         align: "center",
@@ -360,83 +362,104 @@ const HomePage = () => {
   };
 
   return (
-    <>
-      <div className="homepage-container">
-        <div className="feature-button">
-          <div className="feature-button-left">
-            <DropdownAnnotate
-              setSelectedShape={setSelectedShape}
-              addShape={addShape}
-              handleButtonClick={handleButtonClick}
-            />
-            <button className="btn">{constant.properties}</button>
-            <button className="btn" onClick={handleShowDataModal}>
-              {constant.data}
-            </button>
-          </div>
-          <div className="feature-button-right">
-            <button className="btn" onClick={() => setShowImportModal(true)}>
+    <div className="homepage-container">
+      <div className="feature-button">
+        <div className="feature-button-left">
+          <DropdownAnnotate
+            setSelectedShape={setSelectedShape}
+            addShape={addShape}
+            handleButtonClick={handleButtonClick}
+          />
+          <button className="btn" onClick={handleShowDataModal}>
+            <span>
+              <BiData className="icons text" /> {constant.data}
+            </span>
+            <span>
+              <BiData className="icons text" />
+            </span>
+          </button>
+        </div>
+        <div className="feature-button-right">
+          <button className="btn" onClick={() => setShowImportModal(true)}>
+            <span>
+              <BiImport className="icons text" />
               {constant.import_data}
+            </span>
+            <span>
+              <BiImport className="icons text" />
+            </span>
+          </button>
+          <button className="btn">
+            <span>
+              <BiExport className="icons text" /> {constant.export_data}
+            </span>
+            <span>
+              <BiExport className="icons text" />
+            </span>
+          </button>
+          <button className="btn" onClick={downloadScreenshot}>
+            <span>
+              <BiDownload className="icons text" /> {constant.download}
+            </span>
+            <span>
+              <BiDownload className="icons text" />
+            </span>
+          </button>
+          {isCanvasVisible && (
+            <button className="btn cancel" onClick={handleRemoveCanvas}>
+              {constant.cancel}
             </button>
-            <button className="btn" onClick={downloadScreenshot}>
-              {constant.download}
-            </button>
-            {isCanvasVisible && (
-              <button className="btn cancel" onClick={handleRemoveCanvas}>
-                {constant.cancel}
-              </button>
-            )}
-          </div>
+          )}
         </div>
-        <div
-          className="chart-container"
-          ref={chartRef}
-          style={{ position: "relative" }}
-        >
-          <ReactApexCharts
-            className="apex-chart"
-            options={chartData.options}
-            series={chartData.series}
-            type={typeChart(chartId?.id)}
-            height={500}
-          />
-
-          {modal(chartId.id)}
-
-          <ShapeModal
-            selectedShapeObject={selectedShapeObject}
-            shapeModalVisible={shapeModalVisible}
-            setShapeModalVisible={setShapeModalVisible}
-            shapeStrokeWidth={shapeStrokeWidth}
-            setShapeStrokeWidth={setShapeStrokeWidth}
-            shapeColor={shapeColor}
-            setShapeColor={setShapeColor}
-            canvasRef={canvasRef}
-            shapeLineStyle={shapeLineStyle}
-            setShapeLineStyle={setShapeLineStyle}
-            shapeStrokeColor={shapeStrokeColor}
-            setShapeStrokeColor={setShapeStrokeColor}
-          />
-
-          <ExcelImportModal
-            showImportModal={showImportModal}
-            setShowImportModal={setShowImportModal}
-            setData={setData}
-            chartId={chartId}
-          />
-        </div>
-        {data && data?.length > 0 && (
-          <div className="chart-properties">
-            <Switch
-              title="Dark theme"
-              onChange={() => setTheme(!theme)}
-              state={theme}
-            />
-            <GroupButton title="Line style" setLineStyle={setLineStyle} />
-          </div>
-        )}
       </div>
-    </>
+      <div
+        className="chart-container"
+        ref={chartRef}
+        style={{ position: "relative" }}
+      >
+        <ReactApexCharts
+          className="apex-chart"
+          options={chartData.options}
+          series={chartData.series}
+          type={typeChart(chartId?.id)}
+          height={500}
+        />
+
+        {modal(chartId.id)}
+
+        <ShapeModal
+          selectedShapeObject={selectedShapeObject}
+          shapeModalVisible={shapeModalVisible}
+          setShapeModalVisible={setShapeModalVisible}
+          shapeStrokeWidth={shapeStrokeWidth}
+          setShapeStrokeWidth={setShapeStrokeWidth}
+          shapeColor={shapeColor}
+          setShapeColor={setShapeColor}
+          canvasRef={canvasRef}
+          shapeLineStyle={shapeLineStyle}
+          setShapeLineStyle={setShapeLineStyle}
+          shapeStrokeColor={shapeStrokeColor}
+          setShapeStrokeColor={setShapeStrokeColor}
+        />
+
+        <ExcelImportModal
+          showImportModal={showImportModal}
+          setShowImportModal={setShowImportModal}
+          setData={setData}
+          chartId={chartId}
+        />
+      </div>
+      {data && data?.length > 0 && (
+        <div className="chart-properties">
+          <Switch
+            title="Dark theme"
+            onChange={() => setTheme(!theme)}
+            state={theme}
+          />
+          <GroupButton title="Line style" setLineStyle={setLineStyle} />
+        </div>
+      )}
+    </div>
   );
 };
 

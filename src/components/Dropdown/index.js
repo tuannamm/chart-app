@@ -1,7 +1,7 @@
 import Dropdown from "react-bootstrap/Dropdown";
 
 import icons from "../../utils/icons";
-import addShape from "../../utils/addShape";
+import "./dropdown.scss";
 
 const {
   IoTextOutline,
@@ -12,6 +12,7 @@ const {
   GiStraightPipe,
   BiRectangle,
   MdArrowForward,
+  IoShapesOutline,
 } = icons;
 
 const DropdownAnnotate = ({
@@ -27,7 +28,17 @@ const DropdownAnnotate = ({
       }}
       onClick={handleButtonClick}
     >
-      <Dropdown.Toggle>Annotation</Dropdown.Toggle>
+      <Dropdown.Toggle
+        className="toggle-dropdown"
+        style={{ backgroundColor: "white" }}
+      >
+        <span>
+          <IoShapesOutline /> Annotation
+        </span>
+        <span>
+          <IoShapesOutline />
+        </span>
+      </Dropdown.Toggle>
 
       <Dropdown.Menu>
         <Dropdown.Item eventKey="circle">

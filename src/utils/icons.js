@@ -1,5 +1,12 @@
 import { FiMail, FiSettings } from "react-icons/fi";
-import { BiUser, BiRectangle } from "react-icons/bi";
+import {
+  BiUser,
+  BiRectangle,
+  BiData,
+  BiDownload,
+  BiImport,
+  BiExport,
+} from "react-icons/bi";
 import {
   BsTelephone,
   BsCircle,
@@ -7,7 +14,7 @@ import {
   BsTriangle,
   BsPencil,
 } from "react-icons/bs";
-import { IoCreateOutline } from "react-icons/io5";
+import { IoCreateOutline, IoShapesOutline } from "react-icons/io5";
 import {
   FaChartPie,
   FaBars,
@@ -41,6 +48,11 @@ const icons = {
   BiRectangle,
   IoTextOutline,
   MdArrowForward,
+  BiData,
+  BiDownload,
+  BiImport,
+  BiExport,
+  IoShapesOutline,
 };
 
 export default icons;
