@@ -89,10 +89,6 @@ const DataModal = ({
   };
 
   const handleClose = () => {
-    // setTitle("");
-    // setSeries([]);
-    // setNewName("");
-    // setNewItems([{ x: "", y: "" }]);
     setShowDataModal(false);
   };
 
@@ -122,7 +118,7 @@ const DataModal = ({
         <h3>Dataset</h3>
         {series.map((seriesItem, seriesIndex) => (
           <div key={seriesIndex} className="series-item">
-            <h5>Series Name: {seriesItem.name}</h5>
+            <h5>Dataset name: {seriesItem.name}</h5>
             {seriesItem.data.map((item, itemIndex) => (
               <div key={itemIndex} className="item">
                 <div className="form-group">
@@ -199,13 +195,19 @@ const DataModal = ({
             </div>
           </div>
         ))}
-        <Button className="add" variant="secondary" onClick={handleAddItem}>
+        <Button
+          className="add"
+          variant="secondary"
+          onClick={handleAddItem}
+          style={{ marginTop: "0.5rem" }}
+        >
           Add Item
         </Button>
         <Button
           className="add ml-3"
           variant="secondary"
           onClick={handleAddNewName}
+          style={{ marginTop: "0.5rem" }}
         >
           Add Dataset
         </Button>

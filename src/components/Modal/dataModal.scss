@@ -56,12 +56,13 @@
       }
 
       .series-item {
-        margin-top: 1rem;
+        margin: 0.5rem 0;
         padding: 1rem;
         border-radius: 0.25rem;
         background-color: #e9ecef;
         .item {
           margin-top: 0.5rem;
+          
         }
       }
 
@@ -72,6 +73,13 @@
         margin-top: 0.5rem;
         .form-group {
           flex: 1;
+        }
+      }
+      .icons-remove {
+        position: relative;
+        top: 0.8rem;
+        &:hover {
+          color: red
         }
       }
 
@@ -111,7 +119,6 @@
         &:first-child {
           background-color: #007bff;
           color: #ffffff;
-          margin-top: 1rem;
 
           &:hover {
             background-color: #0069d9;
@@ -121,7 +128,6 @@
         &:last-child {
           background-color: #6c757d;
           color: #ffffff;
-          margin-top: 1rem;
 
           &:hover {
             background-color: #5a6268;
