@@ -1,81 +1,95 @@
-.ExcelImportModal {
+.modal {
   .modal-header {
-    background-color: #344955;
-    color: #F9EBEA;
-
     .modal-title {
-      font-weight: 500;
-      font-size: 1.5em;
+      font-weight: bold;
     }
-
     .close {
-      color: #F9EBEA;
-      opacity: 0.8;
-
-      &:hover {
-        opacity: 1;
-      }
+      font-size: 1.5rem;
     }
   }
 
   .modal-body {
-    background-color: #232F34;
+    .btn-download {
+      display: flex;
+      margin: 0 auto;
+      background-color: white;
+      color: black;
+      border: 1px solid black;
+      &:hover {
+        background-color: #e6e6e6;
+        color: black;
+        border: 1px solid black
+      }
+    }
+    .drag-drop-styling {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      border: 1px dashed #666;
+      border-radius: 20px;
+      margin: 20px;
+      cursor: pointer;
+      color: #666;
+      transition: border .3s ease-in-out;
 
-    input[type="file"] {
-      display: block;
-      margin-bottom: 20px;
-      border: 1px solid #4A6572;
-      padding: 10px;
-      border-radius: 4px;
-      color: #F9EBEA;
-      background-color: #4A6572;
+      p {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
     }
 
-    .btn {
-      padding: 8px 12px;
-      background-color: #F9AA33;
-      border-color: #F9AA33;
-      color: #232F34;
-      font-weight: 500;
-
-      &:hover,
-      &:focus {
-        background-color: #FFB74D;
-        border-color: #FFB74D;
-      }
+    .dragging {
+      border: 2px solid #4CAF50;
+      color: #4CAF50;
     }
   }
 
   .modal-footer {
-    background-color: #344955;
-
-    .btn {
-      padding: 8px 12px;
-      background-color: #F9AA33;
-      border-color: #F9AA33;
-      color: #232F34;
-      font-weight: 500;
-
-      &:hover,
-      &:focus {
-        background-color: #FFB74D;
-        border-color: #FFB74D;
+    .btn-secondary {
+      color: #fff;
+      background-color: #6c757d;
+      border-color: #6c757d;
+      &:hover {
+        color: #fff;
+        background-color: #5a6268;
+        border-color: #545b62;
       }
     }
   }
 
   .drag-drop-styling {
-    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    border: 2px dashed #bbbbbb;
     border-radius: 5px;
-    padding: 50px;
-    text-align: center;
-    cursor: pointer;
-    color: #444;
-  }
+    margin: 10px 0;
+    position: relative;
+    transition: border 0.3s ease-in-out;
   
-  .drag-drop-styling.dragging {
-    border: 2px dashed #000;
-    background: #eee;
-  }
+    p {
+      text-align: center;
+      cursor: pointer;
+    }
   
+    &.dragging {
+      border: 2px dashed #2196f3;
+    }
+  
+    input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+  }
 }

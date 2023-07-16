@@ -1,63 +1,22 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
-
-import "./importModal.scss";
 import { useDispatch } from "react-redux";
+
+import icons from "../../utils/icons";
 import { setChartData } from "../../store/action/chartAction";
+import "./importModal.scss";
 
-function DragDrop({ handleFile }) {
-  const [drag, setDrag] = useState(false);
+const { BiDownload } = icons;
 
-  const dragOver = (e) => {
-    e.preventDefault();
-    setDrag(true);
-  };
-
-  const dragEnter = (e) => {
-    e.preventDefault();
-    setDrag(true);
-  };
-
-  const dragLeave = (e) => {
-    e.preventDefault();
-    setDrag(false);
-  };
-
-  const fileDrop = (e) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files.length) {
-      handleFile(files);
-    }
-    setDrag(false);
-  };
-
-  return (
-    <div
-      className={`drag-drop-styling ${drag ? "dragging" : ""}`}
-      onDragOver={dragOver}
-      onDragEnter={dragEnter}
-      onDragLeave={dragLeave}
-      onDrop={fileDrop}
-    >
-      Drag &amp; Drop your Excel file here or click to select file
-      <input type="file" onChange={(e) => handleFile(e.target.files)} />
-    </div>
-  );
-}
-
-function ExcelImportModal({
-  showImportModal,
-  setShowImportModal,
-  setData,
-  chartId,
-}) {
+function ExcelImportModal({ showImportModal, setShowImportModal, setData }) {
   const dispatch = useDispatch();
+  const dropRef = useRef();
+  const fileInputRef = useRef();
 
-  const fileHandler = (files) => {
-    let file = files[0];
+  const handleFileUpload = (event) => {
+    let file = event.target.files[0];
 
     if (
       ![
@@ -73,7 +32,6 @@ function ExcelImportModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
       });
       return;
     }
@@ -115,11 +73,34 @@ function ExcelImportModal({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
       });
     };
-
     reader.readAsBinaryString(file);
+  };
+
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropRef.current.classList.add("dragging");
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropRef.current.classList.remove("dragging");
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropRef.current.classList.remove("dragging");
+    fileInputRef.current.files = e.dataTransfer.files;
+    handleFileUpload(e);
   };
 
   const downloadSampleFile = () => {
@@ -158,10 +139,33 @@ function ExcelImportModal({
         <Modal.Title>Import Excel File</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Button onClick={downloadSampleFile} style={{ marginTop: "10px" }}>
-          Download Sample Excel File
+        <Button className="btn-download" onClick={downloadSampleFile}>
+          <span>
+            <BiDownload /> Sample excel file
+          </span>
         </Button>
-        <DragDrop handleFile={fileHandler} />
+        <div
+          className="drag-drop-styling"
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          ref={dropRef}
+        >
+          <label htmlFor="fileInput">
+            <p>
+              Drop your excel file from your computer or click{" "}
+              <strong>here</strong> to select
+            </p>
+          </label>
+          <input
+            id="fileInput"
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            style={{ display: "none" }}
+          />
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setShowImportModal(false)}>
