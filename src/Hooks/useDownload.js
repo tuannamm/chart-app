@@ -1,12 +1,19 @@
-// hooks/useDownloadScreenshot.js
-import { useScreenshot, createFileName } from "use-react-screenshot";
+import { useScreenshot } from "use-react-screenshot";
 import { toast } from "react-toastify";
 
-export function useDownloadScreenshot(chartRef, data) {
+export const useDownload = (chartRef, data) => {
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
   });
+
+  const createFileName = (extension, name) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+
+    return `${name}_${date}/${month}/${year}.${extension}`;
+  };
 
   const download = (
     image,
@@ -33,4 +40,4 @@ export function useDownloadScreenshot(chartRef, data) {
   };
 
   return downloadScreenshot;
-}
+};

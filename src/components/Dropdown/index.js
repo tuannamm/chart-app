@@ -2,6 +2,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 import icons from "../../utils/icons";
 import "./dropdown.scss";
+import { addShape } from "../../utils/addShape";
 
 const {
   IoTextOutline,
@@ -13,18 +14,19 @@ const {
   BiRectangle,
   MdArrowForward,
   IoShapesOutline,
+  GrTooltip,
 } = icons;
 
 const DropdownAnnotate = ({
   setSelectedShape,
   handleButtonClick,
-  addShape,
+  canvasRef,
 }) => {
   return (
     <Dropdown
       onSelect={(selectedKey) => {
         setSelectedShape(selectedKey);
-        addShape(selectedKey);
+        addShape(selectedKey, canvasRef);
       }}
       onClick={handleButtonClick}
     >
@@ -64,6 +66,9 @@ const DropdownAnnotate = ({
         </Dropdown.Item>
         <Dropdown.Item eventKey="text">
           <IoTextOutline /> Text
+        </Dropdown.Item>
+        <Dropdown.Item eventKey="tooltip">
+          <GrTooltip /> Tooltip
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

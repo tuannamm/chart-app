@@ -91,18 +91,6 @@ const LineModal = ({
     setLabels(updatedLabels);
   };
 
-  // useEffect(() => {
-  //   if (showDataModal && dataChart) {
-  //     setTitle(dataChart.title || "");
-  //     setLabels(dataChart.labels || [""]);
-  //     setSeries(dataChart.series || [{ name: "", data: [""] }]);
-  //   } else {
-  //     setTitle("");
-  //     setLabels([""]);
-  //     setSeries([{ name: "", data: [""] }]);
-  //   }
-  // }, [showDataModal, dataChart]);
-
   useEffect(() => {
     if (showDataModal) {
       if (

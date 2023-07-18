@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
 
 import WelcomePage from "./Pages/WelcomePage";
-import Gallery from "./Pages/Gallery/gallery";
+import Gallery from "./Pages/Gallery";
 import HomePage from "./Pages/HomePage";
 import Admin from "./Pages/Admin";
 import User from "./Pages/User";

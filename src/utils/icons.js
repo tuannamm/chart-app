@@ -26,6 +26,7 @@ import { AiOutlineLoading3Quarters, AiOutlineDelete } from "react-icons/ai";
 import { GiStraightPipe } from "react-icons/gi";
 import { IoTextOutline } from "react-icons/io5";
 import { MdArrowForward } from "react-icons/md";
+import { GrTooltip } from "react-icons/gr";
 
 const icons = {
   FiMail,
@@ -53,6 +54,7 @@ const icons = {
   BiImport,
   BiExport,
   IoShapesOutline,
+  GrTooltip,
 };
 
 export default icons;

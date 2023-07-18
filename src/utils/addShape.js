@@ -1,6 +1,6 @@
 import { fabric } from "fabric";
 
-const addShape = ({ shape, canvasRef }) => {
+export const addShape = (shape, canvasRef) => {
   if (!canvasRef.current) return;
 
   let newShape;
@@ -40,21 +40,41 @@ const addShape = ({ shape, canvasRef }) => {
       });
       break;
     case "arrow":
-      newShape = new fabric.Line([50, 100, 200, 200], {
-        left: 170,
+      const line = new fabric.Line([0, 0, 100, 100], {
+        left: 150,
         top: 150,
         stroke: "black",
         strokeWidth: 2,
       });
-      let triangle = new fabric.Triangle({
-        left: newShape.x2,
-        top: newShape.y2,
-        angle: -45,
+
+      const arrowHead = new fabric.Triangle({
+        left: line.get("x1") + line.get("left"),
+        top: line.get("y1") + line.get("top"),
+        fill: "black",
         width: 20,
         height: 20,
-        fill: "black",
+        selectable: false,
+        originX: "center",
+        originY: "center",
+        hasControls: false,
       });
-      canvasRef.current.add(newShape, triangle);
+
+      arrowHead.set({
+        left: line.get("x2") + line.get("left"),
+        top: line.get("y2") + line.get("top"),
+        angle:
+          (Math.atan2(
+            line.get("y2") - line.get("y1"),
+            line.get("x2") - line.get("x1")
+          ) *
+            180) /
+          Math.PI,
+      });
+
+      newShape = new fabric.Group([line, arrowHead], {
+        left: 170,
+        top: 150,
+      });
       break;
     case "text":
       newShape = new fabric.IText("Hello, World!", {
@@ -76,11 +96,37 @@ const addShape = ({ shape, canvasRef }) => {
         height: 100,
       });
       break;
+    case "tooltip":
+      const rect = new fabric.Rect({
+        left: 140,
+        top: 120,
+        width: 90,
+        height: 40,
+        rx: 10,
+        ry: 10,
+        hasControls: true,
+        fill: "transparent",
+        stroke: "black",
+        strokeWidth: 2,
+      });
+      const tooltipTriangle = new fabric.Triangle({
+        left: 195,
+        top: 120,
+        width: 20,
+        height: 10,
+        angle: 180,
+        hasControls: false,
+        fill: "transparent",
+        stroke: "black",
+        strokeWidth: 2,
+      });
+      newShape = new fabric.Group([rect, tooltipTriangle], {
+        left: 100,
+        top: 100,
+      });
+      break;
     default:
       return;
   }
-
   canvasRef.current.add(newShape);
 };
-
-export default addShape;
