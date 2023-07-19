@@ -50,27 +50,32 @@
     }
 
   }
-  
-  .chart-container {
-    height: 31.25rem;
-    width: 100%;
-    max-width: 50rem; 
-    margin: 1.25rem auto;
-    position: relative;
 
-    .chart {
+  .chart-and-properties-container {
+    display: flex;
+    .chart-container {
+      height: 31.25rem;
+      width: 100%;
+      max-width: 50rem; 
+      margin: 1.25rem auto;
       position: relative;
-      .apex-chart {
+      ;
+      .chart {
         position: relative;
-        z-index: 1;
+        .apex-chart {
+          position: relative;
+          z-index: 1;
+        }
       }
     }
-    
-    .container {
+    .chart-properties {
+      padding: 15px;
       position: relative;
+      
     }
+  
   }
-
+  
   .canvas-container{
     position: absolute;
     top: -32.1875rem;

@@ -1,22 +1,41 @@
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-
-import "./buttonGroup.scss";
-
 const GroupButton = ({ title, setLineStyle }) => {
   return (
-    <ButtonGroup size="sm" className="button-group">
-      <label style={{ marginRight: "5px" }}>{title}</label>
-      <Button variant="light" onClick={() => setLineStyle("smooth")}>
+    <div className="btn-group" role="group">
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio1"
+        autoComplete="off"
+        defaultChecked
+        onChange={() => setLineStyle("smooth")}
+      />
+      <label className="btn btn-outline-primary" htmlFor="btnradio1">
         Smooth
-      </Button>
-      <Button variant="light" onClick={() => setLineStyle("straight")}>
+      </label>
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio2"
+        autoComplete="off"
+        onChange={() => setLineStyle("straight")}
+      />
+      <label className="btn btn-outline-primary" htmlFor="btnradio2">
         Straight
-      </Button>
-      <Button variant="light" onClick={() => setLineStyle("stepline")}>
+      </label>
+      <input
+        type="radio"
+        className="btn-check"
+        name="btnradio"
+        id="btnradio3"
+        autoComplete="off"
+        onChange={() => setLineStyle("stepline")}
+      />
+      <label className="btn btn-outline-primary" htmlFor="btnradio3">
         Stepline
-      </Button>
-    </ButtonGroup>
+      </label>
+    </div>
   );
 };
 

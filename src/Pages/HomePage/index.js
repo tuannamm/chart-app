@@ -5,7 +5,6 @@ import { fabric } from "fabric";
 import { useSelector } from "react-redux";
 
 import GroupButton from "../../components/ButtonGroup";
-import Switch from "../../components/Switch";
 
 import { useDownload } from "../../Hooks/useDownload";
 
@@ -20,6 +19,7 @@ import { useClearCanvas } from "../../Hooks/useClearCanvas";
 import { useShapeDrawingMode } from "../../Hooks/useDrawing";
 import { useKeyboardInteractions } from "../../Hooks/useRemoveShape";
 import { useCanvasDoubleClick } from "../../Hooks/useCustomShape";
+import ChartPropertiesControl from "../../components/ChartProperties";
 
 const HomePage = () => {
   const chartRef = useRef(null);
@@ -28,7 +28,6 @@ const HomePage = () => {
   const [showDataModal, setShowDataModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [selectedDataIndex, setSelectedDataIndex] = useState(null);
-  const [theme, setTheme] = useState(false);
   const [lineStyle, setLineStyle] = useState("smooth");
   const [selectedShape, setSelectedShape] = useState("circle");
   const [shapeModalVisible, setShapeModalVisible] = useState(false);
@@ -38,59 +37,14 @@ const HomePage = () => {
   const [shapeLineStyle, setShapeLineStyle] = useState(null);
   const [shapeStrokeColor, setShapeStrokeColor] = useState(null);
   const [showImportModal, setShowImportModal] = useState(false);
-  const [plotOptions, setPlotOptions] = useState({
-    pie: {
-      expandOnClick: true,
-      donut: { size: "50%", labels: { show: true } },
-    },
-    bar: { horizontal: false },
-  });
-  const [grid, setGrid] = useState({
-    show: true,
-    borderColor: "#90A4AE",
-    strokeDashArray: 0,
-    position: "back",
-    xaxis: { lines: { show: false } },
-    yaxis: { lines: { show: true } },
-    padding: { top: 0, right: 0, bottom: 0, left: 0 },
-  });
-  const [markers, setMarkers] = useState({
-    size: 4,
-    colors: undefined,
-    strokeColors: "#fff",
-    strokeWidth: 2,
-    strokeOpacity: 0.9,
-    strokeDashArray: 0,
-    fillOpacity: 1,
-    discrete: [],
-    shape: "circle",
-    radius: 2,
-    offsetX: 0,
-    offsetY: 0,
-    onClick: undefined,
-    onDblClick: undefined,
-    hover: { size: undefined, sizeOffset: 3 },
-  });
-  const [xaxis, setXaxis] = useState({
-    categories: [],
-    labels: { show: true },
-    axisBorder: { show: true },
-    axisTicks: { show: true },
+  const [chartProperties, setChartProperties] = useState({
+    showGrid: true,
+    showTooltip: true,
+    showLegend: true,
+    showDataLabels: true,
+    showGridRow: true,
   });
 
-  const [yaxis, setYaxis] = useState({
-    show: true,
-    labels: { show: true },
-    axisBorder: { show: true },
-    axisTicks: { show: true },
-  });
-  const [animations, setAnimations] = useState({
-    enabled: true,
-    easing: "easeinout",
-    speed: 600,
-    animateGradually: { enabled: true, delay: 150 },
-    dynamicAnimation: { enabled: true, speed: 350 },
-  });
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
@@ -151,12 +105,6 @@ const HomePage = () => {
   );
 
   const chartOptions = {
-    plotOptions,
-    grid,
-    markers,
-    xaxis,
-    yaxis,
-    animations,
     stroke: {
       curve: lineStyle,
     },
@@ -183,79 +131,62 @@ const HomePage = () => {
           />
         </div>
       </div>
-      <div
-        className="chart-container"
-        ref={chartRef}
-        style={{ position: "relative" }}
-      >
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            setGrid((prevState) => ({ ...prevState, show: !prevState.show }))
-          }
+      <div className="chart-and-properties-container">
+        {data && data?.length > 0 && (
+          <div className="chart-properties">
+            <GroupButton title="Line style" setLineStyle={setLineStyle} />
+            <ChartPropertiesControl
+              properties={chartProperties}
+              onPropertiesChange={setChartProperties}
+              setData={setData}
+            />
+          </div>
+        )}
+        <div
+          className="chart-container"
+          ref={chartRef}
+          style={{ position: "relative" }}
         >
-          Toggle Grid
-        </button>
-        <button
-          className="btn btn-secondary"
-          onClick={() =>
-            setAnimations((prevState) => ({
-              ...prevState,
-              enabled: !prevState.enabled,
-            }))
-          }
-        >
-          Toggle Animations
-        </button>
-
-        <Chart
-          data={data}
-          className="apex-chart"
-          options={chartOptions}
-          chartId={chartId.id}
-        />
-
-        <ModalSelector
-          chartId={chartId.id}
-          showDataModal={showDataModal}
-          setShowDataModal={setShowDataModal}
-          data={data}
-          setData={setData}
-          selectedDataIndex={selectedDataIndex}
-        />
-
-        <ShapeModal
-          selectedShapeObject={selectedShapeObject}
-          shapeModalVisible={shapeModalVisible}
-          setShapeModalVisible={setShapeModalVisible}
-          shapeStrokeWidth={shapeStrokeWidth}
-          setShapeStrokeWidth={setShapeStrokeWidth}
-          shapeColor={shapeColor}
-          setShapeColor={setShapeColor}
-          canvasRef={canvasRef}
-          shapeLineStyle={shapeLineStyle}
-          setShapeLineStyle={setShapeLineStyle}
-          shapeStrokeColor={shapeStrokeColor}
-          setShapeStrokeColor={setShapeStrokeColor}
-        />
-
-        <ExcelImportModal
-          showImportModal={showImportModal}
-          setShowImportModal={setShowImportModal}
-          setData={setData}
-          chartId={chartId.id}
-        />
-      </div>
-      {data && data?.length > 0 && (
-        <div className="chart-properties">
-          <Switch
-            title="Dark theme"
-            onChange={() => setTheme(!theme)}
-            state={theme}
+          <Chart
+            data={data}
+            className="apex-chart"
+            options={chartOptions}
+            chartId={chartId.id}
+            properties={chartProperties}
           />
-          <GroupButton title="Line style" setLineStyle={setLineStyle} />
         </div>
-      )}
+      </div>
+
+      <ModalSelector
+        chartId={chartId.id}
+        showDataModal={showDataModal}
+        setShowDataModal={setShowDataModal}
+        data={data}
+        setData={setData}
+        selectedDataIndex={selectedDataIndex}
+      />
+
+      <ShapeModal
+        selectedShapeObject={selectedShapeObject}
+        shapeModalVisible={shapeModalVisible}
+        setShapeModalVisible={setShapeModalVisible}
+        shapeStrokeWidth={shapeStrokeWidth}
+        setShapeStrokeWidth={setShapeStrokeWidth}
+        shapeColor={shapeColor}
+        setShapeColor={setShapeColor}
+        canvasRef={canvasRef}
+        shapeLineStyle={shapeLineStyle}
+        setShapeLineStyle={setShapeLineStyle}
+        shapeStrokeColor={shapeStrokeColor}
+        setShapeStrokeColor={setShapeStrokeColor}
+      />
+
+      <ExcelImportModal
+        showImportModal={showImportModal}
+        setShowImportModal={setShowImportModal}
+        setData={setData}
+        chartId={chartId.id}
+      />
     </div>
   );
 };
