@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-const Toast = ({ type, message }) => {
+const Toast = (type, message) => {
   const toastOptions = {
     position: "top-right",
     autoClose: 2000,
@@ -13,23 +13,16 @@ const Toast = ({ type, message }) => {
 
   switch (type) {
     case "success":
-      toast.success(message, toastOptions);
-      break;
+      return toast.success(message, toastOptions);
     case "error":
-      toast.error(message, toastOptions);
-      break;
+      return toast.error(message, toastOptions);
     case "info":
-      toast.info(message, toastOptions);
-      break;
+      return toast.info(message, toastOptions);
     case "warning":
-      toast.warning(message, toastOptions);
-      break;
+      return toast.warning(message, toastOptions);
     default:
-      toast(message, toastOptions);
-      break;
+      return toast(message, toastOptions);
   }
-
-  return null;
 };
 
 export default Toast;

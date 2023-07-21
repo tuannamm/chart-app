@@ -93,8 +93,7 @@ const Gallery = () => {
           <Navbar bg="light" expand="lg" className="header-container">
             <Container>
               <NavLink to="/" className="nav-link navbar-brand ">
-                <FaChartPie size={"2em"} color={"00bfff"} />
-                {constant.app_name}
+                <FaChartPie size={"2em"} color={"00bfff"} /> {constant.app_name}
               </NavLink>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">

@@ -47,6 +47,7 @@ const HomePage = () => {
     showGridRow: true,
     showAnimations: true,
   });
+  const [fabricCanvas, setFabricCanvas] = useState(null);
 
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
@@ -80,6 +81,7 @@ const HomePage = () => {
           );
 
           canvasRef.current = canvas;
+          setFabricCanvas(canvas);
         }
       }, 0);
     }
@@ -107,14 +109,18 @@ const HomePage = () => {
     setShapeModalVisible
   );
 
+  const handleCancelClick = () => {
+    if (fabricCanvas) {
+      fabricCanvas.clear();
+      setCanvasVisible(false);
+    }
+  };
+
   const chartOptions = {
     stroke: {
       curve: lineStyle,
     },
   };
-
-  console.log(chartId.id);
-  console.log(data);
 
   return (
     <div className="homepage-container">
@@ -133,7 +139,7 @@ const HomePage = () => {
             setShowImportModal={setShowImportModal}
             downloadScreenshot={downloadScreenshot}
             isCanvasVisible={isCanvasVisible}
-            handleRemoveCanvas={useClearCanvas}
+            handleRemoveCanvas={handleCancelClick}
             data={data}
             chartId={chartId.id}
           />

@@ -7,6 +7,7 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
   switch (chartId) {
     case 1:
     case 2:
+    case 5:
       ws = XLSX.utils.aoa_to_sheet([
         ["My Excel Title"],
         ["", "Label1", "Label2"],
@@ -16,7 +17,6 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "LineChartSample.xlsx");
       break;
-
     case 3:
     case 6:
       ws = XLSX.utils.aoa_to_sheet([
@@ -29,7 +29,6 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "ColumnChartSample.xlsx");
       break;
-
     case 4:
       ws = XLSX.utils.aoa_to_sheet([
         ["My Excel Title"],
