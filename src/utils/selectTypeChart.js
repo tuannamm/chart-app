@@ -10,6 +10,8 @@ const typeChart = (chartId) => {
       return "pie";
     case 5:
       return "mixed";
+    case 6:
+      return "treemap";
     default:
       return;
   }

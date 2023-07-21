@@ -4,7 +4,18 @@ import typeChart from "../../utils/selectTypeChart";
 
 const Chart = ({ data, options, chartId, properties }) => {
   const chartData = {
-    series: data[0]?.series ? data[0]?.series : [],
+    series: [
+      {
+        name: "Nam",
+        type: "column",
+        data: ["10", "23", "33"],
+      },
+      {
+        name: "Nôm ",
+        type: "area",
+        data: ["34", "65", "23"],
+      },
+    ],
     options: {
       chart: {
         id: chartId,
@@ -71,7 +82,7 @@ const Chart = ({ data, options, chartId, properties }) => {
       theme: {
         palette: properties.colorPalette,
       },
-      labels: data[0]?.labels ? data[0]?.labels : [],
+      labels: ["Tháng 1", "Tháng 2", "Tháng 3"],
       fill: {
         type: "solid",
       },

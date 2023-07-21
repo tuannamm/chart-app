@@ -211,22 +211,16 @@ const ExcelImportModal = ({
       const raw_data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
       const title = raw_data[0][0];
-      const seriesNames = ["Series 1", "Series 2"];
-      const series = [];
+      const seriesNames = raw_data[1].slice(1); // remove the first empty item
+      const rows = raw_data.slice(2); // Skip title and seriesNames
 
-      for (let j = 0; j < seriesNames.length; j++) {
-        const data = [];
-        for (let i = 1; i < raw_data.length; i++) {
-          data.push({
-            x: raw_data[i][0],
-            y: raw_data[i][j + 1],
-          });
-        }
-        series.push({
-          name: seriesNames[j],
-          data: data,
-        });
-      }
+      const series = seriesNames.map((name, index) => {
+        const data = rows.map((row) => ({
+          x: row[0],
+          y: row[index + 1],
+        }));
+        return { name, data };
+      });
 
       const data = [
         {
