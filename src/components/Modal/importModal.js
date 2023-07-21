@@ -210,8 +210,8 @@ const ExcelImportModal = ({
 
       const raw_data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-      const title = raw_data[0][0]; // Assuming title is the first cell of the first row
-      const seriesNames = ["Series 1", "Series 2"]; // Add more series names as per your requirement
+      const title = raw_data[0][0];
+      const seriesNames = ["Series 1", "Series 2"];
       const series = [];
 
       for (let j = 0; j < seriesNames.length; j++) {

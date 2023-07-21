@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import "./homepage.scss";
 
 import { fabric } from "fabric";
@@ -19,6 +20,7 @@ import { useClearCanvas } from "../../Hooks/useClearCanvas";
 import { useShapeDrawingMode } from "../../Hooks/useDrawing";
 import { useKeyboardInteractions } from "../../Hooks/useRemoveShape";
 import { useCanvasDoubleClick } from "../../Hooks/useCustomShape";
+
 import ChartPropertiesControl from "../../components/ChartProperties";
 
 const HomePage = () => {
@@ -43,6 +45,7 @@ const HomePage = () => {
     showLegend: true,
     showDataLabels: true,
     showGridRow: true,
+    showAnimations: true,
   });
 
   const chartId = useSelector((state) => state?.chartReducer);
@@ -110,6 +113,9 @@ const HomePage = () => {
     },
   };
 
+  console.log(chartId.id);
+  console.log(data);
+
   return (
     <div className="homepage-container">
       <div className="feature-button">
@@ -128,6 +134,8 @@ const HomePage = () => {
             downloadScreenshot={downloadScreenshot}
             isCanvasVisible={isCanvasVisible}
             handleRemoveCanvas={useClearCanvas}
+            data={data}
+            chartId={chartId.id}
           />
         </div>
       </div>

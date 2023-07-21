@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useExportExcel } from "../../Hooks/useExportExcel";
+
 import icons from "../../utils/icons";
 import constant from "../../utils/constant";
 
@@ -10,7 +12,11 @@ const ButtonRight = ({
   downloadScreenshot,
   isCanvasVisible,
   handleRemoveCanvas,
+  data,
+  chartId,
 }) => {
+  const { exportData } = useExportExcel(chartId);
+
   return (
     <div style={{ display: "flex" }}>
       <button className="btn" onClick={() => setShowImportModal(true)}>
@@ -21,7 +27,7 @@ const ButtonRight = ({
           <BiImport className="icons text" />
         </span>
       </button>
-      <button className="btn">
+      <button className="btn" onClick={() => exportData(data)}>
         <span>
           <BiExport className="icons text" /> {constant.export_data}
         </span>
