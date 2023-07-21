@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 
 import icons from "../../utils/icons";
 import { setChartData } from "../../store/action/chartAction";
+import downloadSampleFile from "../../utils/downloadChartSample";
+import Toast from "../Toast";
+
 import "./importModal.scss";
 
 const { BiDownload } = icons;
@@ -61,15 +63,7 @@ const ExcelImportModal = ({
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       ].includes(file.type)
     ) {
-      toast.error("Invalid file input, select an Excel file", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      Toast("error", "Invalid file input, select an Excel file");
       return;
     }
 
@@ -102,15 +96,7 @@ const ExcelImportModal = ({
       setData(data);
       dispatch(setChartData(data));
       setShowImportModal(false);
-      toast.success("Import successfully!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      Toast("success", "Import successfully!");
     };
     reader.readAsBinaryString(file);
   };
@@ -124,15 +110,7 @@ const ExcelImportModal = ({
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       ].includes(file.type)
     ) {
-      toast.error("Invalid file input, select an Excel file", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      Toast("error", "Invalid file input, select an Excel file");
       return;
     }
 
@@ -166,15 +144,7 @@ const ExcelImportModal = ({
       setData(data);
       dispatch(setChartData(data));
       setShowImportModal(false);
-      toast.success("Import successfully!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      Toast("success", "Import successfully!");
     };
     reader.readAsBinaryString(file);
   };
@@ -188,15 +158,7 @@ const ExcelImportModal = ({
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       ].includes(file.type)
     ) {
-      toast.error("Invalid file input, select an Excel file", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      Toast("error", "Invalid file input, select an Excel file");
       return;
     }
 
@@ -232,15 +194,7 @@ const ExcelImportModal = ({
       setData(data);
       dispatch(setChartData(data));
       setShowImportModal(false);
-      toast.success("Import successfully!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      Toast("success", "Import successfully!");
     };
     reader.readAsBinaryString(file);
   };
@@ -270,59 +224,16 @@ const ExcelImportModal = ({
     handleFileUpload(e);
   };
 
-  const downloadSampleFile = () => {
-    let ws;
-    const wb = XLSX.utils.book_new();
-
-    switch (chartId) {
-      case 1:
-      case 2:
-        ws = XLSX.utils.aoa_to_sheet([
-          ["My Excel Title"],
-          ["", "Label1", "Label2"],
-          ["Dataset1", "Value", "Value"],
-          ["Dataset2", "Value", "Value"],
-        ]);
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        downloadXlsxFile(wb, "LineChartSample.xlsx");
-        break;
-
-      case 3:
-      case 6:
-        ws = XLSX.utils.aoa_to_sheet([
-          ["My Excel Title"],
-          ["", "Nam", "Nom"],
-          ["Thang 1", "12", "45"],
-          ["Thang 2", "18", "67"],
-          ["Thang 3", "56", "76"],
-        ]);
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        downloadXlsxFile(wb, "ColumnChartSample.xlsx");
-        break;
-
-      case 4:
-        ws = XLSX.utils.aoa_to_sheet([
-          ["My Excel Title"],
-          ["Label1", "Value1"],
-          ["Label2", "Value2"],
-          ["Label3", "Value3"],
-        ]);
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        downloadXlsxFile(wb, "PieChartSample.xlsx");
-        break;
-
-      default:
-        return;
-    }
-  };
-
   return (
     <Modal show={showImportModal} onHide={() => setShowImportModal(false)}>
       <Modal.Header closeButton>
         <Modal.Title>Import Excel File</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Button className="btn-download" onClick={downloadSampleFile}>
+        <Button
+          className="btn-download"
+          onClick={() => downloadSampleFile(chartId, downloadXlsxFile)}
+        >
           <span>
             <BiDownload /> Sample excel file
           </span>

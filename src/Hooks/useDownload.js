@@ -1,5 +1,5 @@
 import { useScreenshot } from "use-react-screenshot";
-import { toast } from "react-toastify";
+import Toast from "../components/Toast";
 
 export const useDownload = (chartRef, data) => {
   const [image, takeScreenShot] = useScreenshot({
@@ -27,16 +27,7 @@ export const useDownload = (chartRef, data) => {
 
   const downloadScreenshot = async () => {
     await takeScreenShot(chartRef.current).then(download);
-    toast.success("Download successfully!", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    Toast("success", "Download successfully!");
   };
 
   return downloadScreenshot;

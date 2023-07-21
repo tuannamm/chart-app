@@ -1,7 +1,8 @@
 import { useCallback } from "react";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
-import { toast } from "react-toastify";
+
+import Toast from "../components/Toast";
 
 export const useExportExcel = (chartId) => {
   const exportData = useCallback(
@@ -120,15 +121,7 @@ export const useExportExcel = (chartId) => {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       saveAs(blob, `${data[0].title}.xlsx`);
-      toast.success("Export successfully!", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      Toast("success", "Export successfully!");
     },
     [chartId]
   );
