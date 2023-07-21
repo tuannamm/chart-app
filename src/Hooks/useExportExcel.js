@@ -8,7 +8,7 @@ export const useExportExcel = (chartId) => {
     async (data) => {
       const workbook = new ExcelJS.Workbook();
 
-      if (chartId === 1 || chartId === 2) {
+      if (chartId === 1 || chartId === 2 || chartId === 5) {
         data.forEach((datum, index) => {
           const worksheet = workbook.addWorksheet(`Sheet ${index + 1}`);
 

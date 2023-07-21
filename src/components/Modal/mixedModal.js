@@ -3,6 +3,8 @@ import { Modal, Button } from "react-bootstrap";
 
 import icons from "../../utils/icons";
 import "./mixedModal.scss";
+import { useDispatch } from "react-redux";
+import { setChartData } from "../../store/action/chartAction";
 
 const { AiOutlineDelete } = icons;
 
@@ -18,6 +20,8 @@ const MixedModal = ({
   const [series, setSeries] = useState([
     { name: "", type: "line", data: [""] },
   ]);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (showDataModal) {
@@ -75,6 +79,7 @@ const MixedModal = ({
     } else {
       setData([newData]);
     }
+    dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
 
