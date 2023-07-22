@@ -127,7 +127,6 @@ const HomePage = () => {
       <div className="feature-button">
         <div className="feature-button-left">
           <ButtonLeft
-            className="feature-button-left"
             setSelectedShape={setSelectedShape}
             canvasRef={canvasRef}
             handleButtonClick={handleButtonClick}
@@ -163,11 +162,11 @@ const HomePage = () => {
         >
           <Chart
             data={data}
-            className="apex-chart"
             options={chartOptions}
             chartId={chartId.id}
             properties={chartProperties}
           />
+          )
         </div>
       </div>
 

@@ -10,9 +10,9 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
     case 5:
       ws = XLSX.utils.aoa_to_sheet([
         ["My Excel Title"],
-        ["", "Label1", "Label2"],
-        ["Dataset1", "Value", "Value"],
-        ["Dataset2", "Value", "Value"],
+        ["", "Label 1", "Label 2"],
+        ["Dataset 1", "Value", "Value"],
+        ["Dataset 2", "Value", "Value"],
       ]);
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "LineChartSample.xlsx");
@@ -21,10 +21,10 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
     case 6:
       ws = XLSX.utils.aoa_to_sheet([
         ["My Excel Title"],
-        ["", "Nam", "Nom"],
-        ["Thang 1", "12", "45"],
-        ["Thang 2", "18", "67"],
-        ["Thang 3", "56", "76"],
+        ["", "Dataset 1", "Dataset 2"],
+        ["Label 1", "Value", "Value"],
+        ["Label 2", "Value", "Value"],
+        ["Label 3", "Value", "Value"],
       ]);
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "ColumnChartSample.xlsx");
@@ -39,7 +39,6 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "PieChartSample.xlsx");
       break;
-
     default:
       return;
   }

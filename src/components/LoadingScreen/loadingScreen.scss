@@ -1,9 +1,11 @@
 .loading-screen {
   position: fixed;
- 
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
+  top: 40%;
+  left: 40%;
 
   @media (max-width: 767px) {
     top: 40%;
