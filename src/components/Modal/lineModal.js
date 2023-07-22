@@ -39,9 +39,13 @@ const LineModal = ({
   };
 
   const handleAddData = (seriesIndex) => {
-    const updatedSeries = [...series];
-    updatedSeries[seriesIndex].data.push("");
-    setSeries(updatedSeries);
+    if (series[seriesIndex].data.length < labels.length) {
+      const updatedSeries = [...series];
+      updatedSeries[seriesIndex].data.push("");
+      setSeries(updatedSeries);
+    } else {
+      alert("Cannot add more data points than labels");
+    }
   };
 
   const handleAddSeries = () => {
@@ -184,6 +188,7 @@ const LineModal = ({
             <Button
               variant="secondary"
               onClick={() => handleAddData(seriesIndex)}
+              disabled={series[seriesIndex].data.length >= labels.length}
             >
               Add Data
             </Button>
