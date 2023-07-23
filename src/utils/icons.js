@@ -22,7 +22,11 @@ import {
   FaGithub,
   FaRegLaughWink,
 } from "react-icons/fa";
-import { AiOutlineLoading3Quarters, AiOutlineDelete } from "react-icons/ai";
+import {
+  AiOutlineLoading3Quarters,
+  AiOutlineDelete,
+  AiOutlineClear,
+} from "react-icons/ai";
 import { GiStraightPipe } from "react-icons/gi";
 import { IoTextOutline } from "react-icons/io5";
 import { MdArrowForward } from "react-icons/md";
@@ -55,6 +59,7 @@ const icons = {
   BiExport,
   IoShapesOutline,
   GrTooltip,
+  AiOutlineClear,
 };
 
 export default icons;

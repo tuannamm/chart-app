@@ -113,7 +113,7 @@ const LineModal = ({
   return (
     <Modal show={showDataModal} onHide={handleClose} className="line-modal ">
       <Modal.Header closeButton className="modal-header">
-        <Modal.Title className="modal-title">Line Data</Modal.Title>
+        <Modal.Title className="modal-title">Data</Modal.Title>
       </Modal.Header>
       <Modal.Body className="modal-body">
         <div className="input-group">

@@ -1,3 +1,5 @@
+import "./buttonGroup.scss";
+
 const GroupButton = ({ title, setLineStyle }) => {
   return (
     <div className="btn-group" role="group">

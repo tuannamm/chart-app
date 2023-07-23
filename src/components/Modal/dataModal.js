@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
-import "./dataModal.scss";
+import "./lineModal.scss";
 import icons from "../../utils/icons";
 import { setChartData } from "../../store/action/chartAction";
 
@@ -17,9 +17,67 @@ const DataModal = ({
 }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
-  const [series, setSeries] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newItems, setNewItems] = useState([{ x: "", y: "" }]);
+  const [series, setSeries] = useState([
+    { name: "", data: [{ x: "", y: "" }] },
+  ]);
+  const [labels, setLabels] = useState([""]);
+
+  const handleNameChange = (seriesIndex, value) => {
+    const updatedSeries = [...series];
+    updatedSeries[seriesIndex].name = value;
+    setSeries(updatedSeries);
+  };
+
+  const handleDataChange = (seriesIndex, dataIndex, field, value) => {
+    const updatedSeries = [...series];
+    updatedSeries[seriesIndex].data[dataIndex][field] = value;
+    setSeries(updatedSeries);
+  };
+
+  const handleLabelChange = (labelIndex, value) => {
+    const updatedLabels = [...labels];
+    updatedLabels[labelIndex] = value;
+    setLabels(updatedLabels);
+
+    // Also update labels of series
+    const updatedSeries = [...series];
+    updatedSeries.forEach((serie) => {
+      if (serie.data[labelIndex]) {
+        serie.data[labelIndex].x = value;
+      }
+    });
+    setSeries(updatedSeries);
+  };
+
+  const handleAddData = (seriesIndex) => {
+    if (series[seriesIndex].data.length < labels.length) {
+      const updatedSeries = [...series];
+      updatedSeries[seriesIndex].data.push({
+        x: labels[updatedSeries[seriesIndex].data.length] || "",
+        y: "",
+      });
+      setSeries(updatedSeries);
+    } else {
+      alert("Cannot add more data points than labels");
+    }
+  };
+
+  const handleAddSeries = () => {
+    const newSeriesData = labels.map((label, index) => ({
+      x: label,
+      y: index === 0 ? "" : series[0].data[index].y,
+    }));
+    setSeries([...series, { name: "", data: newSeriesData }]);
+  };
+
+  const handleAddLabel = () => {
+    setLabels([...labels, ""]);
+    const updatedSeries = [...series];
+    updatedSeries.forEach((serie) => {
+      serie.data.push({ x: "", y: "" });
+    });
+    setSeries(updatedSeries);
+  };
 
   const handleSaveData = () => {
     const newData = {
@@ -36,15 +94,46 @@ const DataModal = ({
       updatedData[selectedDataIndex] = newData;
       setData(updatedData);
     } else {
-      setData([newData]);
+      setData([...data, newData]);
     }
 
     dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
 
-  const handleAddItem = () => {
-    setNewItems([...newItems, { x: "", y: "" }]);
+  const handleClose = () => {
+    setShowDataModal(false);
+  };
+
+  const handleRemoveSeries = (seriesIndex) => {
+    const updatedSeries = [...series];
+    updatedSeries.splice(seriesIndex, 1);
+    setSeries(updatedSeries);
+  };
+
+  const handleRemoveData = (seriesIndex, dataIndex) => {
+    const updatedSeries = [...series];
+    updatedSeries[seriesIndex].data.splice(dataIndex, 1);
+    setSeries(updatedSeries);
+
+    const updatedLabels = [...labels];
+    updatedLabels.splice(dataIndex, 1);
+    setLabels(updatedLabels);
+  };
+
+  const handleRemoveLabel = (labelIndex) => {
+    const updatedLabels = [...labels];
+    updatedLabels.splice(labelIndex, 1);
+    setLabels(updatedLabels);
+
+    // Also remove corresponding data from series
+    const updatedSeries = [...series];
+    updatedSeries.forEach((serie) => {
+      if (serie.data[labelIndex]) {
+        serie.data.splice(labelIndex, 1);
+      }
+    });
+    setSeries(updatedSeries);
   };
 
   useEffect(() => {
@@ -56,168 +145,113 @@ const DataModal = ({
       const selectedData = data[selectedDataIndex];
       setTitle(selectedData.title);
       setSeries(selectedData.series);
+      setLabels(selectedData.series[0].data.map(({ x }) => x));
     }
   }, [data, selectedDataIndex, showDataModal]);
 
-  const handleItemChange = (
-    index,
-    field,
-    value,
-    isExistingItem = false,
-    seriesIndex
-  ) => {
-    if (isExistingItem) {
-      const updatedSeries = [...series];
-      updatedSeries[seriesIndex].data[index][field] = value;
-      setSeries(updatedSeries);
-    } else {
-      const updatedItems = [...newItems];
-      updatedItems[index][field] = value;
-      setNewItems(updatedItems);
-    }
-  };
-
-  const handleAddNewName = () => {
-    const newSeries = {
-      name: newName,
-      data: newItems,
-    };
-
-    setSeries([...series, newSeries]);
-    setNewName("");
-    setNewItems([{ x: "", y: "" }]);
-  };
-
-  const handleClose = () => {
-    setShowDataModal(false);
-  };
-
-  const handleDeleteItem = (itemIndex, seriesIndex) => {
-    const updatedSeries = [...series];
-    updatedSeries[seriesIndex].data.splice(itemIndex, 1);
-    setSeries(updatedSeries);
-  };
-
   return (
-    <Modal show={showDataModal} onHide={handleClose} className="modal">
+    <Modal show={showDataModal} onHide={handleClose} className="line-modal">
       <Modal.Header closeButton>
-        <Modal.Title>DATA</Modal.Title>
+        <Modal.Title className="modal-title">DATA</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
+        <div className="input-group">
+          <label htmlFor="title" className="input-label">
+            Title
+          </label>
           <input
             type="text"
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            className="input-field"
             placeholder="Chart title"
           />
         </div>
 
-        <h3>Dataset</h3>
-        {series.map((seriesItem, seriesIndex) => (
-          <div key={seriesIndex} className="series-item">
-            <h5>Dataset name: {seriesItem.name}</h5>
-            {seriesItem.data.map((item, itemIndex) => (
-              <div key={itemIndex} className="item">
-                <div className="form-group">
-                  <input
-                    type="text"
-                    id={`x-${seriesIndex}-${itemIndex}`}
-                    value={item.x}
-                    onChange={(e) =>
-                      handleItemChange(
-                        itemIndex,
-                        "x",
-                        e.target.value,
-                        true,
-                        seriesIndex
-                      )
-                    }
-                    placeholder="Label"
-                  />
-                </div>
-                <div className="form-group">
-                  <input
-                    type="number"
-                    id={`y-${seriesIndex}-${itemIndex}`}
-                    value={item.y}
-                    onChange={(e) =>
-                      handleItemChange(
-                        itemIndex,
-                        "y",
-                        e.target.value,
-                        true,
-                        seriesIndex
-                      )
-                    }
-                    placeholder="Value"
-                  />
-                </div>
+        <h3>Labels</h3>
+        {labels.map((label, labelIndex) => (
+          <div key={`label-${labelIndex}`} className="input-group">
+            <input
+              type="text"
+              value={label}
+              onChange={(e) => handleLabelChange(labelIndex, e.target.value)}
+              className="input-field"
+              placeholder={`Label ${labelIndex + 1}`}
+            />
+            <AiOutlineDelete
+              className="icons-remove"
+              onClick={() => handleRemoveLabel(labelIndex)}
+            />
+          </div>
+        ))}
+        <Button variant="primary" onClick={handleAddLabel} className="ml-3">
+          Add Label
+        </Button>
+
+        <h3>Series</h3>
+        {series.map((serie, seriesIndex) => (
+          <div
+            key={`series-${seriesIndex}`}
+            className="input-group serie-group"
+          >
+            <div className="input-group">
+              <input
+                type="text"
+                value={serie.name}
+                onChange={(e) => handleNameChange(seriesIndex, e.target.value)}
+                className="input-field"
+                placeholder={`Series ${seriesIndex + 1} Name`}
+              />
+              <AiOutlineDelete
+                className="icons-remove"
+                onClick={() => handleRemoveSeries(seriesIndex)}
+              />
+            </div>
+
+            {serie.data.map((dataPoint, dataIndex) => (
+              <div key={`data-${dataIndex}`} className="input-group">
+                <input
+                  type="number"
+                  value={dataPoint.y}
+                  onChange={(e) =>
+                    handleDataChange(
+                      seriesIndex,
+                      dataIndex,
+                      "y",
+                      e.target.value
+                    )
+                  }
+                  className="input-field"
+                  placeholder={`Data ${dataIndex + 1}`}
+                />
                 <AiOutlineDelete
                   className="icons-remove"
-                  onClick={() => handleDeleteItem(itemIndex, seriesIndex)}
+                  onClick={() => handleRemoveData(seriesIndex, dataIndex)}
                 />
               </div>
             ))}
+
+            <Button
+              variant="primary"
+              onClick={() => handleAddData(seriesIndex)}
+              className="ml-3"
+            >
+              Add Data
+            </Button>
           </div>
         ))}
 
-        <div className="form-group">
-          <input
-            type="text"
-            id="newName"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="New Name"
-          />
-        </div>
-        {newItems.map((item, index) => (
-          <div key={index} className="item">
-            <div className="form-group">
-              <input
-                type="text"
-                id={`new-x-${index}`}
-                value={item.x}
-                onChange={(e) => handleItemChange(index, "x", e.target.value)}
-                placeholder="Label"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="number"
-                id={`new-y-${index}`}
-                value={item.y}
-                onChange={(e) => handleItemChange(index, "y", e.target.value)}
-                placeholder="Value"
-              />
-            </div>
-          </div>
-        ))}
-        <Button
-          className="add"
-          variant="secondary"
-          onClick={handleAddItem}
-          style={{ marginTop: "0.5rem" }}
-        >
-          Add Item
-        </Button>
-        <Button
-          className="add ml-3"
-          variant="secondary"
-          onClick={handleAddNewName}
-          style={{ marginTop: "0.5rem" }}
-        >
-          Add Dataset
+        <Button variant="primary" onClick={handleAddSeries} className="ml-3">
+          Add Series
         </Button>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleSaveData}>
-          Save
-        </Button>
         <Button variant="secondary" onClick={handleClose}>
-          Cancel
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleSaveData}>
+          Save Data
         </Button>
       </Modal.Footer>
     </Modal>

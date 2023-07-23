@@ -2,9 +2,14 @@
   padding: 10px;
   background: #f9f9f9;
   border-radius: 10px;
-
+  
   .form-group {
     margin-bottom: 15px;
+    display: flex;
+    gap: 10px;  
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: flex-end;
 
     label {
       font-weight: bold;
@@ -13,9 +18,13 @@
     }
 
     .form-switch {
-      align-items: center;
       display: flex;
-      justify-content: space-between;
+      align-items: center;
+      flex-direction: flex-end;
+
+      label {
+        font-weight: bold;
+      };
 
       input {
         margin-left: 5px;
@@ -23,8 +32,12 @@
     }
 
     .form-control {
+      display: flex;
       border: 1px solid #ddd;
       border-radius: 5px;
+      height: 40px;
+      width: 120px;
+    
     }
   }
 }

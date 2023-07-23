@@ -122,6 +122,8 @@ const HomePage = () => {
     },
   };
 
+  console.log("data", data);
+
   return (
     <div className="homepage-container">
       <div className="feature-button">
@@ -147,7 +149,9 @@ const HomePage = () => {
       <div className="chart-and-properties-container">
         {data && data?.length > 0 && (
           <div className="chart-properties">
-            <GroupButton title="Line style" setLineStyle={setLineStyle} />
+            {chartId.id === 1 || chartId.id === 2 || chartId.id === 5 ? (
+              <GroupButton setLineStyle={setLineStyle} />
+            ) : null}
             <ChartPropertiesControl
               properties={chartProperties}
               onPropertiesChange={setChartProperties}
@@ -166,7 +170,6 @@ const HomePage = () => {
             chartId={chartId.id}
             properties={chartProperties}
           />
-          )
         </div>
       </div>
 

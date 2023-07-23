@@ -14,6 +14,8 @@ const ModalSelector = ({
   switch (chartId) {
     case 1:
     case 2:
+    case 3:
+    case 6:
       return (
         <LineModal
           showDataModal={showDataModal}
@@ -23,17 +25,15 @@ const ModalSelector = ({
           selectedIndex={selectedDataIndex}
         />
       );
-    case 3:
-    case 6:
-      return (
-        <DataModal
-          showDataModal={showDataModal}
-          setShowDataModal={setShowDataModal}
-          data={data}
-          setData={setData}
-          selectedDataIndex={selectedDataIndex}
-        />
-      );
+    // return (
+    //   <DataModal
+    //     showDataModal={showDataModal}
+    //     setShowDataModal={setShowDataModal}
+    //     data={data}
+    //     setData={setData}
+    //     selectedDataIndex={selectedDataIndex}
+    //   />
+    // );
     case 4:
       return (
         <PineModal

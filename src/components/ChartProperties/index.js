@@ -1,7 +1,10 @@
 import React from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
+import icons from "../../utils/icons";
 import "./chartProperties.scss";
+
+const { AiOutlineClear } = icons;
 
 const ChartPropertiesControl = ({
   properties,
@@ -9,7 +12,7 @@ const ChartPropertiesControl = ({
   setData,
 }) => {
   return (
-    <Form>
+    <Form className="form">
       <Row>
         <Col>
           <Form.Group controlId="showGrid">
@@ -105,9 +108,9 @@ const ChartPropertiesControl = ({
           </Form.Group>
         </Col>
       </Row>
-      <Row>
+      <Row style={{ marginTop: "10px" }}>
         <Col>
-          <Form.Group controlId="chartBackgroundColor">
+          <Form.Group controlId="chartBackgroundColor" className="form-group ">
             <Form.Label>Background Color</Form.Label>
             <Form.Control
               type="color"
@@ -118,9 +121,10 @@ const ChartPropertiesControl = ({
                   chartBackgroundColor: event.target.value,
                 })
               }
+              className="form-control"
             />
           </Form.Group>
-          <Form.Group controlId="chartFontSize">
+          <Form.Group controlId="chartFontSize" className="form-group ">
             <Form.Label>Font Size</Form.Label>
             <Form.Control
               type="number"
@@ -131,9 +135,10 @@ const ChartPropertiesControl = ({
                   chartFontSize: event.target.value,
                 })
               }
+              className="form-control"
             />
           </Form.Group>
-          <Form.Group controlId="chartFontColor">
+          <Form.Group controlId="chartFontColor" className="form-group ">
             <Form.Label>Font Color</Form.Label>
             <Form.Control
               type="color"
@@ -144,9 +149,10 @@ const ChartPropertiesControl = ({
                   chartFontColor: event.target.value,
                 })
               }
+              className="form-control"
             />
           </Form.Group>
-          <Form.Group controlId="colorPalette">
+          <Form.Group controlId="colorPalette" className="form-group ">
             <Form.Label>Color Palette</Form.Label>
             <Form.Control
               as="select"
@@ -157,6 +163,7 @@ const ChartPropertiesControl = ({
                   colorPalette: event.target.value,
                 })
               }
+              className="form-control"
             >
               <option value="palette1">Palette 1</option>
               <option value="palette2">Palette 2</option>
@@ -164,7 +171,7 @@ const ChartPropertiesControl = ({
               <option value="palette4">Palette 4</option>
             </Form.Control>
           </Form.Group>
-          <Form.Group controlId="strokeWidth">
+          <Form.Group controlId="strokeWidth" className="form-group ">
             <Form.Label>Stroke Width: {properties.strokeWidth || 2}</Form.Label>
             <Form.Control
               type="range"
@@ -177,10 +184,16 @@ const ChartPropertiesControl = ({
                   strokeWidth: event.target.value,
                 })
               }
+              className="form-control"
             />
           </Form.Group>
-          <Button style={{ marginTop: "15px" }} onClick={() => setData([])}>
-            Refresh data
+          <Button style={{ marginTop: "10px" }} onClick={() => setData([])}>
+            <span>
+              <AiOutlineClear className="icons text" /> Refresh data
+            </span>
+            <span>
+              <AiOutlineClear className="icons text" />
+            </span>
           </Button>
         </Col>
       </Row>
