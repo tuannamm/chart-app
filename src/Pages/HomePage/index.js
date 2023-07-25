@@ -5,8 +5,6 @@ import "./homepage.scss";
 import { fabric } from "fabric";
 import { useSelector } from "react-redux";
 
-import GroupButton from "../../components/ButtonGroup";
-
 import { useDownload } from "../../Hooks/useDownload";
 
 import Chart from "../../components/Chart";
@@ -149,13 +147,12 @@ const HomePage = () => {
       <div className="chart-and-properties-container">
         {data && data?.length > 0 && (
           <div className="chart-properties">
-            {chartId.id === 1 || chartId.id === 2 || chartId.id === 5 ? (
-              <GroupButton setLineStyle={setLineStyle} />
-            ) : null}
             <ChartPropertiesControl
               properties={chartProperties}
               onPropertiesChange={setChartProperties}
               setData={setData}
+              chartId={chartId.id}
+              setLineStyle={setLineStyle}
             />
           </div>
         )}

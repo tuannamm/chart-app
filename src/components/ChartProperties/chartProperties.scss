@@ -3,6 +3,7 @@
   background: #f9f9f9;
   border-radius: 10px;
   
+  
   .form-group {
     margin-bottom: 15px;
     display: flex;
@@ -30,14 +31,19 @@
         margin-left: 5px;
       }
     }
-
     .form-control {
       display: flex;
       border: 1px solid #ddd;
       border-radius: 5px;
       height: 40px;
       width: 120px;
-    
     }
+  }
+  button {
+    margin-left: 115px;
+    background-color: rgb(226, 217, 217); 
+    border: none;
+    color: black;
+   
   }
 }
