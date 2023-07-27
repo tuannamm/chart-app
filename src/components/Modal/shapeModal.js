@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 
 import "./shapeModal.scss";
@@ -111,4 +111,4 @@ const ShapeModal = ({
   );
 };
 
-export default ShapeModal;
+export default memo(ShapeModal);

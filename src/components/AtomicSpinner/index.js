@@ -1,5 +1,6 @@
 import AtomicSpinner from "atomic-spinner";
+import { memo } from "react";
 
 const Spinner = ({ props }) => <AtomicSpinner {...props} />;
 
-export default Spinner;
+export default memo(Spinner);

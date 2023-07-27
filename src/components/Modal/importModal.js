@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { memo, useRef } from "react";
 import { Modal, Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
 import { useDispatch } from "react-redux";
@@ -270,4 +270,4 @@ const ExcelImportModal = ({
   );
 };
 
-export default ExcelImportModal;
+export default memo(ExcelImportModal);

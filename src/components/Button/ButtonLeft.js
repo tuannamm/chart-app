@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import DropdownAnnotate from "../Dropdown";
 import constant from "../../utils/constant";
@@ -31,4 +31,4 @@ const ButtonLeft = ({
   );
 };
 
-export default ButtonLeft;
+export default memo(ButtonLeft);

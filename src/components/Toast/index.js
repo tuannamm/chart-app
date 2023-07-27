@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { toast } from "react-toastify";
 
 const Toast = (type, message) => {
@@ -25,4 +26,4 @@ const Toast = (type, message) => {
   }
 };
 
-export default Toast;
+export default memo(Toast);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { useExportExcel } from "../../Hooks/useExportExcel";
 
@@ -52,4 +52,4 @@ const ButtonRight = ({
   );
 };
 
-export default ButtonRight;
+export default memo(ButtonRight);

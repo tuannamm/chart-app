@@ -1,3 +1,4 @@
+import { memo } from "react";
 import "./buttonGroup.scss";
 
 const GroupButton = ({ title, setLineStyle }) => {
@@ -41,4 +42,4 @@ const GroupButton = ({ title, setLineStyle }) => {
   );
 };
 
-export default GroupButton;
+export default memo(GroupButton);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
 import GroupButton from "../ButtonGroup";
@@ -215,4 +215,4 @@ const ChartPropertiesControl = ({
   );
 };
 
-export default ChartPropertiesControl;
+export default memo(ChartPropertiesControl);

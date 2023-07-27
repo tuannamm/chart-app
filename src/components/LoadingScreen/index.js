@@ -1,5 +1,6 @@
 import ReactLoading from "react-loading";
 import "./loadingScreen.scss";
+import { memo } from "react";
 
 const LoadingScreen = (props) => {
   const { type, color, height, width } = props;
@@ -15,4 +16,4 @@ const LoadingScreen = (props) => {
   );
 };
 
-export default LoadingScreen;
+export default memo(LoadingScreen);

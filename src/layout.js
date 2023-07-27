@@ -14,6 +14,7 @@ import User from "./Pages/User";
 
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/Signup";
+import { memo } from "react";
 
 const Layout = () => {
   return (
@@ -35,4 +36,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default memo(Layout);

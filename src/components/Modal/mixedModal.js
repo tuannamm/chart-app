@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 import icons from "../../utils/icons";
@@ -215,4 +215,4 @@ const MixedModal = ({
   );
 };
 
-export default MixedModal;
+export default memo(MixedModal);

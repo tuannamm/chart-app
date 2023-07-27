@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
@@ -211,4 +211,4 @@ const LineModal = ({
   );
 };
 
-export default LineModal;
+export default memo(LineModal);

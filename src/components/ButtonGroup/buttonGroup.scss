@@ -1,8 +1,9 @@
 .btn-group {
-  .btn-check {
+  label {
+    color: black
+  };
+  .btn {
       border-radius: 10px;
-      border: none
-
+      border: 1px solid gray;
   }
- 
 }

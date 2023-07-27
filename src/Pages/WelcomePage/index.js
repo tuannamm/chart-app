@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./welcomePage.scss";
@@ -39,4 +39,4 @@ const WelcomePage = () => {
   );
 };
 
-export default WelcomePage;
+export default memo(WelcomePage);

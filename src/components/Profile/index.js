@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import "./profile.scss";
 
 import icons from "../../utils/icons";
@@ -74,4 +74,4 @@ const Profile = (props) => {
   );
 };
 
-export default Profile;
+export default memo(Profile);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
@@ -144,4 +144,4 @@ const PineModal = ({
   );
 };
 
-export default PineModal;
+export default memo(PineModal);
