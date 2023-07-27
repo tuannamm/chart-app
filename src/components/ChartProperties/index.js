@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { useSelector } from "react-redux";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
 import GroupButton from "../ButtonGroup";
@@ -12,12 +13,13 @@ const ChartPropertiesControl = ({
   properties,
   onPropertiesChange,
   setData,
-  chartId,
   setLineStyle,
 }) => {
+  const chartId = useSelector((state) => state?.chartReducer);
+
   return (
     <div className="form">
-      {chartId === 1 || chartId === 2 || chartId === 5 ? (
+      {chartId.id === 1 || chartId.id === 2 || chartId.id === 5 ? (
         <GroupButton setLineStyle={setLineStyle} />
       ) : null}
       <Form>

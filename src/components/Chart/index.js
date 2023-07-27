@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import ReactApexCharts from "react-apexcharts";
+
 import typeChart from "../../utils/selectTypeChart";
 
 const Chart = ({ data, options, chartId, properties }) => {

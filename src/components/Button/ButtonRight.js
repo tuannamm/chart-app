@@ -4,6 +4,7 @@ import { useExportExcel } from "../../Hooks/useExportExcel";
 
 import icons from "../../utils/icons";
 import constant from "../../utils/constant";
+import { useSelector } from "react-redux";
 
 const { BiDownload, BiImport, BiExport } = icons;
 
@@ -13,9 +14,10 @@ const ButtonRight = ({
   isCanvasVisible,
   handleRemoveCanvas,
   data,
-  chartId,
 }) => {
-  const { exportData } = useExportExcel(chartId);
+  const chartId = useSelector((state) => state?.chartReducer);
+
+  const { exportData } = useExportExcel(chartId.id);
 
   return (
     <div style={{ display: "flex" }}>

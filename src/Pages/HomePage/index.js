@@ -140,7 +140,6 @@ const HomePage = () => {
             isCanvasVisible={isCanvasVisible}
             handleRemoveCanvas={handleCancelClick}
             data={data}
-            chartId={chartId.id}
           />
         </div>
       </div>
@@ -151,7 +150,6 @@ const HomePage = () => {
               properties={chartProperties}
               onPropertiesChange={setChartProperties}
               setData={setData}
-              chartId={chartId.id}
               setLineStyle={setLineStyle}
             />
           </div>

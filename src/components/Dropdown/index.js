@@ -1,9 +1,9 @@
+import { memo } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import icons from "../../utils/icons";
 import "./dropdown.scss";
 import { addShape } from "../../utils/addShape";
-import { memo } from "react";
 
 const {
   IoTextOutline,
