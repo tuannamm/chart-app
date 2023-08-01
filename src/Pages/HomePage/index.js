@@ -126,8 +126,6 @@ const HomePage = () => {
     },
   };
 
-  console.log(data[0]?.series.length);
-
   return (
     <div className="homepage-container">
       <div className="feature-button">

@@ -2,12 +2,14 @@ import React, { useState, useEffect, memo } from "react";
 import { Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
+import Toast from "../Toast";
 import { setChartData } from "../../store/action/chartAction";
+import checkDuplicateLabels from "../../utils/checkDuplicateLabels";
+import hasUndefinedValue from "../../utils/validateInputData";
 
 import icons from "../../utils/icons";
 import constant from "../../utils/constant";
 import "./lineModal.scss";
-import Toast from "../Toast";
 
 const { AiOutlineDelete, AiOutlinePlus } = icons;
 
@@ -25,20 +27,7 @@ const LineModal = ({
   const [series, setSeries] = useState([{ name: "", data: [""] }]);
   const [duplicateWarning, setDuplicateWarning] = useState([]);
 
-  const checkDuplicateLabels = (labelArr) => {
-    const duplicates = [];
-    const uniqueLabels = new Set();
-
-    labelArr.forEach((label, index) => {
-      if (uniqueLabels.has(label)) {
-        duplicates.push(index);
-      } else {
-        uniqueLabels.add(label);
-      }
-    });
-
-    return duplicates;
-  };
+  const hasEmptyInput = hasUndefinedValue(data);
 
   const handleNameChange = (seriesIndex, value) => {
     const updatedSeries = [...series];
@@ -81,6 +70,12 @@ const LineModal = ({
       Toast("error", "Duplicated label");
       return;
     }
+
+    if (hasEmptyInput) {
+      Toast("error", "Having empty input");
+      return;
+    }
+
     const newData = { title, labels, series };
     if (
       selectedIndex !== null &&
