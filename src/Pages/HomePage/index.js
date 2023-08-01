@@ -126,6 +126,8 @@ const HomePage = () => {
     },
   };
 
+  console.log(data);
+
   return (
     <div className="homepage-container">
       <div className="feature-button">

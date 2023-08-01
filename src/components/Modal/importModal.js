@@ -81,9 +81,21 @@ const ExcelImportModal = ({
       const labels = raw_data[1].slice(1);
       const series = raw_data.slice(2).map((row) => {
         const name = row[0];
-        const data = row.slice(1);
+        const data = row.slice(1).map((value) => {
+          const parsedValue = parseFloat(value);
+          return isNaN(parsedValue) ? undefined : parsedValue;
+        });
+
+        if (data.some((value) => value === undefined || value === null)) {
+          return null;
+        }
         return { name, data };
       });
+
+      if (series.some((serie) => serie === null || serie === undefined)) {
+        Toast("error", "Data contains undefined or NaN values");
+        return;
+      }
 
       const data = [
         {
@@ -93,7 +105,7 @@ const ExcelImportModal = ({
         },
       ];
 
-      setData(data);
+      setData(data || []);
       dispatch(setChartData(data));
       setShowImportModal(false);
       Toast("success", "Import successfully!");
