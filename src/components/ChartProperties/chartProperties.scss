@@ -1,13 +1,12 @@
 .form {
-  padding: 10px;
+  padding: 0.625rem; 
   background: #f9f9f9;
-  border-radius: 10px;
-  
-  
+  border-radius: 0.625rem;
+
   .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 0.9375rem;
     display: flex;
-    gap: 10px;  
+    gap: 0.625rem;
     justify-content: space-between;
     align-items: center;
     flex-direction: flex-end;
@@ -15,7 +14,7 @@
     label {
       font-weight: bold;
       color: #333;
-      margin-bottom: 5px;
+      margin-bottom: 0.3125rem;
     }
 
     .form-switch {
@@ -25,25 +24,25 @@
 
       label {
         font-weight: bold;
-      };
+      }
 
       input {
-        margin-left: 5px;
+        margin-left: 0.3125rem;
       }
     }
     .form-control {
       display: flex;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      height: 40px;
-      width: 120px;
+      border: 0.0625rem solid #ddd;
+      border-radius: 0.3125rem;
+      height: 2.5rem;
+      width: 7.5rem;
     }
   }
+
   button {
-    margin-left: 115px;
-    background-color: rgb(226, 217, 217); 
+    margin-left: 7.1875rem; 
+    background-color: rgb(255, 252, 252);
     border: none;
     color: black;
-   
   }
 }

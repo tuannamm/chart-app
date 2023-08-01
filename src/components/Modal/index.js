@@ -15,7 +15,6 @@ const ModalSelector = ({
     case 1:
     case 2:
     case 3:
-    case 6:
       return (
         <LineModal
           showDataModal={showDataModal}
@@ -25,15 +24,6 @@ const ModalSelector = ({
           selectedIndex={selectedDataIndex}
         />
       );
-    // return (
-    //   <DataModal
-    //     showDataModal={showDataModal}
-    //     setShowDataModal={setShowDataModal}
-    //     data={data}
-    //     setData={setData}
-    //     selectedDataIndex={selectedDataIndex}
-    //   />
-    // );
     case 4:
       return (
         <PineModal
@@ -47,6 +37,16 @@ const ModalSelector = ({
     case 5:
       return (
         <MixedModal
+          showDataModal={showDataModal}
+          setShowDataModal={setShowDataModal}
+          data={data}
+          setData={setData}
+          selectedDataIndex={selectedDataIndex}
+        />
+      );
+    case 6:
+      return (
+        <DataModal
           showDataModal={showDataModal}
           setShowDataModal={setShowDataModal}
           data={data}

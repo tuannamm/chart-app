@@ -3,6 +3,20 @@
   max-height: 90vh;
   overflow-y: auto; 
   
+  .icons-add {
+    cursor: pointer;
+    color: #a3a5a7; 
+    font-size: 25px; 
+    padding: 5px;
+    border: 1px solid #a3a5a7;
+    border-radius: 5px;
+    margin: 0 0 8px 45%;
+  }
+  
+  .icons-add:hover {
+    background-color: #f0f0f0;
+  }
+  
   .modal-header {
     background-color: #f5f5f5;
     border-bottom: 1px solid #dee2e6;
@@ -10,10 +24,12 @@
 
   .modal-title {
     font-size: 1.5rem;
-    margin-bottom: 1rem;
   }
 
   .modal-body {
+    .dataset-name {
+      font-weight: bold; 
+    }
     .input-group {
       display: flex;
       flex-direction: column;
@@ -25,8 +41,9 @@
       }
        .icons-remove {
           position: absolute;
-          right: 25px;
-          bottom: 13px;
+          color: rgb(239, 231, 231);
+          right: 1.563rem;
+          bottom: 0.813rem;
           cursor: pointer;
           &:hover {
             color: red
@@ -39,6 +56,10 @@
         border: 1px solid #ced4da;
         font-size: 1rem;
       }
+      .warning {
+        border: 2px solid #ff0000; /* Red border for warning */
+        background-color: #ffebee; /* Light red background for warning */
+      }
     }
 
     .serie-group {
@@ -46,6 +67,15 @@
       border: 1px solid #dee2e6;
       border-radius: 5px;
       padding: 1rem;
+      .dataset {
+        padding: 0.5rem;
+        border-right: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+
+        &:last-child {
+          border-right: none;
+        }
+      }
     }
   }
 }

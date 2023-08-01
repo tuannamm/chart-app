@@ -26,4 +26,4 @@ const Toast = (type, message) => {
   }
 };
 
-export default memo(Toast);
+export default Toast;

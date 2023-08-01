@@ -4,7 +4,7 @@
     color: #333;
     .modal-title {
       font-weight: bold;
-      font-size: 1.2rem; // 1.2em -> 1.2rem
+      font-size: 1.2rem;
     }
   }
 
@@ -12,13 +12,13 @@
     .input-group {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 0.625rem; // 10px -> 0.625rem
+      margin-bottom: 0.625rem;
       .input-field {
         flex: 1;
-        margin-right: 0.625rem; // 10px -> 0.625rem
-        padding: 0.625rem; // 10px -> 0.625rem
-        border: 0.0625rem solid #ccc; // 1px -> 0.0625rem
-        border-radius: 0.25rem; // 4px -> 0.25rem
+        margin-right: 0.625rem;
+        padding: 0.625rem;
+        border: 0.0625rem solid #ccc;
+        border-radius: 0.25rem;
       }
       
       .icons-remove {
@@ -28,10 +28,10 @@
     }
 
     .serie-group {
-      margin-bottom: 1.25rem; // 20px -> 1.25rem
-      border: 0.0625rem solid #ccc; // 1px -> 0.0625rem
-      border-radius: 0.25rem; // 4px -> 0.25rem
-      padding: 1.25rem; // 20px -> 1.25rem
+      margin-bottom: 1.25rem;
+      border: 0.0625rem solid #ccc;
+      border-radius: 0.25rem;
+      padding: 1.25rem;
 
       .input-group:first-child {
         justify-content: space-between;
@@ -41,9 +41,9 @@
     button {
       display: block;
       width: 100%;
-      padding: 0.625rem; // 10px -> 0.625rem
+      padding: 0.625rem;
       border: none;
-      border-radius: 0.25rem; // 4px -> 0.25rem
+      border-radius: 0.25rem;
       background: #007bff;
       color: white;
       cursor: pointer;
@@ -56,7 +56,7 @@
   .modal-footer {
     button {
       width: auto;
-      margin-right: 0.625rem; // 10px -> 0.625rem
+      margin-right: 0.625rem;
       &:last-child {
         margin-right: 0;
       }
@@ -64,21 +64,21 @@
   }
 
 
-  @media (max-width: 576px) {  // for screens smaller than 576px
+  @media (max-width: 576px) {
     .modal-header {
       .modal-title {
-        font-size: 1.5rem;  // increase font size for small screens
+        font-size: 1.5rem;
       }
     }
 
     .modal-body {
       .input-group {
-        flex-direction: column;  // stack the elements vertically
+        flex-direction: column;
         margin-bottom: 1rem;
 
         .input-field {
-          margin-right: 0;  // remove the right margin for small screens
-          margin-bottom: 0.625rem;  // add bottom margin instead
+          margin-right: 0;
+          margin-bottom: 0.625rem;
         }
       }
 
@@ -93,8 +93,8 @@
 
     .modal-footer {
       button {
-        margin-right: 0;  // remove the right margin for small screens
-        margin-bottom: 0.625rem;  // add bottom margin instead
+        margin-right: 0;
+        margin-bottom: 0.625rem;
       }
     }
   }

@@ -1,5 +1,7 @@
 import * as XLSX from "xlsx";
 
+import Toast from "../components/Toast";
+
 const downloadSampleFile = (chartId, downloadXlsxFile) => {
   let ws;
   const wb = XLSX.utils.book_new();
@@ -16,6 +18,7 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
       ]);
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "LineChartSample.xlsx");
+      Toast("success", "Download successfully!");
       break;
     case 3:
     case 6:
@@ -28,6 +31,7 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
       ]);
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "ColumnChartSample.xlsx");
+      Toast("success", "Download successfully!");
       break;
     case 4:
       ws = XLSX.utils.aoa_to_sheet([
@@ -38,6 +42,7 @@ const downloadSampleFile = (chartId, downloadXlsxFile) => {
       ]);
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       downloadXlsxFile(wb, "PieChartSample.xlsx");
+      Toast("success", "Download successfully!");
       break;
     default:
       return;

@@ -14,7 +14,12 @@ import {
   BsTriangle,
   BsPencil,
 } from "react-icons/bs";
-import { IoCreateOutline, IoShapesOutline } from "react-icons/io5";
+import {
+  IoCreateOutline,
+  IoShapesOutline,
+  IoAddCircleOutline,
+  IoTextOutline,
+} from "react-icons/io5";
 import {
   FaChartPie,
   FaBars,
@@ -26,9 +31,10 @@ import {
   AiOutlineLoading3Quarters,
   AiOutlineDelete,
   AiOutlineClear,
+  AiOutlinePlus,
+  AiOutlineSetting,
 } from "react-icons/ai";
 import { GiStraightPipe } from "react-icons/gi";
-import { IoTextOutline } from "react-icons/io5";
 import { MdArrowForward } from "react-icons/md";
 import { GrTooltip } from "react-icons/gr";
 
@@ -60,6 +66,9 @@ const icons = {
   IoShapesOutline,
   GrTooltip,
   AiOutlineClear,
+  IoAddCircleOutline,
+  AiOutlinePlus,
+  AiOutlineSetting,
 };
 
 export default icons;

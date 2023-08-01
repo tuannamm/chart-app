@@ -42,6 +42,8 @@ const constant = {
   export_data: "Export data",
   download: "Download",
   cancel: "Cancel",
+  save: "Save",
+  refresh_data: "Refresh data",
 };
 
 export default constant;

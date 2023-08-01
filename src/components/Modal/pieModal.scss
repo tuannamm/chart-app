@@ -1,11 +1,19 @@
 .line-modal {
-  .modal-header {
-  }
-
   .modal-body {
-    .input-group {
-    }
-
+     
+  .icons-add {
+    cursor: pointer;
+    color: #a3a5a7; 
+    font-size: 25px; 
+    padding: 5px;
+    border: 1px solid #a3a5a7;
+    border-radius: 5px;
+    margin: 0 0 8px 45%;
+  }
+  
+  .icons-add:hover {
+    background-color: #f0f0f0;
+  }
     .pair-group {
       display: flex;
       justify-content: space-between;
@@ -28,13 +36,12 @@
       position: relative;
       top: 0.8rem;
       bottom: 1rem;
+      margin-left: 0.5rem;
+      color: rgb(239, 231, 231);
       cursor: pointer;
       &:hover {
         color:red;
       }
     }
-  }
-
-  .modal-footer {
   }
 }

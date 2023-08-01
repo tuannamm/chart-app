@@ -1,5 +1,6 @@
 import { memo } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+import { useTranslation } from "react-i18next";
 
 import icons from "../../utils/icons";
 import "./dropdown.scss";
@@ -23,6 +24,8 @@ const DropdownAnnotate = ({
   handleButtonClick,
   canvasRef,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Dropdown
       onSelect={(selectedKey) => {
@@ -36,7 +39,7 @@ const DropdownAnnotate = ({
         style={{ backgroundColor: "white" }}
       >
         <span>
-          <IoShapesOutline /> Annotation
+          <IoShapesOutline /> Annotate
         </span>
         <span>
           <IoShapesOutline />

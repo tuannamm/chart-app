@@ -2,11 +2,14 @@ import React, { useState, useEffect, memo } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
-import "./pieModal.scss";
-import icons from "../../utils/icons";
 import { setChartData } from "../../store/action/chartAction";
 
-const { AiOutlineDelete } = icons;
+import constant from "../../utils/constant";
+import icons from "../../utils/icons";
+
+import "./pieModal.scss";
+
+const { AiOutlineDelete, AiOutlinePlus } = icons;
 
 const PineModal = ({
   showDataModal,
@@ -64,6 +67,24 @@ const PineModal = ({
     dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
+
+  useEffect(() => {
+    if (showDataModal) {
+      const index = selectedIndex !== null ? selectedIndex : 0;
+      if (index >= 0 && index < data.length) {
+        const selectedData = data[index];
+        setTitle(selectedData.title);
+        const pairs = selectedData.labels.map((label, i) => ({
+          label: label,
+          data: selectedData.series[i],
+        }));
+        setLabelDataPairs(pairs);
+      } else {
+        setTitle("");
+        setLabelDataPairs([{ label: "", data: "" }]);
+      }
+    }
+  }, [data, selectedIndex, showDataModal]);
 
   const handleClose = () => {
     setShowDataModal(false);
@@ -128,9 +149,11 @@ const PineModal = ({
           </div>
         ))}
 
-        <Button variant="secondary" onClick={handleAddPair}>
-          Add Label
-        </Button>
+        <AiOutlinePlus
+          className="icons-add"
+          onClick={handleAddPair}
+          style={{ marginTop: "0.625rem" }}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSaveData}>

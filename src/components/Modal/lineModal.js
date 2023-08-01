@@ -1,12 +1,15 @@
 import React, { useState, useEffect, memo } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
-import "./lineModal.scss";
-import icons from "../../utils/icons";
 import { setChartData } from "../../store/action/chartAction";
 
-const { AiOutlineDelete } = icons;
+import icons from "../../utils/icons";
+import constant from "../../utils/constant";
+import "./lineModal.scss";
+import Toast from "../Toast";
+
+const { AiOutlineDelete, AiOutlinePlus } = icons;
 
 const LineModal = ({
   showDataModal,
@@ -15,10 +18,27 @@ const LineModal = ({
   setData,
   selectedIndex,
 }) => {
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [labels, setLabels] = useState([""]);
   const [series, setSeries] = useState([{ name: "", data: [""] }]);
-  const dispatch = useDispatch();
+  const [duplicateWarning, setDuplicateWarning] = useState([]);
+
+  const checkDuplicateLabels = (labelArr) => {
+    const duplicates = [];
+    const uniqueLabels = new Set();
+
+    labelArr.forEach((label, index) => {
+      if (uniqueLabels.has(label)) {
+        duplicates.push(index);
+      } else {
+        uniqueLabels.add(label);
+      }
+    });
+
+    return duplicates;
+  };
 
   const handleNameChange = (seriesIndex, value) => {
     const updatedSeries = [...series];
@@ -35,17 +55,14 @@ const LineModal = ({
   const handleLabelChange = (labelIndex, value) => {
     const updatedLabels = [...labels];
     updatedLabels[labelIndex] = value;
+    setDuplicateWarning(checkDuplicateLabels(updatedLabels));
     setLabels(updatedLabels);
   };
 
   const handleAddData = (seriesIndex) => {
-    if (series[seriesIndex].data.length < labels.length) {
-      const updatedSeries = [...series];
-      updatedSeries[seriesIndex].data.push("");
-      setSeries(updatedSeries);
-    } else {
-      alert("Cannot add more data points than labels");
-    }
+    const updatedSeries = [...series];
+    updatedSeries[seriesIndex].data.push("");
+    setSeries(updatedSeries);
   };
 
   const handleAddSeries = () => {
@@ -57,6 +74,13 @@ const LineModal = ({
   };
 
   const handleSaveData = () => {
+    const duplicatedLabels = checkDuplicateLabels(labels);
+
+    if (duplicatedLabels.length > 0) {
+      setDuplicateWarning(duplicatedLabels);
+      Toast("error", "Duplicated label");
+      return;
+    }
     const newData = { title, labels, series };
     if (
       selectedIndex !== null &&
@@ -70,6 +94,7 @@ const LineModal = ({
       setData([newData]);
     }
     dispatch(setChartData([newData]));
+    Toast("success", "Create chart successfully");
     setShowDataModal(false);
   };
 
@@ -97,6 +122,7 @@ const LineModal = ({
 
   useEffect(() => {
     if (showDataModal) {
+      setDuplicateWarning([]);
       if (
         selectedIndex !== null &&
         selectedIndex >= 0 &&
@@ -110,8 +136,20 @@ const LineModal = ({
     }
   }, [data, selectedIndex, showDataModal]);
 
+  useEffect(() => {
+    if (showDataModal) {
+      const index = selectedIndex !== null ? selectedIndex : 0;
+      if (index >= 0 && index < data.length) {
+        const selectedData = data[index];
+        setTitle(selectedData.title);
+        setLabels(selectedData.labels);
+        setSeries(selectedData.series);
+      }
+    }
+  }, [data, selectedIndex, showDataModal]);
+
   return (
-    <Modal show={showDataModal} onHide={handleClose} className="line-modal ">
+    <Modal show={showDataModal} onHide={handleClose} className="line-modal">
       <Modal.Header closeButton className="modal-header">
         <Modal.Title className="modal-title">Data</Modal.Title>
       </Modal.Header>
@@ -132,7 +170,9 @@ const LineModal = ({
               type="text"
               value={label}
               onChange={(e) => handleLabelChange(labelIndex, e.target.value)}
-              className="input-field"
+              className={`input-field ${
+                duplicateWarning.includes(labelIndex) ? "warning" : ""
+              }`}
               placeholder={`Label ${labelIndex + 1}`}
             />
             <AiOutlineDelete
@@ -142,69 +182,66 @@ const LineModal = ({
           </div>
         ))}
 
-        <Button
-          variant="secondary"
-          style={{ marginBottom: "0.5rem" }}
-          onClick={handleAddLabel}
-        >
-          Add Label
-        </Button>
+        <AiOutlinePlus className="icons-add" onClick={handleAddLabel} />
 
-        {series.map((serie, seriesIndex) => (
-          <div key={`series-${seriesIndex}`} className="serie-group">
-            <div className="input-group">
-              <input
-                type="text"
-                value={serie.name}
-                onChange={(e) => handleNameChange(seriesIndex, e.target.value)}
-                className="input-field"
-                placeholder="Name"
-              />
-
-              <AiOutlineDelete
-                className="icons-remove"
-                onClick={() => handleRemoveSeries(seriesIndex)}
-              />
-            </div>
-
-            {serie.data.map((value, dataIndex) => (
-              <div key={`data-${dataIndex}`} className="input-group">
+        <Row className="serie-group">
+          {series.map((serie, seriesIndex) => (
+            <Col key={`series-${seriesIndex}`} md={4} className="dataset">
+              <div className="input-group">
                 <input
-                  type="number"
-                  value={value}
+                  type="text"
+                  value={serie.name}
                   onChange={(e) =>
-                    handleDataChange(seriesIndex, dataIndex, e.target.value)
+                    handleNameChange(seriesIndex, e.target.value)
                   }
-                  className="input-field"
-                  placeholder={`Data ${dataIndex + 1}`}
+                  className="input-field input-field-name"
+                  placeholder={`Dataset ${seriesIndex + 1}`}
                 />
                 <AiOutlineDelete
                   className="icons-remove"
-                  onClick={() => handleRemoveData(seriesIndex, dataIndex)}
+                  onClick={() => handleRemoveSeries(seriesIndex)}
                 />
               </div>
-            ))}
-
-            <Button
-              variant="secondary"
-              onClick={() => handleAddData(seriesIndex)}
-              disabled={series[seriesIndex].data.length >= labels.length}
-            >
-              Add Data
-            </Button>
-          </div>
-        ))}
-
-        <Button variant="secondary" onClick={handleAddSeries}>
-          Add Dataset
-        </Button>
+              {serie.data.map((value, dataIndex) => (
+                <div key={`data-${dataIndex}`} className="input-group">
+                  <input
+                    type="number"
+                    value={value}
+                    onChange={(e) =>
+                      handleDataChange(seriesIndex, dataIndex, e.target.value)
+                    }
+                    className="input-field"
+                    placeholder={`Data ${dataIndex + 1}`}
+                  />
+                  <AiOutlineDelete
+                    className="icons-remove"
+                    onClick={() => handleRemoveData(seriesIndex, dataIndex)}
+                  />
+                </div>
+              ))}
+              {series[seriesIndex].data.length < labels.length && (
+                <AiOutlinePlus
+                  className="icons-add"
+                  onClick={() => handleAddData(seriesIndex)}
+                />
+              )}
+            </Col>
+          ))}
+          <Col>
+            <AiOutlinePlus
+              className="icons-add"
+              onClick={handleAddSeries}
+              style={{ marginTop: "0.625rem" }}
+            />
+          </Col>
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSaveData}>
-          Save
+          {constant.save}
         </Button>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          {constant.close}
         </Button>
       </Modal.Footer>
     </Modal>

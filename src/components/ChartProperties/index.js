@@ -5,6 +5,7 @@ import { Form, Row, Col, Button } from "react-bootstrap";
 import GroupButton from "../ButtonGroup";
 
 import icons from "../../utils/icons";
+import constant from "../../utils/constant";
 import "./chartProperties.scss";
 
 const { AiOutlineClear } = icons;
@@ -22,7 +23,7 @@ const ChartPropertiesControl = ({
       {chartId.id === 1 || chartId.id === 2 || chartId.id === 5 ? (
         <GroupButton setLineStyle={setLineStyle} />
       ) : null}
-      <Form>
+      <Form style={{ marginTop: "0.625rem" }}>
         <Row>
           <Col>
             <Form.Group controlId="showGrid">
@@ -204,7 +205,8 @@ const ChartPropertiesControl = ({
             </Form.Group>
             <Button onClick={() => setData([])}>
               <span>
-                <AiOutlineClear className="icons text" /> Refresh data
+                <AiOutlineClear className="icons text" />{" "}
+                {constant.refresh_data}
               </span>
               <span>
                 <AiOutlineClear className="icons text" />

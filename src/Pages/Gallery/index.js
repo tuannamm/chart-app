@@ -1,17 +1,18 @@
 import React, { memo, useEffect, useState } from "react";
-
-import "./gallery.scss";
-import "../../components/Header/header.scss";
 import { NavLink, useNavigate } from "react-router-dom";
-import Card from "react-bootstrap/Card";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import Card from "react-bootstrap/Card";
 
 import Setting from "../../Setting/setting";
 import Spinner from "../../components/AtomicSpinner";
+import { setChartId } from "../../store/action/chartAction";
+
 import constant from "../../utils/constant";
 import icons from "../../utils/icons";
-import { setChartId } from "../../store/action/chartAction";
+
+import "./gallery.scss";
+import "../../components/Header/header.scss";
 
 const { FaChartPie } = icons;
 

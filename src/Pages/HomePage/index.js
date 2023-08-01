@@ -1,31 +1,30 @@
 import React, { useState, useRef, useEffect, memo } from "react";
-
-import "./homepage.scss";
-
 import { fabric } from "fabric";
 import { useSelector } from "react-redux";
-
-import { useDownload } from "../../Hooks/useDownload";
 
 import Chart from "../../components/Chart";
 import ShapeModal from "../../components/Modal/shapeModal";
 import ModalSelector from "../../components/Modal";
 import ExcelImportModal from "../../components/Modal/importModal";
+import ChartPropertiesModal from "../../components/Modal/propertiesModal";
 import ButtonLeft from "../../components/Button/ButtonLeft";
 import ButtonRight from "../../components/Button/ButtonRight";
+import ChartPropertiesControl from "../../components/ChartProperties";
 
+import { useDownload } from "../../Hooks/useDownload";
 import { useClearCanvas } from "../../Hooks/useClearCanvas";
 import { useShapeDrawingMode } from "../../Hooks/useDrawing";
 import { useKeyboardInteractions } from "../../Hooks/useRemoveShape";
 import { useCanvasDoubleClick } from "../../Hooks/useCustomShape";
 
-import ChartPropertiesControl from "../../components/ChartProperties";
+import "./homepage.scss";
 
 const HomePage = () => {
   const chartRef = useRef(null);
   const canvasRef = useRef(null);
 
   const [showDataModal, setShowDataModal] = useState(false);
+  const [showPropertyModal, setShowPropertyModal] = useState(false);
   const [isCanvasVisible, setCanvasVisible] = useState(false);
   const [selectedDataIndex, setSelectedDataIndex] = useState(null);
   const [lineStyle, setLineStyle] = useState("smooth");
@@ -53,6 +52,9 @@ const HomePage = () => {
   const [data, setData] = useState(dataChart || []);
 
   const downloadScreenshot = useDownload(chartRef, data);
+
+  const isBiggerChart = data && data[0]?.series.length >= 10;
+  const bigger = isBiggerChart ? "chart-container-bigger" : "chart-container";
 
   const handleButtonClick = () => {
     if (!isCanvasVisible) {
@@ -90,6 +92,10 @@ const HomePage = () => {
     setShowDataModal(true);
   };
 
+  const handleShowPropertyModal = () => {
+    setShowPropertyModal(true);
+  };
+
   useEffect(() => {
     if (selectedShape !== "freeDraw" && canvasRef.current) {
       canvasRef.current.isDrawingMode = false;
@@ -120,7 +126,7 @@ const HomePage = () => {
     },
   };
 
-  console.log("data", data);
+  console.log(data[0]?.series.length);
 
   return (
     <div className="homepage-container">
@@ -131,6 +137,7 @@ const HomePage = () => {
             canvasRef={canvasRef}
             handleButtonClick={handleButtonClick}
             handleShowDataModal={handleShowDataModal}
+            handleShowPropertyModal={handleShowPropertyModal}
           />
         </div>
         <div className="feature-button-right">
@@ -144,7 +151,7 @@ const HomePage = () => {
         </div>
       </div>
       <div className="chart-and-properties-container">
-        {data && data?.length > 0 && (
+        {data && data[0]?.series.length < 10 && (
           <div className="chart-properties">
             <ChartPropertiesControl
               properties={chartProperties}
@@ -154,11 +161,7 @@ const HomePage = () => {
             />
           </div>
         )}
-        <div
-          className="chart-container"
-          ref={chartRef}
-          style={{ position: "relative" }}
-        >
+        <div className={bigger} ref={chartRef} style={{ position: "relative" }}>
           <Chart
             data={data}
             options={chartOptions}
@@ -175,6 +178,15 @@ const HomePage = () => {
         data={data}
         setData={setData}
         selectedDataIndex={selectedDataIndex}
+      />
+
+      <ChartPropertiesModal
+        showPropertyModal={showPropertyModal}
+        setShowPropertyModal={setShowPropertyModal}
+        properties={chartProperties}
+        onPropertiesChange={setChartProperties}
+        setData={setData}
+        setLineStyle={setLineStyle}
       />
 
       <ShapeModal
