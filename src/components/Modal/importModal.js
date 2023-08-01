@@ -1,4 +1,4 @@
-import React, { memo, useRef } from "react";
+import React, { memo, useRef, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
 import { useDispatch } from "react-redux";
@@ -21,6 +21,7 @@ const ExcelImportModal = ({
   const dispatch = useDispatch();
   const dropRef = useRef();
   const fileInputRef = useRef();
+  const [importedData, setImportedData] = useState(null);
 
   const downloadXlsxFile = (workbook, fileName) => {
     const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
@@ -106,6 +107,7 @@ const ExcelImportModal = ({
       ];
 
       setData(data || []);
+      setImportedData({ title, labels, series });
       dispatch(setChartData(data));
       setShowImportModal(false);
       Toast("success", "Import successfully!");
@@ -236,6 +238,36 @@ const ExcelImportModal = ({
     handleFileUpload(e);
   };
 
+  const renderTable = () => {
+    if (!importedData) return null;
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            {importedData.labels.map((label, index) => (
+              <th key={index}>Label {index + 1}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{importedData.title}</td>
+            {importedData.series.map((serie, seriesIndex) => (
+              <td key={seriesIndex}>
+                {serie.name}
+                {serie.data.map((value, dataIndex) => (
+                  <div key={dataIndex}>{value}</div>
+                ))}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+    );
+  };
+
   return (
     <Modal show={showImportModal} onHide={() => setShowImportModal(false)}>
       <Modal.Header closeButton>
@@ -271,6 +303,7 @@ const ExcelImportModal = ({
             onChange={handleFileUpload}
             style={{ display: "none" }}
           />
+          {renderTable()}
         </div>
       </Modal.Body>
       <Modal.Footer>
