@@ -1,12 +1,14 @@
 import React, { useState, useEffect, memo } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-
 import { setChartData } from "../../store/action/chartAction";
+
+import Toast from "../Toast";
+import checkDuplicateLabels from "../../utils/checkDuplicateLabels";
+import hasUndefinedValue from "../../utils/validateInputData";
 
 import constant from "../../utils/constant";
 import icons from "../../utils/icons";
-
 import "./pieModal.scss";
 
 const { AiOutlineDelete, AiOutlinePlus } = icons;
@@ -18,15 +20,21 @@ const PineModal = ({
   setData,
   selectedIndex,
 }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [labelDataPairs, setLabelDataPairs] = useState([
     { label: "", data: "" },
   ]);
-  const dispatch = useDispatch();
+  const [duplicateWarning, setDuplicateWarning] = useState([]);
+
+  const hasEmptyInput = hasUndefinedValue(data);
 
   const handleLabelChange = (index, value) => {
     const updatedPairs = [...labelDataPairs];
     updatedPairs[index].label = value;
+    setDuplicateWarning(
+      checkDuplicateLabels(updatedPairs.map((pair) => pair.label))
+    );
     setLabelDataPairs(updatedPairs);
   };
 
@@ -47,6 +55,21 @@ const PineModal = ({
   };
 
   const handleSaveData = () => {
+    const duplicatedLabels = checkDuplicateLabels(
+      labelDataPairs.map((pair) => pair.label)
+    );
+
+    if (duplicatedLabels.length > 0) {
+      setDuplicateWarning(duplicatedLabels);
+      Toast("error", "Duplicated label");
+      return;
+    }
+
+    if (hasEmptyInput) {
+      Toast("error", "Having empty input");
+      return;
+    }
+
     const newData = {
       title,
       labels: labelDataPairs.map((pair) => pair.label),
@@ -127,7 +150,9 @@ const PineModal = ({
                 type="text"
                 value={pair.label}
                 onChange={(e) => handleLabelChange(index, e.target.value)}
-                className="input-field"
+                className={`input-field ${
+                  duplicateWarning.includes(index) ? "warning" : ""
+                }`}
                 placeholder={`Label ${index + 1}`}
               />
             </div>
@@ -157,10 +182,10 @@ const PineModal = ({
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleSaveData}>
-          Save
+          {constant.save}
         </Button>
         <Button variant="secondary" onClick={handleClose}>
-          Close
+          {constant.close}
         </Button>
       </Modal.Footer>
     </Modal>

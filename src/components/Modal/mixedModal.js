@@ -1,10 +1,12 @@
 import React, { useState, useEffect, memo } from "react";
 import { Modal, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+
+import { setChartData } from "../../store/action/chartAction";
 
 import icons from "../../utils/icons";
 import "./mixedModal.scss";
-import { useDispatch } from "react-redux";
-import { setChartData } from "../../store/action/chartAction";
+import checkDuplicateLabels from "../../utils/checkDuplicateLabels";
 
 const { AiOutlineDelete } = icons;
 
@@ -15,13 +17,14 @@ const MixedModal = ({
   setData,
   selectedIndex,
 }) => {
+  const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [labels, setLabels] = useState([""]);
   const [series, setSeries] = useState([
     { name: "", type: "line", data: [""] },
   ]);
-
-  const dispatch = useDispatch();
+  const [duplicateWarning, setDuplicateWarning] = useState([]);
 
   useEffect(() => {
     if (showDataModal) {
@@ -115,6 +118,10 @@ const MixedModal = ({
     setLabels(updatedLabels);
   };
 
+  const isDataLengthExceedLabels = (seriesIndex) => {
+    return series[seriesIndex]?.data.length < labels.length;
+  };
+
   return (
     <Modal show={showDataModal} onHide={handleClose} className="mixed-modal">
       <Modal.Header closeButton className="modal-header">
@@ -137,7 +144,9 @@ const MixedModal = ({
               type="text"
               value={label}
               onChange={(e) => handleLabelChange(labelIndex, e.target.value)}
-              className="input-field"
+              className={`input-field ${
+                duplicateWarning[labelIndex] ? "warning" : ""
+              }`}
               placeholder={`Label ${labelIndex}`}
             />
             <AiOutlineDelete
@@ -156,13 +165,13 @@ const MixedModal = ({
             <div className="input-group">
               <input
                 type="text"
-                value={serie.name}
+                value={serie?.name}
                 onChange={(e) => handleNameChange(seriesIndex, e.target.value)}
                 className="input-field"
                 placeholder="Name"
               />
               <select
-                value={serie.type}
+                value={serie?.type}
                 onChange={(e) => handleTypeChange(seriesIndex, e.target.value)}
                 className="select-field"
               >
@@ -176,7 +185,7 @@ const MixedModal = ({
               />
             </div>
 
-            {serie.data.map((value, dataIndex) => (
+            {serie?.data.map((value, dataIndex) => (
               <div key={dataIndex} className="input-group">
                 <input
                   type="number"
@@ -193,19 +202,15 @@ const MixedModal = ({
                 />
               </div>
             ))}
-
-            <Button
-              variant="secondary"
-              onClick={() => handleAddData(seriesIndex)}
-            >
-              Add Data
-            </Button>
+            {isDataLengthExceedLabels(seriesIndex) ? (
+              <Button onClick={() => handleAddData(seriesIndex)}>
+                Add Data
+              </Button>
+            ) : null}
           </div>
         ))}
 
-        <Button variant="secondary" onClick={handleAddSeries}>
-          Add Dataset
-        </Button>
+        <Button onClick={handleAddSeries}>Add Dataset</Button>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleSaveData}>Save</Button>

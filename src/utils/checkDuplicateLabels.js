@@ -1,16 +1,16 @@
-const checkDuplicateLabels = (labelArr) => {
-  const duplicates = [];
+const checkDuplicateLabels = (labels) => {
+  const duplicateIndices = [];
   const uniqueLabels = new Set();
 
-  labelArr.forEach((label, index) => {
+  labels.forEach((label, index) => {
     if (uniqueLabels.has(label)) {
-      duplicates.push(index);
+      duplicateIndices.push(index);
     } else {
       uniqueLabels.add(label);
     }
   });
 
-  return duplicates;
+  return duplicateIndices;
 };
 
 export default checkDuplicateLabels;

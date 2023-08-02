@@ -1,8 +1,8 @@
 const hasUndefinedValue = (data) => {
-  return data.some(
+  return data?.some(
     (item) =>
       item.labels.includes(undefined || "") ||
-      item.series.some((serie) => serie.data.includes(undefined || ""))
+      item.series.some((serie) => serie?.data?.includes(undefined || ""))
   );
 };
 

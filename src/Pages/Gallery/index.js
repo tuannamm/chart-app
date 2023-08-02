@@ -60,14 +60,6 @@ const Gallery = () => {
   const dispatch = useDispatch();
   const [loadingScreen, setLoadingScreen] = useState(undefined);
 
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  const handleSignUp = () => {
-    navigate("/signup");
-  };
-
   useEffect(() => {
     setTimeout(() => {
       setLoadingScreen(true);
@@ -100,12 +92,6 @@ const Gallery = () => {
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto"></Nav>
                 <Nav>
-                  <button className="btn-login" onClick={() => handleLogin()}>
-                    {constant.log_in}
-                  </button>
-                  <button className="btn-signup" onClick={() => handleSignUp()}>
-                    {constant.sign_up}
-                  </button>
                   <Setting />
                 </Nav>
               </Navbar.Collapse>

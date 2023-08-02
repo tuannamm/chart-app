@@ -3,11 +3,12 @@ import { Modal, Button } from "react-bootstrap";
 import * as XLSX from "xlsx";
 import { useDispatch } from "react-redux";
 
-import icons from "../../utils/icons";
 import { setChartData } from "../../store/action/chartAction";
 import downloadSampleFile from "../../utils/downloadChartSample";
 import Toast from "../Toast";
 
+import icons from "../../utils/icons";
+import constant from "../../utils/constant";
 import "./importModal.scss";
 
 const { BiDownload } = icons;
@@ -86,7 +87,6 @@ const ExcelImportModal = ({
           const parsedValue = parseFloat(value);
           return isNaN(parsedValue) ? undefined : parsedValue;
         });
-
         if (data.some((value) => value === undefined || value === null)) {
           return null;
         }
@@ -117,7 +117,6 @@ const ExcelImportModal = ({
 
   const handlePieChartFile = (event) => {
     let file = event.target.files[0];
-
     if (
       ![
         "application/vnd.ms-excel",
@@ -127,7 +126,6 @@ const ExcelImportModal = ({
       Toast("error", "Invalid file input, select an Excel file");
       return;
     }
-
     const reader = new FileReader();
     reader.onload = (evt) => {
       const bstr = evt.target.result;
@@ -143,10 +141,20 @@ const ExcelImportModal = ({
       const series = [];
 
       for (let i = 1; i < raw_data.length; i++) {
-        labels.push(raw_data[i][0]);
-        series.push(parseInt(raw_data[i][1]));
+        const label = raw_data[i][0];
+        const value = raw_data[i][1];
+        if (
+          label === undefined ||
+          label === null ||
+          value === undefined ||
+          value === null
+        ) {
+          Toast("error", "Data contains undefined or null values");
+          return;
+        }
+        labels.push(label);
+        series.push(value);
       }
-
       const data = [
         {
           title,
@@ -187,13 +195,13 @@ const ExcelImportModal = ({
       const raw_data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
       const title = raw_data[0][0];
-      const seriesNames = raw_data[1].slice(1); // remove the first empty item
-      const rows = raw_data.slice(2); // Skip title and seriesNames
+      const seriesNames = raw_data[1].slice(1);
+      const rows = raw_data.slice(2);
 
       const series = seriesNames.map((name, index) => {
         const data = rows.map((row) => ({
           x: row[0],
-          y: row[index + 1],
+          y: isNaN(row[index + 1]) ? 0 : row[index + 1],
         }));
         return { name, data };
       });
@@ -238,36 +246,6 @@ const ExcelImportModal = ({
     handleFileUpload(e);
   };
 
-  const renderTable = () => {
-    if (!importedData) return null;
-
-    return (
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            {importedData.labels.map((label, index) => (
-              <th key={index}>Label {index + 1}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{importedData.title}</td>
-            {importedData.series.map((serie, seriesIndex) => (
-              <td key={seriesIndex}>
-                {serie.name}
-                {serie.data.map((value, dataIndex) => (
-                  <div key={dataIndex}>{value}</div>
-                ))}
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-    );
-  };
-
   return (
     <Modal show={showImportModal} onHide={() => setShowImportModal(false)}>
       <Modal.Header closeButton>
@@ -303,12 +281,11 @@ const ExcelImportModal = ({
             onChange={handleFileUpload}
             style={{ display: "none" }}
           />
-          {renderTable()}
         </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => setShowImportModal(false)}>
-          Close
+          {constant.close}
         </Button>
       </Modal.Footer>
     </Modal>

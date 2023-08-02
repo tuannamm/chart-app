@@ -171,15 +171,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      <ModalSelector
-        chartId={chartId.id}
-        showDataModal={showDataModal}
-        setShowDataModal={setShowDataModal}
-        data={data}
-        setData={setData}
-        selectedDataIndex={selectedDataIndex}
-      />
-
       <ChartPropertiesModal
         showPropertyModal={showPropertyModal}
         setShowPropertyModal={setShowPropertyModal}
@@ -187,6 +178,15 @@ const HomePage = () => {
         onPropertiesChange={setChartProperties}
         setData={setData}
         setLineStyle={setLineStyle}
+      />
+
+      <ModalSelector
+        chartId={chartId.id}
+        showDataModal={showDataModal}
+        setShowDataModal={setShowDataModal}
+        data={data}
+        setData={setData}
+        selectedDataIndex={selectedDataIndex}
       />
 
       <ShapeModal
