@@ -13,4 +13,14 @@ const checkDuplicateLabels = (labels) => {
   return duplicateIndices;
 };
 
-export default checkDuplicateLabels;
+const checkForDuplicates = (labels) => {
+  const duplicates = labels.reduce((acc, label, index) => {
+    if (labels.indexOf(label) !== index && acc.indexOf(label) === -1) {
+      acc.push(label);
+    }
+    return acc;
+  }, []);
+  return labels.map((label) => duplicates.includes(label));
+};
+
+export { checkDuplicateLabels, checkForDuplicates };

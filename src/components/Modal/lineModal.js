@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import Toast from "../Toast";
 import { setChartData } from "../../store/action/chartAction";
-import checkDuplicateLabels from "../../utils/checkDuplicateLabels";
+import { checkDuplicateLabels } from "../../utils/checkDuplicateLabels";
 import hasUndefinedValue from "../../utils/validateInputData";
 
 import icons from "../../utils/icons";

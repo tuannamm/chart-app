@@ -11,7 +11,7 @@ const typeChart = (chartId) => {
     case 5:
       return "line";
     case 6:
-      return "treemap";
+      return "candlestick";
     default:
       return;
   }

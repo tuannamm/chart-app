@@ -6,8 +6,9 @@ import { setChartData } from "../../store/action/chartAction";
 
 import icons from "../../utils/icons";
 import "./mixedModal.scss";
-import checkDuplicateLabels from "../../utils/checkDuplicateLabels";
+import { checkDuplicateLabels } from "../../utils/checkDuplicateLabels";
 import Toast from "../Toast";
+import hasUndefinedValue from "../../utils/validateInputData";
 
 const { AiOutlineDelete, AiOutlinePlus } = icons;
 
@@ -26,6 +27,8 @@ const MixedModal = ({
     { name: "", type: "line", data: [""] },
   ]);
   const [duplicateWarning, setDuplicateWarning] = useState([]);
+
+  const hasEmptyInput = hasUndefinedValue(data);
 
   useEffect(() => {
     if (showDataModal) {
@@ -70,24 +73,10 @@ const MixedModal = ({
     setSeries([...series, { name: "", type: "line", data: [""] }]);
   };
 
-  const isInputValid = (input) => {
-    if (input === undefined || input === null || input === "") return false;
-
-    if (Array.isArray(input)) {
-      return input.every((item) => isInputValid(item));
-    }
-
-    if (typeof input === "object") {
-      return Object.values(input).every((value) => isInputValid(value));
-    }
-
-    return true;
-  };
-
   const handleSaveData = () => {
     const newData = { title, labels, series };
 
-    if (isInputValid(newData)) {
+    if (hasEmptyInput) {
       Toast("error", "Invalid input. Please check your data.");
       return;
     }
@@ -130,6 +119,8 @@ const MixedModal = ({
     const updatedLabels = [...labels];
     updatedLabels[labelIndex] = value;
     setLabels(updatedLabels);
+    const duplicateWarnings = checkDuplicateLabels(updatedLabels);
+    setDuplicateWarning(duplicateWarnings);
   };
 
   const handleRemoveLabel = (labelIndex) => {
