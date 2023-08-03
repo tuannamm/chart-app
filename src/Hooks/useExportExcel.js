@@ -7,6 +7,10 @@ import Toast from "../components/Toast";
 export const useExportExcel = (chartId) => {
   const exportData = useCallback(
     async (data) => {
+      if (data === undefined || data.length === 0) {
+        Toast("error", "Data is empty");
+        return;
+      }
       const workbook = new ExcelJS.Workbook();
 
       if (chartId === 1 || chartId === 2 || chartId === 5) {
