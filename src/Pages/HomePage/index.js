@@ -49,7 +49,8 @@ const HomePage = () => {
   const chartId = useSelector((state) => state?.chartReducer);
   const dataChart = useSelector((state) => state?.chartDataReducer.data);
 
-  const [data, setData] = useState(dataChart || []);
+  const dataFromStore = chartId.id === 4 || chartId.id === 6 ? [] : dataChart;
+  const [data, setData] = useState(dataFromStore);
 
   const downloadScreenshot = useDownload(chartRef, data);
 
