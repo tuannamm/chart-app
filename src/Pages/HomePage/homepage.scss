@@ -1,8 +1,8 @@
 .homepage-container {
   width: 85%;
-  height: 80vh;
+  height: 90%;
   margin: 1.5rem auto; 
-  border: 0.0625rem solid black;
+  border: 1px solid black;
   border-radius: 0.625rem;
   background-color: white;
 
@@ -51,7 +51,7 @@
     .btn {
       position: relative;
       overflow: hidden;
-      border: 0.0625rem solid black;
+      border: 2px solid black;
       color: #18181a;
       display: inline-block;
       font-size: 0.9375rem;
@@ -122,9 +122,9 @@
   .chart-and-properties-container {
     display: flex;
     .chart-container-bigger {
-      height: 31.25rem;
+      height:auto;
       width: 100%;
-      max-width: 80rem; 
+      
       margin: 1.25rem auto;
       position: relative;
       ;

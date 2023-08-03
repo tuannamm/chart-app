@@ -1,9 +1,11 @@
 .btn-group {
   label {
-    color: black
+    color: black;
+    
   };
   .btn {
       border-radius: 10px;
-      border: 1px solid gray;
+      border: 2px solid black;
+      border-left: 1px solid black;
   }
 }

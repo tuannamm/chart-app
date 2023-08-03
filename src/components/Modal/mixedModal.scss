@@ -22,9 +22,29 @@
       }
       
       .icons-remove {
+        position: absolute;
+        color: rgb(239, 231, 231);
+        right: 1.563rem;
+        bottom: 0.813rem;
         cursor: pointer;
-        color: red;
+        &:hover {
+          color: red
+        }
       }
+    }
+
+    .icons-add {
+      cursor: pointer;
+      color: #a3a5a7; 
+      font-size: 25px; 
+      padding: 5px;
+      border: 1px solid #a3a5a7;
+      border-radius: 5px;
+      margin: 0 0 8px 45%;
+    }
+    
+    .icons-add:hover {
+      background-color: #f0f0f0;
     }
 
     .serie-group {
@@ -102,5 +122,5 @@
       }
     }
   }
-
+ 
 }

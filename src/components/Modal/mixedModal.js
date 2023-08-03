@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
 import { setChartData } from "../../store/action/chartAction";
@@ -7,8 +7,9 @@ import { setChartData } from "../../store/action/chartAction";
 import icons from "../../utils/icons";
 import "./mixedModal.scss";
 import checkDuplicateLabels from "../../utils/checkDuplicateLabels";
+import Toast from "../Toast";
 
-const { AiOutlineDelete } = icons;
+const { AiOutlineDelete, AiOutlinePlus } = icons;
 
 const MixedModal = ({
   showDataModal,
@@ -69,8 +70,27 @@ const MixedModal = ({
     setSeries([...series, { name: "", type: "line", data: [""] }]);
   };
 
+  const isInputValid = (input) => {
+    if (input === undefined || input === null || input === "") return false;
+
+    if (Array.isArray(input)) {
+      return input.every((item) => isInputValid(item));
+    }
+
+    if (typeof input === "object") {
+      return Object.values(input).every((value) => isInputValid(value));
+    }
+
+    return true;
+  };
+
   const handleSaveData = () => {
     const newData = { title, labels, series };
+
+    if (isInputValid(newData)) {
+      Toast("error", "Invalid input. Please check your data.");
+      return;
+    }
     if (
       selectedIndex !== null &&
       selectedIndex >= 0 &&
@@ -147,7 +167,7 @@ const MixedModal = ({
               className={`input-field ${
                 duplicateWarning[labelIndex] ? "warning" : ""
               }`}
-              placeholder={`Label ${labelIndex}`}
+              placeholder={`Label ${labelIndex + 1}`}
             />
             <AiOutlineDelete
               className="icons-remove"
@@ -156,61 +176,68 @@ const MixedModal = ({
           </div>
         ))}
 
-        <Button variant="secondary" onClick={handleAddLabel}>
-          Add Label
-        </Button>
+        <AiOutlinePlus className="icons-add" onClick={handleAddLabel} />
 
-        {series.map((serie, seriesIndex) => (
-          <div key={seriesIndex} className="serie-group">
-            <div className="input-group">
-              <input
-                type="text"
-                value={serie?.name}
-                onChange={(e) => handleNameChange(seriesIndex, e.target.value)}
-                className="input-field"
-                placeholder="Name"
-              />
-              <select
-                value={serie?.type}
-                onChange={(e) => handleTypeChange(seriesIndex, e.target.value)}
-                className="select-field"
-              >
-                <option value="line">Line</option>
-                <option value="area">Area</option>
-                <option value="column">Column</option>
-              </select>
-              <AiOutlineDelete
-                className="icons-remove"
-                onClick={() => handleRemoveSeries(seriesIndex)}
-              />
-            </div>
-
-            {serie?.data.map((value, dataIndex) => (
-              <div key={dataIndex} className="input-group">
+        <Row className="serie-group">
+          {series.map((serie, seriesIndex) => (
+            <Col key={seriesIndex} className="dataset">
+              <div className="input-group">
                 <input
-                  type="number"
-                  value={value}
+                  type="text"
+                  value={serie?.name}
                   onChange={(e) =>
-                    handleDataChange(seriesIndex, dataIndex, e.target.value)
+                    handleNameChange(seriesIndex, e.target.value)
                   }
                   className="input-field"
-                  placeholder={`Data ${dataIndex}`}
+                  placeholder="Name"
                 />
+                <select
+                  value={serie?.type}
+                  onChange={(e) =>
+                    handleTypeChange(seriesIndex, e.target.value)
+                  }
+                  className="select-field my-custom-select"
+                >
+                  <option value="line">Line</option>
+                  <option value="area">Area</option>
+                  <option value="column">Column</option>
+                </select>
                 <AiOutlineDelete
                   className="icons-remove"
-                  onClick={() => handleRemoveData(seriesIndex, dataIndex)}
+                  onClick={() => handleRemoveSeries(seriesIndex)}
                 />
               </div>
-            ))}
-            {isDataLengthExceedLabels(seriesIndex) ? (
-              <Button onClick={() => handleAddData(seriesIndex)}>
-                Add Data
-              </Button>
-            ) : null}
-          </div>
-        ))}
 
-        <Button onClick={handleAddSeries}>Add Dataset</Button>
+              {serie?.data.map((value, dataIndex) => (
+                <div key={dataIndex} className="input-group">
+                  <input
+                    type="number"
+                    value={value}
+                    onChange={(e) =>
+                      handleDataChange(seriesIndex, dataIndex, e.target.value)
+                    }
+                    className="input-field"
+                    placeholder={`Data ${dataIndex + 1}`}
+                  />
+                  <AiOutlineDelete
+                    className="icons-remove"
+                    onClick={() => handleRemoveData(seriesIndex, dataIndex)}
+                  />
+                </div>
+              ))}
+              {isDataLengthExceedLabels(seriesIndex) ? (
+                <AiOutlinePlus
+                  className="icons-add"
+                  onClick={() => handleAddData(seriesIndex)}
+                />
+              ) : null}
+            </Col>
+          ))}
+
+          <Col>
+            <AiOutlinePlus className="icons-add" onClick={handleAddSeries} />
+          </Col>
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={handleSaveData}>Save</Button>
