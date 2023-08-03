@@ -45,12 +45,10 @@ const ExcelImportModal = ({
   };
 
   const handleFileUpload = (event) => {
-    if (chartId === 1 || chartId === 2 || chartId === 5) {
+    if (chartId === 1 || chartId === 2 || chartId === 5 || chartId === 5) {
       handleLineChartFile(event);
     } else if (chartId === 4) {
       handlePieChartFile(event);
-    } else if (chartId === 3) {
-      handleColumnChartFile(event);
     } else if (chartId === 6) {
       handleColumnChartFile(event);
     }
