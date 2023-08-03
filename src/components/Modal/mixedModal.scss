@@ -56,6 +56,10 @@
       .input-group:first-child {
         justify-content: space-between;
       }
+
+      .my-custom-select {
+        border: none;
+      }
     }
 
     button {
@@ -110,10 +114,14 @@
         padding: 1rem;
       }
 
+   
+
       button {
         padding: 0.875rem;
       }
     }
+
+    
 
     .modal-footer {
       button {

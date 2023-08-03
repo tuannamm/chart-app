@@ -30,21 +30,6 @@ const MixedModal = ({
 
   const hasEmptyInput = hasUndefinedValue(data);
 
-  useEffect(() => {
-    if (showDataModal) {
-      if (
-        selectedIndex !== null &&
-        selectedIndex >= 0 &&
-        selectedIndex < data.length
-      ) {
-        const selectedData = data[selectedIndex];
-        setTitle(selectedData.title);
-        setLabels(selectedData.labels);
-        setSeries(selectedData.series);
-      }
-    }
-  }, [data, selectedIndex, showDataModal]);
-
   const handleNameChange = (seriesIndex, value) => {
     const updatedSeries = [...series];
     updatedSeries[seriesIndex].name = value;
@@ -94,6 +79,35 @@ const MixedModal = ({
     dispatch(setChartData([newData]));
     setShowDataModal(false);
   };
+
+  useEffect(() => {
+    if (showDataModal && data) {
+      setDuplicateWarning([]);
+      if (
+        selectedIndex !== null &&
+        selectedIndex >= 0 &&
+        selectedIndex < data.length
+      ) {
+        const selectedData = data[selectedIndex];
+        setTitle(selectedData.title);
+        setLabels(selectedData.labels);
+        setSeries(selectedData.series);
+      }
+    }
+  }, [data, selectedIndex, showDataModal]);
+
+  useEffect(() => {
+    if (showDataModal && data) {
+      const index =
+        selectedIndex !== null && selectedIndex >= 0 ? selectedIndex : 0;
+      if (index >= 0 && index < data.length) {
+        const selectedData = data[index];
+        setTitle(selectedData.title);
+        setLabels(selectedData.labels);
+        setSeries(selectedData.series);
+      }
+    }
+  }, [data, selectedIndex, showDataModal]);
 
   const handleClose = () => {
     setShowDataModal(false);
