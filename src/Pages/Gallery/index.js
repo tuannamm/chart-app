@@ -1,20 +1,14 @@
 import React, { memo, useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Card from "react-bootstrap/Card";
 
-import Setting from "../../Setting/setting";
 import Spinner from "../../components/AtomicSpinner";
 import { setChartId } from "../../store/action/chartAction";
 
-import constant from "../../utils/constant";
-import icons from "../../utils/icons";
-
 import "./gallery.scss";
 import "../../components/Header/header.scss";
-
-const { FaChartPie } = icons;
+import Navbar from "../../components/Navbar";
 
 const chartListData = [
   {
@@ -83,27 +77,13 @@ const Gallery = () => {
         </div>
       ) : (
         <>
-          <Navbar bg="light" expand="lg" className="header-container">
-            <Container>
-              <NavLink to="/" className="nav-link navbar-brand ">
-                <FaChartPie size={"2em"} color={"00bfff"} /> {constant.app_name}
-              </NavLink>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto"></Nav>
-                <Nav>
-                  <Setting />
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-
+          <Navbar />
           <div className="card-chart-container bounce">
             <div className="list-chart">
               {chartListData &&
                 chartListData.map((chart) => (
                   <Card
-                    style={{ width: "25rem", height: "20rem" }}
+                    style={{ width: "20rem", height: "15rem" }}
                     key={chart?.id}
                     onClick={() => handleSelectChart(chart?.id)}
                     className="card-chart"

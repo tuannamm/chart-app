@@ -3,6 +3,7 @@ import { fabric } from "fabric";
 import { useSelector } from "react-redux";
 
 import Chart from "../../components/Chart";
+import Navbar from "../../components/Navbar";
 import ShapeModal from "../../components/Modal/shapeModal";
 import ModalSelector from "../../components/Modal";
 import ExcelImportModal from "../../components/Modal/importModal";
@@ -10,6 +11,7 @@ import ChartPropertiesModal from "../../components/Modal/propertiesModal";
 import ButtonLeft from "../../components/Button/ButtonLeft";
 import ButtonRight from "../../components/Button/ButtonRight";
 import ChartPropertiesControl from "../../components/ChartProperties";
+import BreadcrumbComponent from "../../components/Breadcrumb";
 
 import { useDownload } from "../../Hooks/useDownload";
 import { useClearCanvas } from "../../Hooks/useClearCanvas";
@@ -130,87 +132,99 @@ const HomePage = () => {
   console.log(data);
 
   return (
-    <div className="homepage-container">
-      <div className="feature-button">
-        <div className="feature-button-left">
-          <ButtonLeft
-            setSelectedShape={setSelectedShape}
-            canvasRef={canvasRef}
-            handleButtonClick={handleButtonClick}
-            handleShowDataModal={handleShowDataModal}
-            handleShowPropertyModal={handleShowPropertyModal}
-          />
+    <div>
+      <Navbar />
+
+      <div className="homepage-container">
+        <div>
+          <BreadcrumbComponent chartId={chartId} />
         </div>
-        <div className="feature-button-right">
-          <ButtonRight
-            setShowImportModal={setShowImportModal}
-            downloadScreenshot={downloadScreenshot}
-            isCanvasVisible={isCanvasVisible}
-            handleRemoveCanvas={handleCancelClick}
-            data={data}
-          />
-        </div>
-      </div>
-      <div className="chart-and-properties-container">
-        {data && data[0]?.series.length < 10 && (
-          <div className="chart-properties">
-            <ChartPropertiesControl
-              properties={chartProperties}
-              onPropertiesChange={setChartProperties}
-              setData={setData}
-              setLineStyle={setLineStyle}
+        <div className="feature-button">
+          <div className="feature-button-left">
+            <ButtonLeft
+              setSelectedShape={setSelectedShape}
+              canvasRef={canvasRef}
+              handleButtonClick={handleButtonClick}
+              handleShowDataModal={handleShowDataModal}
+              handleShowPropertyModal={handleShowPropertyModal}
             />
           </div>
-        )}
-        <div className={bigger} ref={chartRef} style={{ position: "relative" }}>
-          <Chart
-            data={data}
-            options={chartOptions}
-            chartId={chartId.id}
-            properties={chartProperties}
-          />
+          <div className="feature-button-right">
+            <ButtonRight
+              setShowImportModal={setShowImportModal}
+              downloadScreenshot={downloadScreenshot}
+              isCanvasVisible={isCanvasVisible}
+              handleRemoveCanvas={handleCancelClick}
+              data={data}
+            />
+          </div>
         </div>
+
+        <div className="chart-and-properties-container">
+          {data && data[0]?.series.length < 10 && (
+            <div className="chart-properties">
+              <ChartPropertiesControl
+                properties={chartProperties}
+                onPropertiesChange={setChartProperties}
+                setData={setData}
+                setLineStyle={setLineStyle}
+              />
+            </div>
+          )}
+          <div
+            className={bigger}
+            ref={chartRef}
+            style={{ position: "relative" }}
+          >
+            <Chart
+              data={data}
+              options={chartOptions}
+              chartId={chartId.id}
+              properties={chartProperties}
+            />
+          </div>
+        </div>
+
+        <ChartPropertiesModal
+          showPropertyModal={showPropertyModal}
+          setShowPropertyModal={setShowPropertyModal}
+          properties={chartProperties}
+          onPropertiesChange={setChartProperties}
+          setData={setData}
+          setLineStyle={setLineStyle}
+        />
+
+        <ModalSelector
+          chartId={chartId.id}
+          showDataModal={showDataModal}
+          setShowDataModal={setShowDataModal}
+          data={data}
+          setData={setData}
+          selectedDataIndex={selectedDataIndex}
+        />
+
+        <ShapeModal
+          selectedShapeObject={selectedShapeObject}
+          shapeModalVisible={shapeModalVisible}
+          setShapeModalVisible={setShapeModalVisible}
+          shapeStrokeWidth={shapeStrokeWidth}
+          setShapeStrokeWidth={setShapeStrokeWidth}
+          shapeColor={shapeColor}
+          setShapeColor={setShapeColor}
+          canvasRef={canvasRef}
+          shapeLineStyle={shapeLineStyle}
+          setShapeLineStyle={setShapeLineStyle}
+          shapeStrokeColor={shapeStrokeColor}
+          setShapeStrokeColor={setShapeStrokeColor}
+        />
+
+        <ExcelImportModal
+          showImportModal={showImportModal}
+          setShowImportModal={setShowImportModal}
+          setData={setData}
+          chartId={chartId.id}
+        />
       </div>
-
-      <ChartPropertiesModal
-        showPropertyModal={showPropertyModal}
-        setShowPropertyModal={setShowPropertyModal}
-        properties={chartProperties}
-        onPropertiesChange={setChartProperties}
-        setData={setData}
-        setLineStyle={setLineStyle}
-      />
-
-      <ModalSelector
-        chartId={chartId.id}
-        showDataModal={showDataModal}
-        setShowDataModal={setShowDataModal}
-        data={data}
-        setData={setData}
-        selectedDataIndex={selectedDataIndex}
-      />
-
-      <ShapeModal
-        selectedShapeObject={selectedShapeObject}
-        shapeModalVisible={shapeModalVisible}
-        setShapeModalVisible={setShapeModalVisible}
-        shapeStrokeWidth={shapeStrokeWidth}
-        setShapeStrokeWidth={setShapeStrokeWidth}
-        shapeColor={shapeColor}
-        setShapeColor={setShapeColor}
-        canvasRef={canvasRef}
-        shapeLineStyle={shapeLineStyle}
-        setShapeLineStyle={setShapeLineStyle}
-        shapeStrokeColor={shapeStrokeColor}
-        setShapeStrokeColor={setShapeStrokeColor}
-      />
-
-      <ExcelImportModal
-        showImportModal={showImportModal}
-        setShowImportModal={setShowImportModal}
-        setData={setData}
-        chartId={chartId.id}
-      />
     </div>
   );
 };

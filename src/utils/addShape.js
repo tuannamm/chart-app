@@ -15,9 +15,11 @@ export const addShape = (shape, canvasRef) => {
 
   switch (shape) {
     case "circle":
+      // hình tròn
       newShape = new fabric.Circle({ ...shapeProperties, radius: 50 });
       break;
     case "square":
+      // hình vuông
       newShape = new fabric.Rect({
         ...shapeProperties,
         width: 100,
@@ -25,6 +27,7 @@ export const addShape = (shape, canvasRef) => {
       });
       break;
     case "triangle":
+      // hình tam giác
       newShape = new fabric.Triangle({
         ...shapeProperties,
         width: 100,
@@ -32,6 +35,7 @@ export const addShape = (shape, canvasRef) => {
       });
       break;
     case "line":
+      // đường thẳng
       newShape = new fabric.Line([50, 100, 200, 200], {
         left: 170,
         top: 150,
@@ -40,6 +44,7 @@ export const addShape = (shape, canvasRef) => {
       });
       break;
     case "arrow":
+      // hình mũi tên
       const line = new fabric.Line([0, 0, 100, 100], {
         left: 150,
         top: 150,
@@ -77,6 +82,7 @@ export const addShape = (shape, canvasRef) => {
       });
       break;
     case "text":
+      // text
       newShape = new fabric.IText("Hello, World!", {
         left: 100,
         top: 100,

@@ -1,17 +1,17 @@
 const typeChart = (chartId) => {
   switch (chartId) {
     case 1:
-      return "line";
+      return "Line chart";
     case 2:
-      return "area";
+      return "Area chart";
     case 3:
-      return "bar";
+      return "Column chart";
     case 4:
-      return "pie";
+      return "Pie chart";
     case 5:
-      return "line";
+      return "Mixed chart";
     case 6:
-      return "treemap";
+      return "Tree map chart";
     default:
       return;
   }

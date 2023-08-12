@@ -1,0 +1,22 @@
+.breadcrumb {
+  .breadcrumb-item {
+      font-size: 1.5625rem;
+      &:not(:last-child) {
+          color: #6c757d;
+          a {
+              color: inherit;
+              text-decoration: none;
+
+              &:hover {
+                  text-decoration: underline;
+              }
+          }
+      }
+      &.active {
+          color: #343a40;
+      }
+      + .breadcrumb-item::before {
+          color: #6c757d;
+      }
+  }
+}

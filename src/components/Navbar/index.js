@@ -4,20 +4,21 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-bootstrap";
 
-import icons from "../../utils/icons";
 import constant from "../../utils/constant";
 import Setting from "../../Setting/setting";
 import { Link } from "react-router-dom";
-
-const { FaChartPie } = icons;
 
 const NavBar = (props) => {
   return (
     <div>
       <Navbar bg="white" expand="md" className="header-container">
         <Container>
-          <NavLink to="/home" className="nav-link navbar-brand ">
-            <FaChartPie size={"2em"} color={"00bfff"} /> {constant.app_name}
+          <NavLink to="/" className="nav-link navbar-brand ">
+            <img
+              src="https://res.cloudinary.com/dgd57kdbo/image/upload/f_auto,q_auto/gsebpvlmuutrkbsw1rs1"
+              alt=""
+              style={{ width: "18.75rem" }}
+            />
           </NavLink>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

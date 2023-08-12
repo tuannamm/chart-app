@@ -28,9 +28,9 @@ const App = () => {
         />
       ) : (
         <div className="app-container">
-          <div className="header-container">
+          {/* <div className="header-container">
             <Header />
-          </div>
+          </div> */}
           <div className="app-content">
             <Outlet />
           </div>

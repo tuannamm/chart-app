@@ -4,24 +4,24 @@
   align-items: center;
   .list-chart {
     display: grid;
-    grid-template-columns: 0fr 0fr 0fr;; /* Responsive grid with a minimum width of 300px */
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: 2fr 2fr 2fr;
     @media (max-width: 48rem) {
       grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
     }
     gap: 1.25rem;
-    margin-top: 0.625rem;
-    padding: 1.25rem;
-    justify-items: center;
-    justify-content: center;
+    padding: 6.5rem;
   }
   .card-chart {
     text-align: center;
     margin: 1.25rem;
-    border: 0.0625rem solid rgb(201, 198, 198);
+    border: none;
+    padding: 20px;
     border-radius: 0.9375rem;
     animation-duration: 0.5s;
     animation-fill-mode: forwards;
-
+    border: 0.5px solid gray;
     @keyframes card-hover {
       0% {
         transform: scale(1);
@@ -60,15 +60,3 @@
 } 
 
 
-// .bounce {
-//   animation: bounce 1s ease;
-// }
-// @keyframes bounce {
-//     70% { transform:translateY(0%); }
-//     80% { transform:translateY(-15%); }
-//     90% { transform:translateY(0%); }
-//     95% { transform:translateY(-7%); }
-//     97% { transform:translateY(0%); }
-//     99% { transform:translateY(-3%); }
-//     100% { transform:translateY(0); }
-// }

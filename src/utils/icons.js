@@ -33,6 +33,8 @@ import {
   AiOutlineClear,
   AiOutlinePlus,
   AiOutlineSetting,
+  AiFillGithub,
+  AiFillLinkedin,
 } from "react-icons/ai";
 import { GiStraightPipe } from "react-icons/gi";
 import { MdArrowForward } from "react-icons/md";
@@ -69,6 +71,8 @@ const icons = {
   IoAddCircleOutline,
   AiOutlinePlus,
   AiOutlineSetting,
+  AiFillGithub,
+  AiFillLinkedin,
 };
 
 export default icons;
