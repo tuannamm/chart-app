@@ -13,7 +13,7 @@ export const useExportExcel = (chartId) => {
       }
       const workbook = new ExcelJS.Workbook();
 
-      if (chartId === 1 || chartId === 2 || chartId === 5) {
+      if (chartId === 1 || chartId === 2 || chartId === 5 || chartId === 3) {
         data.forEach((datum, index) => {
           const worksheet = workbook.addWorksheet(`Sheet ${index + 1}`);
 
@@ -73,7 +73,7 @@ export const useExportExcel = (chartId) => {
         });
       }
 
-      if (chartId === 3 || chartId === 6) {
+      if (chartId === 6) {
         data.forEach((datum, index) => {
           const worksheet = workbook.addWorksheet(`Sheet ${index + 1}`);
 
