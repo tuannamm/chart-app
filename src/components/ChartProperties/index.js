@@ -1,11 +1,13 @@
 import React, { memo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Row, Col, Button } from "react-bootstrap";
 
 import GroupButton from "../ButtonGroup";
 
 import icons from "../../utils/icons";
 import constant from "../../utils/constant";
+import { setChartData } from "../../store/action/chartAction";
+
 import "./chartProperties.scss";
 
 const { AiOutlineClear } = icons;
@@ -16,7 +18,13 @@ const ChartPropertiesControl = ({
   setData,
   setLineStyle,
 }) => {
+  const dispatch = useDispatch();
   const chartId = useSelector((state) => state?.chartReducer);
+
+  const handleRefreshData = () => {
+    setData([]);
+    dispatch(setChartData([]));
+  };
 
   return (
     <div className="form">
@@ -203,7 +211,7 @@ const ChartPropertiesControl = ({
                 className="form-control"
               />
             </Form.Group>
-            <Button onClick={() => setData([])}>
+            <Button onClick={() => handleRefreshData()}>
               <span>
                 <AiOutlineClear className="icons text" />{" "}
                 {constant.refresh_data}
