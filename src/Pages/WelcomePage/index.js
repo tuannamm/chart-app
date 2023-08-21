@@ -31,7 +31,7 @@ const WelcomePage = () => {
               <AiFillLinkedin />
             </span>
             <span style={{ fontSize: "20px" }}>
-              <AiFillGithub />
+              <AiFillGithub href="https://github.com/tuannamm" />
             </span>
             <span></span>
           </NavLink>

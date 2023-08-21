@@ -27,7 +27,7 @@ const NavBar = (props) => {
                 {constant.gallery}
               </Link>
             </Nav>
-            <Setting />
+            {/* <Setting /> */}
           </Navbar.Collapse>
         </Container>
       </Navbar>
